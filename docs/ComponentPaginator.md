@@ -1,0 +1,135 @@
+# ComponentPaginator
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**Count** | **float32** |  | 
+**Total** | **float32** |  | 
+**Offset** | **float32** |  | [default to 0]
+**Limit** | **float32** |  | [default to 20]
+**Results** | [**[]Component**](Component.md) |  | 
+
+## Methods
+
+### NewComponentPaginator
+
+`func NewComponentPaginator(count float32, total float32, offset float32, limit float32, results []Component, ) *ComponentPaginator`
+
+NewComponentPaginator instantiates a new ComponentPaginator object
+This constructor will assign default values to properties that have it defined,
+and makes sure properties required by API are set, but the set of arguments
+will change when the set of required properties is changed
+
+### NewComponentPaginatorWithDefaults
+
+`func NewComponentPaginatorWithDefaults() *ComponentPaginator`
+
+NewComponentPaginatorWithDefaults instantiates a new ComponentPaginator object
+This constructor will only assign default values to properties that have it defined,
+but it doesn't guarantee that properties required by API are set
+
+### GetCount
+
+`func (o *ComponentPaginator) GetCount() float32`
+
+GetCount returns the Count field if non-nil, zero value otherwise.
+
+### GetCountOk
+
+`func (o *ComponentPaginator) GetCountOk() (*float32, bool)`
+
+GetCountOk returns a tuple with the Count field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCount
+
+`func (o *ComponentPaginator) SetCount(v float32)`
+
+SetCount sets Count field to given value.
+
+
+### GetTotal
+
+`func (o *ComponentPaginator) GetTotal() float32`
+
+GetTotal returns the Total field if non-nil, zero value otherwise.
+
+### GetTotalOk
+
+`func (o *ComponentPaginator) GetTotalOk() (*float32, bool)`
+
+GetTotalOk returns a tuple with the Total field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetTotal
+
+`func (o *ComponentPaginator) SetTotal(v float32)`
+
+SetTotal sets Total field to given value.
+
+
+### GetOffset
+
+`func (o *ComponentPaginator) GetOffset() float32`
+
+GetOffset returns the Offset field if non-nil, zero value otherwise.
+
+### GetOffsetOk
+
+`func (o *ComponentPaginator) GetOffsetOk() (*float32, bool)`
+
+GetOffsetOk returns a tuple with the Offset field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetOffset
+
+`func (o *ComponentPaginator) SetOffset(v float32)`
+
+SetOffset sets Offset field to given value.
+
+
+### GetLimit
+
+`func (o *ComponentPaginator) GetLimit() float32`
+
+GetLimit returns the Limit field if non-nil, zero value otherwise.
+
+### GetLimitOk
+
+`func (o *ComponentPaginator) GetLimitOk() (*float32, bool)`
+
+GetLimitOk returns a tuple with the Limit field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLimit
+
+`func (o *ComponentPaginator) SetLimit(v float32)`
+
+SetLimit sets Limit field to given value.
+
+
+### GetResults
+
+`func (o *ComponentPaginator) GetResults() []Component`
+
+GetResults returns the Results field if non-nil, zero value otherwise.
+
+### GetResultsOk
+
+`func (o *ComponentPaginator) GetResultsOk() (*[]Component, bool)`
+
+GetResultsOk returns a tuple with the Results field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetResults
+
+`func (o *ComponentPaginator) SetResults(v []Component)`
+
+SetResults sets Results field to given value.
+
+
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

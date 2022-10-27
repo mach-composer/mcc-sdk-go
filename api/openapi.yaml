@@ -1,0 +1,936 @@
+openapi: 3.0.0
+info:
+  title: MCC Public API
+  version: 0.1.0
+servers:
+- description: Live environment
+  url: https://api.mach.cloud
+security:
+- bearerAuth:
+  - api-client:read
+  - api-client:write
+  - component:read
+  - component:write
+  - component-version:write
+paths:
+  /authorize:
+    get:
+      operationId: Authorize
+      parameters:
+      - explode: true
+        in: query
+        name: audience
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: response_type
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: provider
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: code_challenge
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: code_challenge_method
+        required: false
+        schema:
+          example: S256
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: redirect_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "307":
+          description: OK
+      tags:
+      - Auth
+    servers:
+    - description: Development server
+      url: http://localhost:3000
+    - description: Test server
+      url: https://auth.mcc.labd.io
+    - description: Production server
+      url: https://auth.mach.cloud
+  /oauth/token:
+    post:
+      operationId: GetAuthToken
+      parameters:
+      - explode: true
+        in: query
+        name: grant_type
+        required: false
+        schema:
+          example: client_credentials
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: client_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: code_verifier
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: code
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: redirect_uri
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: OK
+      security:
+      - basicAuth: []
+      tags:
+      - Auth
+    servers:
+    - description: Development server
+      url: http://localhost:3000
+    - description: Test server
+      url: https://auth.mcc.labd.io
+    - description: Production server
+      url: https://auth.mach.cloud
+  /oauth/introspect:
+    post:
+      operationId: IntrospectToken
+      parameters:
+      - explode: true
+        in: query
+        name: token
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Auth
+    servers:
+    - description: Development server
+      url: http://localhost:3000
+    - description: Test server
+      url: https://auth.mcc.labd.io
+    - description: Production server
+      url: https://auth.mach.cloud
+  /account/organizations/:
+    get:
+      operationId: OrganizationQuery
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationPaginator'
+          description: OK
+      summary: List all organizations
+      tags:
+      - Account Management
+    post:
+      operationId: OrganizationCreate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationDraft'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: OK
+      summary: Create new organization
+      tags:
+      - Account Management
+  /account/organizations/{organization}/users:
+    get:
+      operationId: OrganizationUserQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserPaginator'
+          description: OK
+      summary: List all users in an organization
+      tags:
+      - Account Management
+    post:
+      operationId: OrganizationUserInvite
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUserInviteDraft'
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserInvite'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+          description: Unauthorized
+      summary: Add user to an organization
+      tags:
+      - Account Management
+  /account/organizations/{organization}/projects:
+    get:
+      operationId: ProjectQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectPaginator'
+          description: OK
+      summary: List all projects in an organization
+      tags:
+      - Account Management
+    post:
+      operationId: ProjectCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectDraft'
+        required: true
+      responses:
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+          description: Unauthorized
+      summary: Create new project in an organization
+      tags:
+      - Account Management
+  /{organization}/projects/{project}/api-clients:
+    get:
+      operationId: ApiClientQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClientPaginator'
+          description: OK
+      security:
+      - bearerAuth:
+        - api-client:read
+      summary: List all api clients
+      tags:
+      - API Clients
+    post:
+      operationId: ApiClientCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiClientDraft'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: OK
+      security:
+      - bearerAuth:
+        - api-client:write
+      summary: Create new api client
+      tags:
+      - API Clients
+  /{organization}/projects/{project}/components:
+    get:
+      operationId: ComponentQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentPaginator'
+          description: OK
+      summary: List all components
+      tags:
+      - Components
+    post:
+      operationId: ComponentCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentDraft'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Create component
+      tags:
+      - Components
+  /{organization}/projects/{project}/components/{component}/versions:
+    get:
+      operationId: ComponentVersionQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersionPaginator'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: List all versions of a component
+      tags:
+      - Components
+    post:
+      operationId: ComponentVersionCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentVersionDraft'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersion'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Create component
+      tags:
+      - Components
+components:
+  parameters:
+    organizationParam:
+      description: Organization Key
+      explode: false
+      in: path
+      name: organization
+      required: true
+      schema:
+        example: my-organization
+        type: string
+      style: simple
+    projectParam:
+      description: Project Key
+      explode: false
+      in: path
+      name: project
+      required: true
+      schema:
+        example: my-project
+        type: string
+      style: simple
+  responses:
+    ErrorResponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Invalid request
+    ErrorUnauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+      description: Unauthorized
+  schemas:
+    Error:
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      required:
+      - status
+      type: object
+    BaseResource:
+      properties:
+        created_at:
+          format: date-time
+          type: string
+      required:
+      - created_at
+      type: object
+    Paginator:
+      properties:
+        count:
+          type: number
+        total:
+          type: number
+        offset:
+          default: 0
+          type: number
+        limit:
+          default: 20
+          type: number
+      required:
+      - count
+      - limit
+      - offset
+      - results
+      - total
+      type: object
+    ApiClientDraft:
+      example:
+        scope:
+        - scope
+        - scope
+        description: description
+      properties:
+        description:
+          description: description about the api client
+          type: string
+        scope:
+          description: Scope
+          items:
+            type: string
+          type: array
+      type: object
+    ApiClient:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/ApiClient_allOf'
+    ApiClientPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ApiClientPaginator_allOf'
+    ComponentDraft:
+      example:
+        key: key
+      properties:
+        key:
+          type: string
+      required:
+      - key
+      type: object
+    ComponentVersionDraft:
+      example:
+        component: component
+        version: version
+      properties:
+        component:
+          type: string
+        version:
+          type: string
+      required:
+      - component
+      - version
+      type: object
+    Component:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/Component_allOf'
+    ComponentPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ComponentPaginator_allOf'
+    ComponentVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/ComponentVersion_allOf'
+    ComponentVersionPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ComponentVersionPaginator_allOf'
+    ProjectDraft:
+      example:
+        name: name
+        key: key
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+      required:
+      - key
+      - name
+      type: object
+    Project:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/Project_allOf'
+    ProjectPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ProjectPaginator_allOf'
+    Organization:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/Organization_allOf'
+    OrganizationDraft:
+      example:
+        name: name
+        key: key
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+      required:
+      - key
+      - name
+      type: object
+    OrganizationPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/OrganizationPaginator_allOf'
+    OrganizationUser:
+      properties:
+        client_id:
+          format: uuid
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        name:
+          description: Name of the user
+          type: string
+        email:
+          description: E-mail address of the user
+          type: string
+        organization_key:
+          description: Key of the organization
+          type: string
+        organization_name:
+          description: Name of the organization
+          type: string
+        organization_scopes:
+          items:
+            type: string
+          type: array
+        projects:
+          items:
+            $ref: '#/components/schemas/OrganizationUser_projects_inner'
+          type: array
+      required:
+      - email
+      type: object
+    OrganizationUserPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/OrganizationUserPaginator_allOf'
+    OrganizationUserInvite:
+      example:
+        email: email
+      properties:
+        email:
+          description: E-mail address of the user
+          type: string
+      required:
+      - email
+      type: object
+    OrganizationUserInviteDraft:
+      example:
+        email: email
+      properties:
+        email:
+          description: E-mail address of the user
+          type: string
+      required:
+      - email
+      type: object
+    OrganizationUserInvite_401_response:
+      properties:
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    ApiClient_allOf:
+      properties:
+        description:
+          description: description about the api client
+          type: string
+        client_id:
+          description: the client id
+          type: string
+        client_secret:
+          description: the client id
+          type: string
+        scope:
+          description: Scope
+          items:
+            type: string
+          type: array
+      required:
+      - client_id
+      - client_secret
+      - scope
+      type: object
+      example: null
+    ApiClientPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ApiClient'
+          type: array
+      type: object
+      example: null
+    Component_allOf:
+      properties:
+        key:
+          description: key of the component
+          type: string
+      type: object
+      example: null
+    ComponentPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/Component'
+          type: array
+      type: object
+      example: null
+    ComponentVersion_allOf:
+      properties:
+        component:
+          description: key of the component
+          type: string
+        version:
+          description: version of the component
+          type: string
+      required:
+      - component
+      - version
+      type: object
+      example: null
+    ComponentVersionPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/ComponentVersion'
+          type: array
+      type: object
+      example: null
+    Project_allOf:
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+        description:
+          description: description about the api client
+          type: string
+      required:
+      - key
+      - name
+      type: object
+      example: null
+    ProjectPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+      type: object
+      example: null
+    Organization_allOf:
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+      required:
+      - key
+      - name
+      type: object
+      example: null
+    OrganizationPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/Organization'
+          type: array
+      type: object
+      example: null
+    OrganizationUser_projects_inner:
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+      type: object
+    OrganizationUserPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/OrganizationUser'
+          type: array
+      type: object
+      example: null
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: Opaque token
+      scheme: bearer
+      type: http
+    basicAuth:
+      scheme: basic
+      type: http

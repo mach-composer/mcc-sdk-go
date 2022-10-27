@@ -1,0 +1,154 @@
+# \APIClientsApi
+
+All URIs are relative to *https://api.mach.cloud*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**ApiClientCreate**](APIClientsApi.md#ApiClientCreate) | **Post** /{organization}/projects/{project}/api-clients | Create new api client
+[**ApiClientQuery**](APIClientsApi.md#ApiClientQuery) | **Get** /{organization}/projects/{project}/api-clients | List all api clients
+
+
+
+## ApiClientCreate
+
+> ApiClient ApiClientCreate(ctx, organization, project).ApiClientDraft(apiClientDraft).Execute()
+
+Create new api client
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+    apiClientDraft := *openapiclient.NewApiClientDraft() // ApiClientDraft | 
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.APIClientsApi.ApiClientCreate(context.Background(), organization, project).ApiClientDraft(apiClientDraft).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientCreate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ApiClientCreate`: ApiClient
+    fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientCreate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiClientCreateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **apiClientDraft** | [**ApiClientDraft**](ApiClientDraft.md) |  | 
+
+### Return type
+
+[**ApiClient**](ApiClient.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiClientQuery
+
+> ApiClientPaginator ApiClientQuery(ctx, organization, project).Execute()
+
+List all api clients
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.APIClientsApi.ApiClientQuery(context.Background(), organization, project).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientQuery``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ApiClientQuery`: ApiClientPaginator
+    fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientQuery`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiClientQueryRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**ApiClientPaginator**](ApiClientPaginator.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
