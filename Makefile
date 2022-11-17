@@ -7,6 +7,7 @@ clean:
 	rm -rf tmp
 
 generate:
+	rm -rf mccsdk
 	openapi-generator generate \
 		-i ../mcc-api-documentation/openapi.yaml \
 		-g go \

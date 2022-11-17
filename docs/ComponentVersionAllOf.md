@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Component** | **string** | key of the component | 
 **Version** | **string** | version of the component | 
+**CommitHash** | Pointer to **string** | commit hash of the component | [optional] 
 
 ## Methods
 
@@ -65,6 +66,31 @@ and a boolean to check if the value has been set.
 
 SetVersion sets Version field to given value.
 
+
+### GetCommitHash
+
+`func (o *ComponentVersionAllOf) GetCommitHash() string`
+
+GetCommitHash returns the CommitHash field if non-nil, zero value otherwise.
+
+### GetCommitHashOk
+
+`func (o *ComponentVersionAllOf) GetCommitHashOk() (*string, bool)`
+
+GetCommitHashOk returns a tuple with the CommitHash field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCommitHash
+
+`func (o *ComponentVersionAllOf) SetCommitHash(v string)`
+
+SetCommitHash sets CommitHash field to given value.
+
+### HasCommitHash
+
+`func (o *ComponentVersionAllOf) HasCommitHash() bool`
+
+HasCommitHash returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

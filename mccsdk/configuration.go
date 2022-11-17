@@ -112,41 +112,17 @@ func NewConfiguration() *Configuration {
 		OperationServers: map[string]ServerConfigurations{
 			"AuthApiService.Authorize": {
 				{
-					URL: "http://localhost:3000",
-					Description: "Development server",
-				},
-				{
-					URL: "https://auth.mcc.labd.io",
-					Description: "Test server",
-				},
-				{
 					URL: "https://auth.mach.cloud",
 					Description: "Production server",
 				},
 			},
 			"AuthApiService.GetAuthToken": {
 				{
-					URL: "http://localhost:3000",
-					Description: "Development server",
-				},
-				{
-					URL: "https://auth.mcc.labd.io",
-					Description: "Test server",
-				},
-				{
 					URL: "https://auth.mach.cloud",
 					Description: "Production server",
 				},
 			},
 			"AuthApiService.IntrospectToken": {
-				{
-					URL: "http://localhost:3000",
-					Description: "Development server",
-				},
-				{
-					URL: "https://auth.mcc.labd.io",
-					Description: "Test server",
-				},
 				{
 					URL: "https://auth.mach.cloud",
 					Description: "Production server",

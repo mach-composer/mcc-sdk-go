@@ -23,7 +23,8 @@ type ApiClient struct {
 	// the client id
 	ClientId string `json:"client_id"`
 	// the client id
-	ClientSecret string `json:"client_secret"`
+	ClientSecret string     `json:"client_secret"`
+	LastUsedAt   *time.Time `json:"last_used_at,omitempty"`
 	// Scope
 	Scope []string `json:"scope"`
 }
@@ -153,6 +154,38 @@ func (o *ApiClient) SetClientSecret(v string) {
 	o.ClientSecret = v
 }
 
+// GetLastUsedAt returns the LastUsedAt field value if set, zero value otherwise.
+func (o *ApiClient) GetLastUsedAt() time.Time {
+	if o == nil || o.LastUsedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.LastUsedAt
+}
+
+// GetLastUsedAtOk returns a tuple with the LastUsedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApiClient) GetLastUsedAtOk() (*time.Time, bool) {
+	if o == nil || o.LastUsedAt == nil {
+		return nil, false
+	}
+	return o.LastUsedAt, true
+}
+
+// HasLastUsedAt returns a boolean if a field has been set.
+func (o *ApiClient) HasLastUsedAt() bool {
+	if o != nil && o.LastUsedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLastUsedAt gets a reference to the given time.Time and assigns it to the LastUsedAt field.
+func (o *ApiClient) SetLastUsedAt(v time.Time) {
+	o.LastUsedAt = &v
+}
+
 // GetScope returns the Scope field value
 func (o *ApiClient) GetScope() []string {
 	if o == nil {
@@ -190,6 +223,9 @@ func (o ApiClient) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["client_secret"] = o.ClientSecret
+	}
+	if o.LastUsedAt != nil {
+		toSerialize["last_used_at"] = o.LastUsedAt
 	}
 	if true {
 		toSerialize["scope"] = o.Scope

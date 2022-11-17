@@ -16,8 +16,9 @@ import (
 
 // ComponentVersionDraft struct for ComponentVersionDraft
 type ComponentVersionDraft struct {
-	Component string `json:"component"`
-	Version   string `json:"version"`
+	Component  string  `json:"component"`
+	Version    string  `json:"version"`
+	CommitHash *string `json:"commit_hash,omitempty"`
 }
 
 // NewComponentVersionDraft instantiates a new ComponentVersionDraft object
@@ -87,6 +88,38 @@ func (o *ComponentVersionDraft) SetVersion(v string) {
 	o.Version = v
 }
 
+// GetCommitHash returns the CommitHash field value if set, zero value otherwise.
+func (o *ComponentVersionDraft) GetCommitHash() string {
+	if o == nil || o.CommitHash == nil {
+		var ret string
+		return ret
+	}
+	return *o.CommitHash
+}
+
+// GetCommitHashOk returns a tuple with the CommitHash field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ComponentVersionDraft) GetCommitHashOk() (*string, bool) {
+	if o == nil || o.CommitHash == nil {
+		return nil, false
+	}
+	return o.CommitHash, true
+}
+
+// HasCommitHash returns a boolean if a field has been set.
+func (o *ComponentVersionDraft) HasCommitHash() bool {
+	if o != nil && o.CommitHash != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCommitHash gets a reference to the given string and assigns it to the CommitHash field.
+func (o *ComponentVersionDraft) SetCommitHash(v string) {
+	o.CommitHash = &v
+}
+
 func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
@@ -94,6 +127,9 @@ func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["version"] = o.Version
+	}
+	if o.CommitHash != nil {
+		toSerialize["commit_hash"] = o.CommitHash
 	}
 	return json.Marshal(toSerialize)
 }

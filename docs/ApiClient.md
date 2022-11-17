@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **Description** | Pointer to **string** | description about the api client | [optional] 
 **ClientId** | **string** | the client id | 
 **ClientSecret** | **string** | the client id | 
+**LastUsedAt** | Pointer to **time.Time** |  | [optional] 
 **Scope** | **[]string** | Scope | 
 
 ## Methods
@@ -113,6 +114,31 @@ and a boolean to check if the value has been set.
 
 SetClientSecret sets ClientSecret field to given value.
 
+
+### GetLastUsedAt
+
+`func (o *ApiClient) GetLastUsedAt() time.Time`
+
+GetLastUsedAt returns the LastUsedAt field if non-nil, zero value otherwise.
+
+### GetLastUsedAtOk
+
+`func (o *ApiClient) GetLastUsedAtOk() (*time.Time, bool)`
+
+GetLastUsedAtOk returns a tuple with the LastUsedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastUsedAt
+
+`func (o *ApiClient) SetLastUsedAt(v time.Time)`
+
+SetLastUsedAt sets LastUsedAt field to given value.
+
+### HasLastUsedAt
+
+`func (o *ApiClient) HasLastUsedAt() bool`
+
+HasLastUsedAt returns a boolean if a field has been set.
 
 ### GetScope
 
