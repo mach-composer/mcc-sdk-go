@@ -6,13 +6,13 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Component** | **string** |  | 
 **Version** | **string** |  | 
-**CommitHash** | Pointer to **string** |  | [optional] 
+**Branch** | **string** |  | 
 
 ## Methods
 
 ### NewComponentVersionDraft
 
-`func NewComponentVersionDraft(component string, version string, ) *ComponentVersionDraft`
+`func NewComponentVersionDraft(component string, version string, branch string, ) *ComponentVersionDraft`
 
 NewComponentVersionDraft instantiates a new ComponentVersionDraft object
 This constructor will assign default values to properties that have it defined,
@@ -67,30 +67,25 @@ and a boolean to check if the value has been set.
 SetVersion sets Version field to given value.
 
 
-### GetCommitHash
+### GetBranch
 
-`func (o *ComponentVersionDraft) GetCommitHash() string`
+`func (o *ComponentVersionDraft) GetBranch() string`
 
-GetCommitHash returns the CommitHash field if non-nil, zero value otherwise.
+GetBranch returns the Branch field if non-nil, zero value otherwise.
 
-### GetCommitHashOk
+### GetBranchOk
 
-`func (o *ComponentVersionDraft) GetCommitHashOk() (*string, bool)`
+`func (o *ComponentVersionDraft) GetBranchOk() (*string, bool)`
 
-GetCommitHashOk returns a tuple with the CommitHash field if it's non-nil, zero value otherwise
+GetBranchOk returns a tuple with the Branch field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCommitHash
+### SetBranch
 
-`func (o *ComponentVersionDraft) SetCommitHash(v string)`
+`func (o *ComponentVersionDraft) SetBranch(v string)`
 
-SetCommitHash sets CommitHash field to given value.
+SetBranch sets Branch field to given value.
 
-### HasCommitHash
-
-`func (o *ComponentVersionDraft) HasCommitHash() bool`
-
-HasCommitHash returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

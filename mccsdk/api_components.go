@@ -148,6 +148,133 @@ func (a *ComponentsApiService) ComponentCreateExecute(r ApiComponentCreateReques
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiComponentLatestVersionRequest struct {
+	ctx          context.Context
+	ApiService   *ComponentsApiService
+	organization string
+	project      string
+	component    string
+	branch       *string
+}
+
+func (r ApiComponentLatestVersionRequest) Branch(branch string) ApiComponentLatestVersionRequest {
+	r.branch = &branch
+	return r
+}
+
+func (r ApiComponentLatestVersionRequest) Execute() (*ComponentVersion, *http.Response, error) {
+	return r.ApiService.ComponentLatestVersionExecute(r)
+}
+
+/*
+ComponentLatestVersion Get last component version.
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@return ApiComponentLatestVersionRequest
+*/
+func (a *ComponentsApiService) ComponentLatestVersion(ctx context.Context, organization string, project string, component string) ApiComponentLatestVersionRequest {
+	return ApiComponentLatestVersionRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ComponentVersion
+func (a *ComponentsApiService) ComponentLatestVersionExecute(r ApiComponentLatestVersionRequest) (*ComponentVersion, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ComponentVersion
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentLatestVersion")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/latest"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.branch == nil {
+		return localVarReturnValue, nil, reportError("branch is required and must be specified")
+	}
+
+	localVarQueryParams.Add("branch", parameterToString(*r.branch, ""))
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiComponentQueryRequest struct {
 	ctx          context.Context
 	ApiService   *ComponentsApiService
@@ -380,6 +507,247 @@ func (a *ComponentsApiService) ComponentVersionCreateExecute(r ApiComponentVersi
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiComponentVersionGetCommitsRequest struct {
+	ctx          context.Context
+	ApiService   *ComponentsApiService
+	organization string
+	project      string
+	component    string
+	version      string
+}
+
+func (r ApiComponentVersionGetCommitsRequest) Execute() (*ComponentVersionCommits, *http.Response, error) {
+	return r.ApiService.ComponentVersionGetCommitsExecute(r)
+}
+
+/*
+ComponentVersionGetCommits Get commits for this component version
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@param version Component version
+	@return ApiComponentVersionGetCommitsRequest
+*/
+func (a *ComponentsApiService) ComponentVersionGetCommits(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionGetCommitsRequest {
+	return ApiComponentVersionGetCommitsRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+		version:      version,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ComponentVersionCommits
+func (a *ComponentsApiService) ComponentVersionGetCommitsExecute(r ApiComponentVersionGetCommitsRequest) (*ComponentVersionCommits, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ComponentVersionCommits
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentVersionGetCommits")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterToString(r.version, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiComponentVersionPushCommitsRequest struct {
+	ctx                     context.Context
+	ApiService              *ComponentsApiService
+	organization            string
+	project                 string
+	component               string
+	version                 string
+	componentVersionCommits *ComponentVersionCommits
+}
+
+func (r ApiComponentVersionPushCommitsRequest) ComponentVersionCommits(componentVersionCommits ComponentVersionCommits) ApiComponentVersionPushCommitsRequest {
+	r.componentVersionCommits = &componentVersionCommits
+	return r
+}
+
+func (r ApiComponentVersionPushCommitsRequest) Execute() (*http.Response, error) {
+	return r.ApiService.ComponentVersionPushCommitsExecute(r)
+}
+
+/*
+ComponentVersionPushCommits Push commits for this component version
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@param version Component version
+	@return ApiComponentVersionPushCommitsRequest
+*/
+func (a *ComponentsApiService) ComponentVersionPushCommits(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionPushCommitsRequest {
+	return ApiComponentVersionPushCommitsRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+		version:      version,
+	}
+}
+
+// Execute executes the request
+func (a *ComponentsApiService) ComponentVersionPushCommitsExecute(r ApiComponentVersionPushCommitsRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentVersionPushCommits")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterToString(r.version, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.componentVersionCommits == nil {
+		return nil, reportError("componentVersionCommits is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.componentVersionCommits
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }
 
 type ApiComponentVersionQueryRequest struct {

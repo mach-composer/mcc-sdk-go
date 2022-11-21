@@ -210,12 +210,6 @@ paths:
               $ref: '#/components/schemas/OrganizationUserInviteDraft'
         required: true
       responses:
-        default:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Invalid request
         "200":
           content:
             application/json:
@@ -228,6 +222,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationUserInvite_401_response'
           description: Unauthorized
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
       summary: Add user to an organization
       tags:
       - Account Management
@@ -273,12 +273,6 @@ paths:
               $ref: '#/components/schemas/ProjectDraft'
         required: true
       responses:
-        default:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-          description: Invalid request
         "200":
           content:
             application/json:
@@ -291,6 +285,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationUserInvite_401_response'
           description: Unauthorized
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
       summary: Create new project in an organization
       tags:
       - Account Management
@@ -363,6 +363,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiClient'
           description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
       security:
       - bearerAuth:
         - api-client:write
@@ -442,6 +448,59 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
       summary: Create component
+      tags:
+      - Components
+  /{organization}/projects/{project}/components/{component}/latest:
+    get:
+      operationId: ComponentLatestVersion
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: branch
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersion'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Get last component version.
       tags:
       - Components
   /{organization}/projects/{project}/components/{component}/versions:
@@ -541,6 +600,115 @@ paths:
       summary: Create component
       tags:
       - Components
+  /{organization}/projects/{project}/components/{component}/versions/{version}/commits:
+    get:
+      operationId: ComponentVersionGetCommits
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Component version
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersionCommits'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Get commits for this component version
+      tags:
+      - Components
+    post:
+      operationId: ComponentVersionPushCommits
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Component version
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentVersionCommits'
+        required: true
+      responses:
+        "201":
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Push commits for this component version
+      tags:
+      - Components
 components:
   parameters:
     organizationParam:
@@ -577,23 +745,6 @@ components:
             $ref: '#/components/schemas/OrganizationUserInvite_401_response'
       description: Unauthorized
   schemas:
-    Error:
-      properties:
-        status:
-          type: string
-        error:
-          type: string
-      required:
-      - status
-      type: object
-    BaseResource:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-      required:
-      - created_at
-      type: object
     Paginator:
       properties:
         count:
@@ -613,98 +764,22 @@ components:
       - results
       - total
       type: object
-    ApiClientDraft:
-      example:
-        scope:
-        - scope
-        - scope
-        description: description
+    BaseResource:
       properties:
-        description:
-          description: description about the api client
-          type: string
-        scope:
-          description: Scope
-          items:
-            type: string
-          type: array
-      type: object
-    ApiClient:
-      allOf:
-      - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/ApiClient_allOf'
-    ApiClientPaginator:
-      allOf:
-      - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ApiClientPaginator_allOf'
-    ComponentDraft:
-      example:
-        key: key
-      properties:
-        key:
+        created_at:
+          format: date-time
           type: string
       required:
-      - key
+      - created_at
       type: object
-    ComponentVersionDraft:
-      example:
-        component: component
-        version: version
-        commit_hash: commit_hash
-      properties:
-        component:
-          type: string
-        version:
-          type: string
-        commit_hash:
-          type: string
-      required:
-      - component
-      - version
-      type: object
-    Component:
-      allOf:
-      - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/Component_allOf'
-    ComponentPaginator:
-      allOf:
-      - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ComponentPaginator_allOf'
-    ComponentVersion:
-      allOf:
-      - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/ComponentVersion_allOf'
-    ComponentVersionPaginator:
-      allOf:
-      - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ComponentVersionPaginator_allOf'
-    ProjectDraft:
-      example:
-        name: name
-        key: key
-      properties:
-        key:
-          description: The organization key (must be unique)
-          type: string
-        name:
-          description: The name of the organization
-          type: string
-      required:
-      - key
-      - name
-      type: object
-    Project:
-      allOf:
-      - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/Project_allOf'
-    ProjectPaginator:
-      allOf:
-      - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ProjectPaginator_allOf'
     Organization:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
       - $ref: '#/components/schemas/Organization_allOf'
+    OrganizationPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/OrganizationPaginator_allOf'
     OrganizationDraft:
       example:
         name: name
@@ -720,10 +795,6 @@ components:
       - key
       - name
       type: object
-    OrganizationPaginator:
-      allOf:
-      - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/OrganizationPaginator_allOf'
     OrganizationUser:
       properties:
         client_id:
@@ -759,16 +830,6 @@ components:
       allOf:
       - $ref: '#/components/schemas/Paginator'
       - $ref: '#/components/schemas/OrganizationUserPaginator_allOf'
-    OrganizationUserInvite:
-      example:
-        email: email
-      properties:
-        email:
-          description: E-mail address of the user
-          type: string
-      required:
-      - email
-      type: object
     OrganizationUserInviteDraft:
       example:
         email: email
@@ -779,6 +840,166 @@ components:
       required:
       - email
       type: object
+    Error:
+      properties:
+        status:
+          type: string
+        error:
+          type: string
+      required:
+      - status
+      type: object
+    OrganizationUserInvite:
+      example:
+        email: email
+      properties:
+        email:
+          description: E-mail address of the user
+          type: string
+      required:
+      - email
+      type: object
+    Project:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/Project_allOf'
+    ProjectPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ProjectPaginator_allOf'
+    ProjectDraft:
+      example:
+        name: name
+        key: key
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+      required:
+      - key
+      - name
+      type: object
+    ApiClient:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/ApiClient_allOf'
+    ApiClientPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ApiClientPaginator_allOf'
+    ApiClientDraft:
+      example:
+        scope:
+        - scope
+        - scope
+        description: description
+      properties:
+        description:
+          description: description about the api client
+          type: string
+        scope:
+          description: Scope
+          items:
+            type: string
+          type: array
+      type: object
+    Component:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/Component_allOf'
+    ComponentPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ComponentPaginator_allOf'
+    ComponentDraft:
+      example:
+        key: key
+      properties:
+        key:
+          type: string
+      required:
+      - key
+      type: object
+    ComponentVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/ComponentVersion_allOf'
+    ComponentVersionPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/ComponentVersionPaginator_allOf'
+    ComponentVersionDraft:
+      example:
+        component: component
+        version: version
+        branch: branch
+      properties:
+        component:
+          type: string
+        version:
+          type: string
+        branch:
+          type: string
+      required:
+      - branch
+      - component
+      - version
+      type: object
+    CommitDataAuthor:
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        date:
+          format: date-time
+          type: string
+      required:
+      - date
+      - email
+      - name
+      type: object
+    CommitDataDraft:
+      properties:
+        commit:
+          type: string
+        parents:
+          items:
+            type: string
+          type: array
+        subject:
+          type: string
+        author:
+          $ref: '#/components/schemas/CommitDataAuthor'
+        committer:
+          $ref: '#/components/schemas/CommitDataAuthor'
+      required:
+      - author
+      - commit
+      - committer
+      - parent
+      - subject
+      type: object
+    CommitData:
+      allOf:
+      - $ref: '#/components/schemas/CommitDataDraft'
+      - $ref: '#/components/schemas/CommitData_allOf'
+    ComponentVersionCommits:
+      example:
+        commits:
+        - null
+        - null
+      properties:
+        commits:
+          items:
+            $ref: '#/components/schemas/CommitData'
+          type: array
+      required:
+      - commits
+      type: object
     OrganizationUserInvite_401_response:
       properties:
         message:
@@ -787,6 +1008,70 @@ components:
       - code
       - message
       type: object
+    Organization_allOf:
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+      required:
+      - key
+      - name
+      type: object
+      example: null
+    OrganizationPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/Organization'
+          type: array
+      type: object
+      example: null
+    OrganizationUser_projects_inner:
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+      type: object
+    OrganizationUserPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/OrganizationUser'
+          type: array
+      type: object
+      example: null
+    Project_allOf:
+      properties:
+        key:
+          description: The organization key (must be unique)
+          type: string
+        name:
+          description: The name of the organization
+          type: string
+        description:
+          description: description about the api client
+          type: string
+      required:
+      - key
+      - name
+      type: object
+      example: null
+    ProjectPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/Project'
+          type: array
+      type: object
+      example: null
     ApiClient_allOf:
       properties:
         description:
@@ -859,68 +1144,11 @@ components:
           type: array
       type: object
       example: null
-    Project_allOf:
+    CommitData_allOf:
       properties:
-        key:
-          description: The organization key (must be unique)
+        created_at:
+          format: date-time
           type: string
-        name:
-          description: The name of the organization
-          type: string
-        description:
-          description: description about the api client
-          type: string
-      required:
-      - key
-      - name
-      type: object
-      example: null
-    ProjectPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/Project'
-          type: array
-      type: object
-      example: null
-    Organization_allOf:
-      properties:
-        key:
-          description: The organization key (must be unique)
-          type: string
-        name:
-          description: The name of the organization
-          type: string
-      required:
-      - key
-      - name
-      type: object
-      example: null
-    OrganizationPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/Organization'
-          type: array
-      type: object
-      example: null
-    OrganizationUser_projects_inner:
-      properties:
-        name:
-          type: string
-        key:
-          type: string
-        scopes:
-          items:
-            type: string
-          type: array
-      type: object
-    OrganizationUserPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/OrganizationUser'
-          type: array
       type: object
       example: null
   securitySchemes:

@@ -16,19 +16,20 @@ import (
 
 // ComponentVersionDraft struct for ComponentVersionDraft
 type ComponentVersionDraft struct {
-	Component  string  `json:"component"`
-	Version    string  `json:"version"`
-	CommitHash *string `json:"commit_hash,omitempty"`
+	Component string `json:"component"`
+	Version   string `json:"version"`
+	Branch    string `json:"branch"`
 }
 
 // NewComponentVersionDraft instantiates a new ComponentVersionDraft object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponentVersionDraft(component string, version string) *ComponentVersionDraft {
+func NewComponentVersionDraft(component string, version string, branch string) *ComponentVersionDraft {
 	this := ComponentVersionDraft{}
 	this.Component = component
 	this.Version = version
+	this.Branch = branch
 	return &this
 }
 
@@ -88,36 +89,28 @@ func (o *ComponentVersionDraft) SetVersion(v string) {
 	o.Version = v
 }
 
-// GetCommitHash returns the CommitHash field value if set, zero value otherwise.
-func (o *ComponentVersionDraft) GetCommitHash() string {
-	if o == nil || o.CommitHash == nil {
+// GetBranch returns the Branch field value
+func (o *ComponentVersionDraft) GetBranch() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.CommitHash
+
+	return o.Branch
 }
 
-// GetCommitHashOk returns a tuple with the CommitHash field value if set, nil otherwise
+// GetBranchOk returns a tuple with the Branch field value
 // and a boolean to check if the value has been set.
-func (o *ComponentVersionDraft) GetCommitHashOk() (*string, bool) {
-	if o == nil || o.CommitHash == nil {
+func (o *ComponentVersionDraft) GetBranchOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CommitHash, true
+	return &o.Branch, true
 }
 
-// HasCommitHash returns a boolean if a field has been set.
-func (o *ComponentVersionDraft) HasCommitHash() bool {
-	if o != nil && o.CommitHash != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetCommitHash gets a reference to the given string and assigns it to the CommitHash field.
-func (o *ComponentVersionDraft) SetCommitHash(v string) {
-	o.CommitHash = &v
+// SetBranch sets field value
+func (o *ComponentVersionDraft) SetBranch(v string) {
+	o.Branch = v
 }
 
 func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
@@ -128,8 +121,8 @@ func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["version"] = o.Version
 	}
-	if o.CommitHash != nil {
-		toSerialize["commit_hash"] = o.CommitHash
+	if true {
+		toSerialize["branch"] = o.Branch
 	}
 	return json.Marshal(toSerialize)
 }

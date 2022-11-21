@@ -90,8 +90,11 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**GetAuthToken**](docs/AuthApi.md#getauthtoken) | **Post** /oauth/token | 
 *AuthApi* | [**IntrospectToken**](docs/AuthApi.md#introspecttoken) | **Post** /oauth/introspect | 
 *ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /{organization}/projects/{project}/components | Create component
+*ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
 *ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /{organization}/projects/{project}/components | List all components
 *ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /{organization}/projects/{project}/components/{component}/versions | Create component
+*ComponentsApi* | [**ComponentVersionGetCommits**](docs/ComponentsApi.md#componentversiongetcommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
+*ComponentsApi* | [**ComponentVersionPushCommits**](docs/ComponentsApi.md#componentversionpushcommits) | **Post** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
 *ComponentsApi* | [**ComponentVersionQuery**](docs/ComponentsApi.md#componentversionquery) | **Get** /{organization}/projects/{project}/components/{component}/versions | List all versions of a component
 
 
@@ -103,6 +106,10 @@ Class | Method | HTTP request | Description
  - [ApiClientPaginator](docs/ApiClientPaginator.md)
  - [ApiClientPaginatorAllOf](docs/ApiClientPaginatorAllOf.md)
  - [BaseResource](docs/BaseResource.md)
+ - [CommitData](docs/CommitData.md)
+ - [CommitDataAllOf](docs/CommitDataAllOf.md)
+ - [CommitDataAuthor](docs/CommitDataAuthor.md)
+ - [CommitDataDraft](docs/CommitDataDraft.md)
  - [Component](docs/Component.md)
  - [ComponentAllOf](docs/ComponentAllOf.md)
  - [ComponentDraft](docs/ComponentDraft.md)
@@ -110,6 +117,7 @@ Class | Method | HTTP request | Description
  - [ComponentPaginatorAllOf](docs/ComponentPaginatorAllOf.md)
  - [ComponentVersion](docs/ComponentVersion.md)
  - [ComponentVersionAllOf](docs/ComponentVersionAllOf.md)
+ - [ComponentVersionCommits](docs/ComponentVersionCommits.md)
  - [ComponentVersionDraft](docs/ComponentVersionDraft.md)
  - [ComponentVersionPaginator](docs/ComponentVersionPaginator.md)
  - [ComponentVersionPaginatorAllOf](docs/ComponentVersionPaginatorAllOf.md)
