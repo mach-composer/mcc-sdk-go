@@ -67,7 +67,7 @@ func (r ApiAuthorizeRequest) Execute() (*http.Response, error) {
 }
 
 /*
-Authorize Method for Authorize
+Authorize Start authorization flow
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiAuthorizeRequest
@@ -201,7 +201,7 @@ func (r ApiGetAuthTokenRequest) Execute() (*http.Response, error) {
 }
 
 /*
-GetAuthToken Method for GetAuthToken
+GetAuthToken Return a new token
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiGetAuthTokenRequest
@@ -308,7 +308,7 @@ func (r ApiIntrospectTokenRequest) Execute() (*http.Response, error) {
 }
 
 /*
-IntrospectToken Method for IntrospectToken
+IntrospectToken Introspect an existing token
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiIntrospectTokenRequest

@@ -80,22 +80,22 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *APIClientsApi* | [**ApiClientCreate**](docs/APIClientsApi.md#apiclientcreate) | **Post** /{organization}/projects/{project}/api-clients | Create new api client
 *APIClientsApi* | [**ApiClientQuery**](docs/APIClientsApi.md#apiclientquery) | **Get** /{organization}/projects/{project}/api-clients | List all api clients
-*AccountManagementApi* | [**OrganizationCreate**](docs/AccountManagementApi.md#organizationcreate) | **Post** /account/organizations/ | Create new organization
-*AccountManagementApi* | [**OrganizationQuery**](docs/AccountManagementApi.md#organizationquery) | **Get** /account/organizations/ | List all organizations
+*AccountManagementApi* | [**OrganizationCreate**](docs/AccountManagementApi.md#organizationcreate) | **Post** /account/organizations | Create new organization
+*AccountManagementApi* | [**OrganizationQuery**](docs/AccountManagementApi.md#organizationquery) | **Get** /account/organizations | List all organizations
 *AccountManagementApi* | [**OrganizationUserInvite**](docs/AccountManagementApi.md#organizationuserinvite) | **Post** /account/organizations/{organization}/users | Add user to an organization
 *AccountManagementApi* | [**OrganizationUserQuery**](docs/AccountManagementApi.md#organizationuserquery) | **Get** /account/organizations/{organization}/users | List all users in an organization
 *AccountManagementApi* | [**ProjectCreate**](docs/AccountManagementApi.md#projectcreate) | **Post** /account/organizations/{organization}/projects | Create new project in an organization
 *AccountManagementApi* | [**ProjectQuery**](docs/AccountManagementApi.md#projectquery) | **Get** /account/organizations/{organization}/projects | List all projects in an organization
-*AuthApi* | [**Authorize**](docs/AuthApi.md#authorize) | **Get** /authorize | 
-*AuthApi* | [**GetAuthToken**](docs/AuthApi.md#getauthtoken) | **Post** /oauth/token | 
-*AuthApi* | [**IntrospectToken**](docs/AuthApi.md#introspecttoken) | **Post** /oauth/introspect | 
+*AuthApi* | [**Authorize**](docs/AuthApi.md#authorize) | **Get** /authorize | Start authorization flow
+*AuthApi* | [**GetAuthToken**](docs/AuthApi.md#getauthtoken) | **Post** /oauth/token | Return a new token
+*AuthApi* | [**IntrospectToken**](docs/AuthApi.md#introspecttoken) | **Post** /oauth/introspect | Introspect an existing token
 *ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /{organization}/projects/{project}/components | Create component
 *ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
 *ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /{organization}/projects/{project}/components | List all components
 *ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /{organization}/projects/{project}/components/{component}/versions | Create component
-*ComponentsApi* | [**ComponentVersionGetCommits**](docs/ComponentsApi.md#componentversiongetcommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
 *ComponentsApi* | [**ComponentVersionPushCommits**](docs/ComponentsApi.md#componentversionpushcommits) | **Post** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
 *ComponentsApi* | [**ComponentVersionQuery**](docs/ComponentsApi.md#componentversionquery) | **Get** /{organization}/projects/{project}/components/{component}/versions | List all versions of a component
+*ComponentsApi* | [**ComponentVersionQueryCommits**](docs/ComponentsApi.md#componentversionquerycommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
 
 
 ## Documentation For Models
@@ -110,6 +110,8 @@ Class | Method | HTTP request | Description
  - [CommitDataAllOf](docs/CommitDataAllOf.md)
  - [CommitDataAuthor](docs/CommitDataAuthor.md)
  - [CommitDataDraft](docs/CommitDataDraft.md)
+ - [CommitDataPaginator](docs/CommitDataPaginator.md)
+ - [CommitDataPaginatorAllOf](docs/CommitDataPaginatorAllOf.md)
  - [Component](docs/Component.md)
  - [ComponentAllOf](docs/ComponentAllOf.md)
  - [ComponentDraft](docs/ComponentDraft.md)

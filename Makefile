@@ -9,7 +9,7 @@ clean:
 generate:
 	rm -rf mccsdk
 	openapi-generator generate \
-		-i ../mcc-api-documentation/openapi.yaml \
+		-i ../mcc-api-documentation/openapi-public.yaml \
 		-g go \
 		--enable-post-process-file \
 		--model-package mccsdk/mccmodels \

@@ -63,6 +63,7 @@ paths:
       responses:
         "307":
           description: OK
+      summary: Start authorization flow
       tags:
       - Auth
     servers:
@@ -113,6 +114,7 @@ paths:
           description: OK
       security:
       - basicAuth: []
+      summary: Return a new token
       tags:
       - Auth
     servers:
@@ -132,12 +134,13 @@ paths:
       responses:
         "200":
           description: OK
+      summary: Introspect an existing token
       tags:
       - Auth
     servers:
     - description: Production server
       url: https://auth.mach.cloud
-  /account/organizations/:
+  /account/organizations:
     get:
       operationId: OrganizationQuery
       responses:
@@ -602,7 +605,7 @@ paths:
       - Components
   /{organization}/projects/{project}/components/{component}/versions/{version}/commits:
     get:
-      operationId: ComponentVersionGetCommits
+      operationId: ComponentVersionQueryCommits
       parameters:
       - description: Organization Key
         explode: false
@@ -643,7 +646,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ComponentVersionCommits'
+                $ref: '#/components/schemas/CommitDataPaginator'
           description: OK
         default:
           content:
@@ -987,6 +990,10 @@ components:
       allOf:
       - $ref: '#/components/schemas/CommitDataDraft'
       - $ref: '#/components/schemas/CommitData_allOf'
+    CommitDataPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - $ref: '#/components/schemas/CommitDataPaginator_allOf'
     ComponentVersionCommits:
       example:
         commits:
@@ -1128,8 +1135,8 @@ components:
         version:
           description: version of the component
           type: string
-        commit_hash:
-          description: commit hash of the component
+        branch:
+          description: branch of the version
           type: string
       required:
       - component
@@ -1149,6 +1156,14 @@ components:
         created_at:
           format: date-time
           type: string
+      type: object
+      example: null
+    CommitDataPaginator_allOf:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/CommitData'
+          type: array
       type: object
       example: null
   securitySchemes:

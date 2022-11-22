@@ -4,8 +4,8 @@ All URIs are relative to *https://api.mach.cloud*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**OrganizationCreate**](AccountManagementApi.md#OrganizationCreate) | **Post** /account/organizations/ | Create new organization
-[**OrganizationQuery**](AccountManagementApi.md#OrganizationQuery) | **Get** /account/organizations/ | List all organizations
+[**OrganizationCreate**](AccountManagementApi.md#OrganizationCreate) | **Post** /account/organizations | Create new organization
+[**OrganizationQuery**](AccountManagementApi.md#OrganizationQuery) | **Get** /account/organizations | List all organizations
 [**OrganizationUserInvite**](AccountManagementApi.md#OrganizationUserInvite) | **Post** /account/organizations/{organization}/users | Add user to an organization
 [**OrganizationUserQuery**](AccountManagementApi.md#OrganizationUserQuery) | **Get** /account/organizations/{organization}/users | List all users in an organization
 [**ProjectCreate**](AccountManagementApi.md#ProjectCreate) | **Post** /account/organizations/{organization}/projects | Create new project in an organization

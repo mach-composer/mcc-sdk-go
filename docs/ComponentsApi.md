@@ -8,9 +8,9 @@ Method | HTTP request | Description
 [**ComponentLatestVersion**](ComponentsApi.md#ComponentLatestVersion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
 [**ComponentQuery**](ComponentsApi.md#ComponentQuery) | **Get** /{organization}/projects/{project}/components | List all components
 [**ComponentVersionCreate**](ComponentsApi.md#ComponentVersionCreate) | **Post** /{organization}/projects/{project}/components/{component}/versions | Create component
-[**ComponentVersionGetCommits**](ComponentsApi.md#ComponentVersionGetCommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
 [**ComponentVersionPushCommits**](ComponentsApi.md#ComponentVersionPushCommits) | **Post** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
 [**ComponentVersionQuery**](ComponentsApi.md#ComponentVersionQuery) | **Get** /{organization}/projects/{project}/components/{component}/versions | List all versions of a component
+[**ComponentVersionQueryCommits**](ComponentsApi.md#ComponentVersionQueryCommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
 
 
 
@@ -310,83 +310,6 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ComponentVersionGetCommits
-
-> ComponentVersionCommits ComponentVersionGetCommits(ctx, organization, project, component, version).Execute()
-
-Get commits for this component version
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    organization := "my-organization" // string | Organization Key
-    project := "my-project" // string | Project Key
-    component := "component_example" // string | Component key
-    version := "version_example" // string | Component version
-
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.ComponentsApi.ComponentVersionGetCommits(context.Background(), organization, project, component, version).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionGetCommits``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `ComponentVersionGetCommits`: ComponentVersionCommits
-    fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionGetCommits`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
-**version** | **string** | Component version | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiComponentVersionGetCommitsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
-
-
-### Return type
-
-[**ComponentVersionCommits**](ComponentVersionCommits.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
-- **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
-[[Back to Model list]](../README.md#documentation-for-models)
-[[Back to README]](../README.md)
-
-
 ## ComponentVersionPushCommits
 
 > ComponentVersionPushCommits(ctx, organization, project, component, version).ComponentVersionCommits(componentVersionCommits).Execute()
@@ -524,6 +447,83 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**ComponentVersionPaginator**](ComponentVersionPaginator.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionQueryCommits
+
+> CommitDataPaginator ComponentVersionQueryCommits(ctx, organization, project, component, version).Execute()
+
+Get commits for this component version
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+    component := "component_example" // string | Component key
+    version := "version_example" // string | Component version
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.ComponentsApi.ComponentVersionQueryCommits(context.Background(), organization, project, component, version).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionQueryCommits``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ComponentVersionQueryCommits`: CommitDataPaginator
+    fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionQueryCommits`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+**component** | **string** | Component key | 
+**version** | **string** | Component version | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionQueryCommitsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+### Return type
+
+[**CommitDataPaginator**](CommitDataPaginator.md)
 
 ### Authorization
 

@@ -4,9 +4,9 @@ All URIs are relative to *https://api.mach.cloud*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**Authorize**](AuthApi.md#Authorize) | **Get** /authorize | 
-[**GetAuthToken**](AuthApi.md#GetAuthToken) | **Post** /oauth/token | 
-[**IntrospectToken**](AuthApi.md#IntrospectToken) | **Post** /oauth/introspect | 
+[**Authorize**](AuthApi.md#Authorize) | **Get** /authorize | Start authorization flow
+[**GetAuthToken**](AuthApi.md#GetAuthToken) | **Post** /oauth/token | Return a new token
+[**IntrospectToken**](AuthApi.md#IntrospectToken) | **Post** /oauth/introspect | Introspect an existing token
 
 
 
@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 > Authorize(ctx).Audience(audience).ResponseType(responseType).Provider(provider).CodeChallenge(codeChallenge).CodeChallengeMethod(codeChallengeMethod).RedirectUri(redirectUri).Execute()
 
-
+Start authorization flow
 
 ### Example
 
@@ -86,7 +86,7 @@ Name | Type | Description  | Notes
 
 > GetAuthToken(ctx).GrantType(grantType).ClientId(clientId).CodeVerifier(codeVerifier).Code(code).RedirectUri(redirectUri).Execute()
 
-
+Return a new token
 
 ### Example
 
@@ -156,7 +156,7 @@ Name | Type | Description  | Notes
 
 > IntrospectToken(ctx).Token(token).Execute()
 
-
+Introspect an existing token
 
 ### Example
 

@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **CreatedAt** | **time.Time** |  | 
 **Component** | **string** | key of the component | 
 **Version** | **string** | version of the component | 
-**CommitHash** | Pointer to **string** | commit hash of the component | [optional] 
+**Branch** | Pointer to **string** | branch of the version | [optional] 
 
 ## Methods
 
@@ -88,30 +88,30 @@ and a boolean to check if the value has been set.
 SetVersion sets Version field to given value.
 
 
-### GetCommitHash
+### GetBranch
 
-`func (o *ComponentVersion) GetCommitHash() string`
+`func (o *ComponentVersion) GetBranch() string`
 
-GetCommitHash returns the CommitHash field if non-nil, zero value otherwise.
+GetBranch returns the Branch field if non-nil, zero value otherwise.
 
-### GetCommitHashOk
+### GetBranchOk
 
-`func (o *ComponentVersion) GetCommitHashOk() (*string, bool)`
+`func (o *ComponentVersion) GetBranchOk() (*string, bool)`
 
-GetCommitHashOk returns a tuple with the CommitHash field if it's non-nil, zero value otherwise
+GetBranchOk returns a tuple with the Branch field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetCommitHash
+### SetBranch
 
-`func (o *ComponentVersion) SetCommitHash(v string)`
+`func (o *ComponentVersion) SetBranch(v string)`
 
-SetCommitHash sets CommitHash field to given value.
+SetBranch sets Branch field to given value.
 
-### HasCommitHash
+### HasBranch
 
-`func (o *ComponentVersion) HasCommitHash() bool`
+`func (o *ComponentVersion) HasBranch() bool`
 
-HasCommitHash returns a boolean if a field has been set.
+HasBranch returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

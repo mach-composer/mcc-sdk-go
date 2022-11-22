@@ -66,7 +66,7 @@ func (a *AccountManagementApiService) OrganizationCreateExecute(r ApiOrganizatio
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/"
+	localVarPath := localBasePath + "/account/organizations"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -169,7 +169,7 @@ func (a *AccountManagementApiService) OrganizationQueryExecute(r ApiOrganization
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/"
+	localVarPath := localBasePath + "/account/organizations"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}

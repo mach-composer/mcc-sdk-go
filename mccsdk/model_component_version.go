@@ -22,8 +22,8 @@ type ComponentVersion struct {
 	Component string `json:"component"`
 	// version of the component
 	Version string `json:"version"`
-	// commit hash of the component
-	CommitHash *string `json:"commit_hash,omitempty"`
+	// branch of the version
+	Branch *string `json:"branch,omitempty"`
 }
 
 // NewComponentVersion instantiates a new ComponentVersion object
@@ -118,36 +118,36 @@ func (o *ComponentVersion) SetVersion(v string) {
 	o.Version = v
 }
 
-// GetCommitHash returns the CommitHash field value if set, zero value otherwise.
-func (o *ComponentVersion) GetCommitHash() string {
-	if o == nil || o.CommitHash == nil {
+// GetBranch returns the Branch field value if set, zero value otherwise.
+func (o *ComponentVersion) GetBranch() string {
+	if o == nil || o.Branch == nil {
 		var ret string
 		return ret
 	}
-	return *o.CommitHash
+	return *o.Branch
 }
 
-// GetCommitHashOk returns a tuple with the CommitHash field value if set, nil otherwise
+// GetBranchOk returns a tuple with the Branch field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ComponentVersion) GetCommitHashOk() (*string, bool) {
-	if o == nil || o.CommitHash == nil {
+func (o *ComponentVersion) GetBranchOk() (*string, bool) {
+	if o == nil || o.Branch == nil {
 		return nil, false
 	}
-	return o.CommitHash, true
+	return o.Branch, true
 }
 
-// HasCommitHash returns a boolean if a field has been set.
-func (o *ComponentVersion) HasCommitHash() bool {
-	if o != nil && o.CommitHash != nil {
+// HasBranch returns a boolean if a field has been set.
+func (o *ComponentVersion) HasBranch() bool {
+	if o != nil && o.Branch != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetCommitHash gets a reference to the given string and assigns it to the CommitHash field.
-func (o *ComponentVersion) SetCommitHash(v string) {
-	o.CommitHash = &v
+// SetBranch gets a reference to the given string and assigns it to the Branch field.
+func (o *ComponentVersion) SetBranch(v string) {
+	o.Branch = &v
 }
 
 func (o ComponentVersion) MarshalJSON() ([]byte, error) {
@@ -161,8 +161,8 @@ func (o ComponentVersion) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["version"] = o.Version
 	}
-	if o.CommitHash != nil {
-		toSerialize["commit_hash"] = o.CommitHash
+	if o.Branch != nil {
+		toSerialize["branch"] = o.Branch
 	}
 	return json.Marshal(toSerialize)
 }
