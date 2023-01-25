@@ -16,17 +16,20 @@ import (
 
 // Error struct for Error
 type Error struct {
-	Status string  `json:"status"`
-	Error  *string `json:"error,omitempty"`
+	Status      int           `json:"status"`
+	Summary     string        `json:"summary"`
+	Description *string       `json:"description,omitempty"`
+	Errors      []ErrorObject `json:"errors,omitempty"`
 }
 
 // NewError instantiates a new Error object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewError(status string) *Error {
+func NewError(status int, summary string) *Error {
 	this := Error{}
 	this.Status = status
+	this.Summary = summary
 	return &this
 }
 
@@ -39,9 +42,9 @@ func NewErrorWithDefaults() *Error {
 }
 
 // GetStatus returns the Status field value
-func (o *Error) GetStatus() string {
+func (o *Error) GetStatus() int {
 	if o == nil {
-		var ret string
+		var ret int
 		return ret
 	}
 
@@ -50,7 +53,7 @@ func (o *Error) GetStatus() string {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *Error) GetStatusOk() (*string, bool) {
+func (o *Error) GetStatusOk() (*int, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -58,40 +61,96 @@ func (o *Error) GetStatusOk() (*string, bool) {
 }
 
 // SetStatus sets field value
-func (o *Error) SetStatus(v string) {
+func (o *Error) SetStatus(v int) {
 	o.Status = v
 }
 
-// GetError returns the Error field value if set, zero value otherwise.
-func (o *Error) GetError() string {
-	if o == nil || o.Error == nil {
+// GetSummary returns the Summary field value
+func (o *Error) GetSummary() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Error
+
+	return o.Summary
 }
 
-// GetErrorOk returns a tuple with the Error field value if set, nil otherwise
+// GetSummaryOk returns a tuple with the Summary field value
 // and a boolean to check if the value has been set.
-func (o *Error) GetErrorOk() (*string, bool) {
-	if o == nil || o.Error == nil {
+func (o *Error) GetSummaryOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Error, true
+	return &o.Summary, true
 }
 
-// HasError returns a boolean if a field has been set.
-func (o *Error) HasError() bool {
-	if o != nil && o.Error != nil {
+// SetSummary sets field value
+func (o *Error) SetSummary(v string) {
+	o.Summary = v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *Error) GetDescription() string {
+	if o == nil || o.Description == nil {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Error) GetDescriptionOk() (*string, bool) {
+	if o == nil || o.Description == nil {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *Error) HasDescription() bool {
+	if o != nil && o.Description != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetError gets a reference to the given string and assigns it to the Error field.
-func (o *Error) SetError(v string) {
-	o.Error = &v
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *Error) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetErrors returns the Errors field value if set, zero value otherwise.
+func (o *Error) GetErrors() []ErrorObject {
+	if o == nil || o.Errors == nil {
+		var ret []ErrorObject
+		return ret
+	}
+	return o.Errors
+}
+
+// GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Error) GetErrorsOk() ([]ErrorObject, bool) {
+	if o == nil || o.Errors == nil {
+		return nil, false
+	}
+	return o.Errors, true
+}
+
+// HasErrors returns a boolean if a field has been set.
+func (o *Error) HasErrors() bool {
+	if o != nil && o.Errors != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetErrors gets a reference to the given []ErrorObject and assigns it to the Errors field.
+func (o *Error) SetErrors(v []ErrorObject) {
+	o.Errors = v
 }
 
 func (o Error) MarshalJSON() ([]byte, error) {
@@ -99,8 +158,14 @@ func (o Error) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["status"] = o.Status
 	}
-	if o.Error != nil {
-		toSerialize["error"] = o.Error
+	if true {
+		toSerialize["summary"] = o.Summary
+	}
+	if o.Description != nil {
+		toSerialize["description"] = o.Description
+	}
+	if o.Errors != nil {
+		toSerialize["errors"] = o.Errors
 	}
 	return json.Marshal(toSerialize)
 }

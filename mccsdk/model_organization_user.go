@@ -23,6 +23,8 @@ type OrganizationUser struct {
 	Name *string `json:"name,omitempty"`
 	// E-mail address of the user
 	Email string `json:"email"`
+	// The avatar profile image url of the user
+	AvatarUrl *string `json:"avatar_url,omitempty"`
 	// Key of the organization
 	OrganizationKey *string `json:"organization_key,omitempty"`
 	// Name of the organization
@@ -169,6 +171,38 @@ func (o *OrganizationUser) SetEmail(v string) {
 	o.Email = v
 }
 
+// GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
+func (o *OrganizationUser) GetAvatarUrl() string {
+	if o == nil || o.AvatarUrl == nil {
+		var ret string
+		return ret
+	}
+	return *o.AvatarUrl
+}
+
+// GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUser) GetAvatarUrlOk() (*string, bool) {
+	if o == nil || o.AvatarUrl == nil {
+		return nil, false
+	}
+	return o.AvatarUrl, true
+}
+
+// HasAvatarUrl returns a boolean if a field has been set.
+func (o *OrganizationUser) HasAvatarUrl() bool {
+	if o != nil && o.AvatarUrl != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAvatarUrl gets a reference to the given string and assigns it to the AvatarUrl field.
+func (o *OrganizationUser) SetAvatarUrl(v string) {
+	o.AvatarUrl = &v
+}
+
 // GetOrganizationKey returns the OrganizationKey field value if set, zero value otherwise.
 func (o *OrganizationUser) GetOrganizationKey() string {
 	if o == nil || o.OrganizationKey == nil {
@@ -310,6 +344,9 @@ func (o OrganizationUser) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["email"] = o.Email
+	}
+	if o.AvatarUrl != nil {
+		toSerialize["avatar_url"] = o.AvatarUrl
 	}
 	if o.OrganizationKey != nil {
 		toSerialize["organization_key"] = o.OrganizationKey

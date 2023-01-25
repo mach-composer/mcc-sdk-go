@@ -1,4 +1,4 @@
-# Error
+# ErrorForbidden
 
 ## Properties
 
@@ -6,117 +6,86 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Status** | **int** |  | 
 **Summary** | **string** |  | 
-**Description** | Pointer to **string** |  | [optional] 
-**Errors** | Pointer to [**[]ErrorObject**](ErrorObject.md) |  | [optional] 
+**Description** | **string** |  | 
 
 ## Methods
 
-### NewError
+### NewErrorForbidden
 
-`func NewError(status int, summary string, ) *Error`
+`func NewErrorForbidden(status int, summary string, description string, ) *ErrorForbidden`
 
-NewError instantiates a new Error object
+NewErrorForbidden instantiates a new ErrorForbidden object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewErrorWithDefaults
+### NewErrorForbiddenWithDefaults
 
-`func NewErrorWithDefaults() *Error`
+`func NewErrorForbiddenWithDefaults() *ErrorForbidden`
 
-NewErrorWithDefaults instantiates a new Error object
+NewErrorForbiddenWithDefaults instantiates a new ErrorForbidden object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetStatus
 
-`func (o *Error) GetStatus() int`
+`func (o *ErrorForbidden) GetStatus() int`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Error) GetStatusOk() (*int, bool)`
+`func (o *ErrorForbidden) GetStatusOk() (*int, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Error) SetStatus(v int)`
+`func (o *ErrorForbidden) SetStatus(v int)`
 
 SetStatus sets Status field to given value.
 
 
 ### GetSummary
 
-`func (o *Error) GetSummary() string`
+`func (o *ErrorForbidden) GetSummary() string`
 
 GetSummary returns the Summary field if non-nil, zero value otherwise.
 
 ### GetSummaryOk
 
-`func (o *Error) GetSummaryOk() (*string, bool)`
+`func (o *ErrorForbidden) GetSummaryOk() (*string, bool)`
 
 GetSummaryOk returns a tuple with the Summary field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetSummary
 
-`func (o *Error) SetSummary(v string)`
+`func (o *ErrorForbidden) SetSummary(v string)`
 
 SetSummary sets Summary field to given value.
 
 
 ### GetDescription
 
-`func (o *Error) GetDescription() string`
+`func (o *ErrorForbidden) GetDescription() string`
 
 GetDescription returns the Description field if non-nil, zero value otherwise.
 
 ### GetDescriptionOk
 
-`func (o *Error) GetDescriptionOk() (*string, bool)`
+`func (o *ErrorForbidden) GetDescriptionOk() (*string, bool)`
 
 GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDescription
 
-`func (o *Error) SetDescription(v string)`
+`func (o *ErrorForbidden) SetDescription(v string)`
 
 SetDescription sets Description field to given value.
 
-### HasDescription
-
-`func (o *Error) HasDescription() bool`
-
-HasDescription returns a boolean if a field has been set.
-
-### GetErrors
-
-`func (o *Error) GetErrors() []ErrorObject`
-
-GetErrors returns the Errors field if non-nil, zero value otherwise.
-
-### GetErrorsOk
-
-`func (o *Error) GetErrorsOk() (*[]ErrorObject, bool)`
-
-GetErrorsOk returns a tuple with the Errors field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetErrors
-
-`func (o *Error) SetErrors(v []ErrorObject)`
-
-SetErrors sets Errors field to given value.
-
-### HasErrors
-
-`func (o *Error) HasErrors() bool`
-
-HasErrors returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

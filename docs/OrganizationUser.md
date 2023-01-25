@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **CreatedAt** | Pointer to **time.Time** |  | [optional] 
 **Name** | Pointer to **string** | Name of the user | [optional] 
 **Email** | **string** | E-mail address of the user | 
+**AvatarUrl** | Pointer to **string** | The avatar profile image url of the user | [optional] 
 **OrganizationKey** | Pointer to **string** | Key of the organization | [optional] 
 **OrganizationName** | Pointer to **string** | Name of the organization | [optional] 
 **OrganizationScopes** | Pointer to **[]string** |  | [optional] 
@@ -126,6 +127,31 @@ and a boolean to check if the value has been set.
 
 SetEmail sets Email field to given value.
 
+
+### GetAvatarUrl
+
+`func (o *OrganizationUser) GetAvatarUrl() string`
+
+GetAvatarUrl returns the AvatarUrl field if non-nil, zero value otherwise.
+
+### GetAvatarUrlOk
+
+`func (o *OrganizationUser) GetAvatarUrlOk() (*string, bool)`
+
+GetAvatarUrlOk returns a tuple with the AvatarUrl field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAvatarUrl
+
+`func (o *OrganizationUser) SetAvatarUrl(v string)`
+
+SetAvatarUrl sets AvatarUrl field to given value.
+
+### HasAvatarUrl
+
+`func (o *OrganizationUser) HasAvatarUrl() bool`
+
+HasAvatarUrl returns a boolean if a field has been set.
 
 ### GetOrganizationKey
 

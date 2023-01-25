@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Count** | **float32** |  | 
-**Total** | **float32** |  | 
+**Count** | **float32** | Number of items in the current page | 
+**Total** | **float32** | Total number of items found | 
 **Offset** | **float32** |  | [default to 0]
 **Limit** | **float32** |  | [default to 20]
 **Results** | [**[]ComponentVersion**](ComponentVersion.md) |  | 

@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 ## Authorize
 
-> Authorize(ctx).Audience(audience).ResponseType(responseType).Provider(provider).CodeChallenge(codeChallenge).CodeChallengeMethod(codeChallengeMethod).RedirectUri(redirectUri).Execute()
+> Authorize(ctx).ResponseType(responseType).Scope(scope).RedirectUri(redirectUri).State(state).ClientId(clientId).CodeChallenge(codeChallenge).CodeChallengeMethod(codeChallengeMethod).Provider(provider).Execute()
 
 Start authorization flow
 
@@ -29,16 +29,18 @@ import (
 )
 
 func main() {
-    audience := "audience_example" // string |  (optional)
-    responseType := "responseType_example" // string |  (optional)
+    responseType := "responseType_example" // string | 
+    scope := "scope_example" // string | 
+    redirectUri := "redirectUri_example" // string | 
+    state := "state_example" // string | 
+    clientId := "clientId_example" // string | 
+    codeChallenge := "codeChallenge_example" // string | 
+    codeChallengeMethod := "S256" // string | 
     provider := "provider_example" // string |  (optional)
-    codeChallenge := "codeChallenge_example" // string |  (optional)
-    codeChallengeMethod := "S256" // string |  (optional)
-    redirectUri := "redirectUri_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.AuthApi.Authorize(context.Background()).Audience(audience).ResponseType(responseType).Provider(provider).CodeChallenge(codeChallenge).CodeChallengeMethod(codeChallengeMethod).RedirectUri(redirectUri).Execute()
+    resp, r, err := apiClient.AuthApi.Authorize(context.Background()).ResponseType(responseType).Scope(scope).RedirectUri(redirectUri).State(state).ClientId(clientId).CodeChallenge(codeChallenge).CodeChallengeMethod(codeChallengeMethod).Provider(provider).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `AuthApi.Authorize``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -57,12 +59,14 @@ Other parameters are passed through a pointer to a apiAuthorizeRequest struct vi
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **audience** | **string** |  | 
  **responseType** | **string** |  | 
- **provider** | **string** |  | 
+ **scope** | **string** |  | 
+ **redirectUri** | **string** |  | 
+ **state** | **string** |  | 
+ **clientId** | **string** |  | 
  **codeChallenge** | **string** |  | 
  **codeChallengeMethod** | **string** |  | 
- **redirectUri** | **string** |  | 
+ **provider** | **string** |  | 
 
 ### Return type
 
@@ -84,7 +88,7 @@ Name | Type | Description  | Notes
 
 ## GetAuthToken
 
-> GetAuthToken(ctx).GrantType(grantType).ClientId(clientId).CodeVerifier(codeVerifier).Code(code).RedirectUri(redirectUri).Execute()
+> GetAuthToken(ctx).GrantType(grantType).ClientId(clientId).CodeVerifier(codeVerifier).Code(code).RedirectUri(redirectUri).RefreshToken(refreshToken).Execute()
 
 Return a new token
 
@@ -101,15 +105,16 @@ import (
 )
 
 func main() {
-    grantType := "client_credentials" // string |  (optional)
-    clientId := "clientId_example" // string |  (optional)
+    grantType := "grantType_example" // string | 
+    clientId := "clientId_example" // string | 
     codeVerifier := "codeVerifier_example" // string |  (optional)
     code := "code_example" // string |  (optional)
     redirectUri := "redirectUri_example" // string |  (optional)
+    refreshToken := "refreshToken_example" // string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.AuthApi.GetAuthToken(context.Background()).GrantType(grantType).ClientId(clientId).CodeVerifier(codeVerifier).Code(code).RedirectUri(redirectUri).Execute()
+    resp, r, err := apiClient.AuthApi.GetAuthToken(context.Background()).GrantType(grantType).ClientId(clientId).CodeVerifier(codeVerifier).Code(code).RedirectUri(redirectUri).RefreshToken(refreshToken).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `AuthApi.GetAuthToken``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -133,6 +138,7 @@ Name | Type | Description  | Notes
  **codeVerifier** | **string** |  | 
  **code** | **string** |  | 
  **redirectUri** | **string** |  | 
+ **refreshToken** | **string** |  | 
 
 ### Return type
 
@@ -140,11 +146,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[basicAuth](../README.md#basicAuth)
+No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/x-www-form-urlencoded
 - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

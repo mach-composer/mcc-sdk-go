@@ -24,17 +24,14 @@ type AuthApiService service
 type ApiAuthorizeRequest struct {
 	ctx                 context.Context
 	ApiService          *AuthApiService
-	audience            *string
 	responseType        *string
-	provider            *string
+	scope               *string
+	redirectUri         *string
+	state               *string
+	clientId            *string
 	codeChallenge       *string
 	codeChallengeMethod *string
-	redirectUri         *string
-}
-
-func (r ApiAuthorizeRequest) Audience(audience string) ApiAuthorizeRequest {
-	r.audience = &audience
-	return r
+	provider            *string
 }
 
 func (r ApiAuthorizeRequest) ResponseType(responseType string) ApiAuthorizeRequest {
@@ -42,8 +39,23 @@ func (r ApiAuthorizeRequest) ResponseType(responseType string) ApiAuthorizeReque
 	return r
 }
 
-func (r ApiAuthorizeRequest) Provider(provider string) ApiAuthorizeRequest {
-	r.provider = &provider
+func (r ApiAuthorizeRequest) Scope(scope string) ApiAuthorizeRequest {
+	r.scope = &scope
+	return r
+}
+
+func (r ApiAuthorizeRequest) RedirectUri(redirectUri string) ApiAuthorizeRequest {
+	r.redirectUri = &redirectUri
+	return r
+}
+
+func (r ApiAuthorizeRequest) State(state string) ApiAuthorizeRequest {
+	r.state = &state
+	return r
+}
+
+func (r ApiAuthorizeRequest) ClientId(clientId string) ApiAuthorizeRequest {
+	r.clientId = &clientId
 	return r
 }
 
@@ -57,8 +69,8 @@ func (r ApiAuthorizeRequest) CodeChallengeMethod(codeChallengeMethod string) Api
 	return r
 }
 
-func (r ApiAuthorizeRequest) RedirectUri(redirectUri string) ApiAuthorizeRequest {
-	r.redirectUri = &redirectUri
+func (r ApiAuthorizeRequest) Provider(provider string) ApiAuthorizeRequest {
+	r.provider = &provider
 	return r
 }
 
@@ -97,24 +109,37 @@ func (a *AuthApiService) AuthorizeExecute(r ApiAuthorizeRequest) (*http.Response
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.responseType == nil {
+		return nil, reportError("responseType is required and must be specified")
+	}
+	if r.scope == nil {
+		return nil, reportError("scope is required and must be specified")
+	}
+	if r.redirectUri == nil {
+		return nil, reportError("redirectUri is required and must be specified")
+	}
+	if r.state == nil {
+		return nil, reportError("state is required and must be specified")
+	}
+	if r.clientId == nil {
+		return nil, reportError("clientId is required and must be specified")
+	}
+	if r.codeChallenge == nil {
+		return nil, reportError("codeChallenge is required and must be specified")
+	}
+	if r.codeChallengeMethod == nil {
+		return nil, reportError("codeChallengeMethod is required and must be specified")
+	}
 
-	if r.audience != nil {
-		localVarQueryParams.Add("audience", parameterToString(*r.audience, ""))
-	}
-	if r.responseType != nil {
-		localVarQueryParams.Add("response_type", parameterToString(*r.responseType, ""))
-	}
+	localVarQueryParams.Add("response_type", parameterToString(*r.responseType, ""))
+	localVarQueryParams.Add("scope", parameterToString(*r.scope, ""))
+	localVarQueryParams.Add("redirect_uri", parameterToString(*r.redirectUri, ""))
+	localVarQueryParams.Add("state", parameterToString(*r.state, ""))
+	localVarQueryParams.Add("client_id", parameterToString(*r.clientId, ""))
+	localVarQueryParams.Add("code_challenge", parameterToString(*r.codeChallenge, ""))
+	localVarQueryParams.Add("code_challenge_method", parameterToString(*r.codeChallengeMethod, ""))
 	if r.provider != nil {
 		localVarQueryParams.Add("provider", parameterToString(*r.provider, ""))
-	}
-	if r.codeChallenge != nil {
-		localVarQueryParams.Add("code_challenge", parameterToString(*r.codeChallenge, ""))
-	}
-	if r.codeChallengeMethod != nil {
-		localVarQueryParams.Add("code_challenge_method", parameterToString(*r.codeChallengeMethod, ""))
-	}
-	if r.redirectUri != nil {
-		localVarQueryParams.Add("redirect_uri", parameterToString(*r.redirectUri, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -169,6 +194,7 @@ type ApiGetAuthTokenRequest struct {
 	codeVerifier *string
 	code         *string
 	redirectUri  *string
+	refreshToken *string
 }
 
 func (r ApiGetAuthTokenRequest) GrantType(grantType string) ApiGetAuthTokenRequest {
@@ -193,6 +219,11 @@ func (r ApiGetAuthTokenRequest) Code(code string) ApiGetAuthTokenRequest {
 
 func (r ApiGetAuthTokenRequest) RedirectUri(redirectUri string) ApiGetAuthTokenRequest {
 	r.redirectUri = &redirectUri
+	return r
+}
+
+func (r ApiGetAuthTokenRequest) RefreshToken(refreshToken string) ApiGetAuthTokenRequest {
+	r.refreshToken = &refreshToken
 	return r
 }
 
@@ -231,24 +262,15 @@ func (a *AuthApiService) GetAuthTokenExecute(r ApiGetAuthTokenRequest) (*http.Re
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
+	if r.grantType == nil {
+		return nil, reportError("grantType is required and must be specified")
+	}
+	if r.clientId == nil {
+		return nil, reportError("clientId is required and must be specified")
+	}
 
-	if r.grantType != nil {
-		localVarQueryParams.Add("grant_type", parameterToString(*r.grantType, ""))
-	}
-	if r.clientId != nil {
-		localVarQueryParams.Add("client_id", parameterToString(*r.clientId, ""))
-	}
-	if r.codeVerifier != nil {
-		localVarQueryParams.Add("code_verifier", parameterToString(*r.codeVerifier, ""))
-	}
-	if r.code != nil {
-		localVarQueryParams.Add("code", parameterToString(*r.code, ""))
-	}
-	if r.redirectUri != nil {
-		localVarQueryParams.Add("redirect_uri", parameterToString(*r.redirectUri, ""))
-	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/x-www-form-urlencoded"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -263,6 +285,20 @@ func (a *AuthApiService) GetAuthTokenExecute(r ApiGetAuthTokenRequest) (*http.Re
 	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	localVarFormParams.Add("grant_type", parameterToString(*r.grantType, ""))
+	localVarFormParams.Add("client_id", parameterToString(*r.clientId, ""))
+	if r.codeVerifier != nil {
+		localVarFormParams.Add("code_verifier", parameterToString(*r.codeVerifier, ""))
+	}
+	if r.code != nil {
+		localVarFormParams.Add("code", parameterToString(*r.code, ""))
+	}
+	if r.redirectUri != nil {
+		localVarFormParams.Add("redirect_uri", parameterToString(*r.redirectUri, ""))
+	}
+	if r.refreshToken != nil {
+		localVarFormParams.Add("refresh_token", parameterToString(*r.refreshToken, ""))
 	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {

@@ -19,43 +19,57 @@ paths:
       parameters:
       - explode: true
         in: query
-        name: audience
-        required: false
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
         name: response_type
-        required: false
+        required: true
         schema:
           type: string
         style: form
       - explode: true
         in: query
-        name: provider
-        required: false
+        name: scope
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: redirect_uri
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: state
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: client_id
+        required: true
         schema:
           type: string
         style: form
       - explode: true
         in: query
         name: code_challenge
-        required: false
+        required: true
         schema:
           type: string
         style: form
       - explode: true
         in: query
         name: code_challenge_method
-        required: false
+        required: true
         schema:
           example: S256
           type: string
         style: form
       - explode: true
         in: query
-        name: redirect_uri
+        name: provider
         required: false
         schema:
           type: string
@@ -72,48 +86,16 @@ paths:
   /oauth/token:
     post:
       operationId: GetAuthToken
-      parameters:
-      - explode: true
-        in: query
-        name: grant_type
-        required: false
-        schema:
-          example: client_credentials
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: client_id
-        required: false
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: code_verifier
-        required: false
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: code
-        required: false
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: redirect_uri
-        required: false
-        schema:
-          type: string
-        style: form
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenBody'
+        required: true
       responses:
         "200":
           description: OK
-      security:
-      - basicAuth: []
+      security: []
       summary: Return a new token
       tags:
       - Auth
@@ -140,6 +122,37 @@ paths:
     servers:
     - description: Production server
       url: https://auth.mach.cloud
+  /account/me:
+    get:
+      operationId: MyAccountInformation
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyAccountInformation_200_response'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Return user information from current user
+      tags:
+      - Account Management
   /account/organizations:
     get:
       operationId: OrganizationQuery
@@ -150,6 +163,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
       summary: List all organizations
       tags:
       - Account Management
@@ -168,6 +193,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/Organization'
           description: OK
+          links:
+            ProjectCreateSetOrganization:
+              operationId: ProjectCreate
+              parameters:
+                organization: $response.body#/key
+            ProjectQuerySetOrganization:
+              operationId: ProjectCreate
+              parameters:
+                organization: $response.body#/key
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
       summary: Create new organization
       tags:
       - Account Management
@@ -191,6 +243,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationUserPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
       summary: List all users in an organization
       tags:
       - Account Management
@@ -223,8 +287,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+                $ref: '#/components/schemas/ErrorUnauthorized'
           description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -254,6 +324,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProjectPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
       summary: List all projects in an organization
       tags:
       - Account Management
@@ -282,12 +364,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/Project'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
         "401":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+                $ref: '#/components/schemas/ErrorUnauthorized'
           description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -326,6 +420,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiClientPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
       security:
       - bearerAuth:
         - api-client:read
@@ -360,12 +466,24 @@ paths:
               $ref: '#/components/schemas/ApiClientDraft'
         required: true
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiClient'
-          description: OK
+          description: New API Client created
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -407,6 +525,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComponentPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
       summary: List all components
       tags:
       - Components
@@ -438,13 +574,25 @@ paths:
               $ref: '#/components/schemas/ComponentDraft'
         required: true
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Component'
-          description: OK
-        "400":
+          description: New component created
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
           content:
             application/json:
               schema:
@@ -497,6 +645,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComponentVersion'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -543,6 +703,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/ComponentVersionPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -588,12 +760,24 @@ paths:
               $ref: '#/components/schemas/ComponentVersionDraft'
         required: true
       responses:
-        "200":
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComponentVersion'
-          description: OK
+          description: New version created
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -648,6 +832,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/CommitDataPaginator'
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -703,6 +899,18 @@ paths:
       responses:
         "201":
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
         default:
           content:
             application/json:
@@ -745,14 +953,66 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/OrganizationUserInvite_401_response'
+            $ref: '#/components/schemas/ErrorUnauthorized'
       description: Unauthorized
+    ErrorForbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorForbidden'
+      description: Forbidden
   schemas:
+    TokenBody:
+      properties:
+        grant_type:
+          type: string
+        client_id:
+          type: string
+        code_verifier:
+          type: string
+        code:
+          type: string
+        redirect_uri:
+          type: string
+        refresh_token:
+          type: string
+      required:
+      - client_id
+      - grant_type
+      type: object
+    ErrorObject:
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Error:
+      properties:
+        status:
+          type: int
+        summary:
+          type: string
+        description:
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/ErrorObject'
+          type: array
+      required:
+      - status
+      - summary
+      type: object
     Paginator:
       properties:
         count:
+          description: Number of items in the current page
           type: number
         total:
+          description: Total number of items found
           type: number
         offset:
           default: 0
@@ -812,6 +1072,9 @@ components:
         email:
           description: E-mail address of the user
           type: string
+        avatar_url:
+          description: The avatar profile image url of the user
+          type: string
         organization_key:
           description: Key of the organization
           type: string
@@ -842,15 +1105,6 @@ components:
           type: string
       required:
       - email
-      type: object
-    Error:
-      properties:
-        status:
-          type: string
-        error:
-          type: string
-      required:
-      - status
       type: object
     OrganizationUserInvite:
       example:
@@ -1007,13 +1261,43 @@ components:
       required:
       - commits
       type: object
-    OrganizationUserInvite_401_response:
+    MyAccountInformation_200_response:
+      example:
+        avatar_url: avatar_url
+        name: name
+        created_at: 2000-01-23T04:56:07.000+00:00
+        email: email
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        name:
+          description: Name of the user
+          type: string
+        email:
+          description: E-mail address of the user
+          type: string
+        avatar_url:
+          type: string
+    ErrorUnauthorized:
       properties:
         message:
           type: string
+      title: ErrorUnauthorized
+      type: object
+    ErrorForbidden:
+      properties:
+        status:
+          type: int
+        summary:
+          type: string
+        description:
+          type: string
       required:
-      - code
-      - message
+      - description
+      - status
+      - summary
+      title: ErrorForbidden
       type: object
     Organization_allOf:
       properties:

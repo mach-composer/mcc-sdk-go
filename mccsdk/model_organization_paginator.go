@@ -16,7 +16,9 @@ import (
 
 // OrganizationPaginator struct for OrganizationPaginator
 type OrganizationPaginator struct {
-	Count   float32        `json:"count"`
+	// Number of items in the current page
+	Count float32 `json:"count"`
+	// Total number of items found
 	Total   float32        `json:"total"`
 	Offset  float32        `json:"offset"`
 	Limit   float32        `json:"limit"`

@@ -80,6 +80,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *APIClientsApi* | [**ApiClientCreate**](docs/APIClientsApi.md#apiclientcreate) | **Post** /{organization}/projects/{project}/api-clients | Create new api client
 *APIClientsApi* | [**ApiClientQuery**](docs/APIClientsApi.md#apiclientquery) | **Get** /{organization}/projects/{project}/api-clients | List all api clients
+*AccountManagementApi* | [**MyAccountInformation**](docs/AccountManagementApi.md#myaccountinformation) | **Get** /account/me | Return user information from current user
 *AccountManagementApi* | [**OrganizationCreate**](docs/AccountManagementApi.md#organizationcreate) | **Post** /account/organizations | Create new organization
 *AccountManagementApi* | [**OrganizationQuery**](docs/AccountManagementApi.md#organizationquery) | **Get** /account/organizations | List all organizations
 *AccountManagementApi* | [**OrganizationUserInvite**](docs/AccountManagementApi.md#organizationuserinvite) | **Post** /account/organizations/{organization}/users | Add user to an organization
@@ -124,6 +125,10 @@ Class | Method | HTTP request | Description
  - [ComponentVersionPaginator](docs/ComponentVersionPaginator.md)
  - [ComponentVersionPaginatorAllOf](docs/ComponentVersionPaginatorAllOf.md)
  - [Error](docs/Error.md)
+ - [ErrorForbidden](docs/ErrorForbidden.md)
+ - [ErrorObject](docs/ErrorObject.md)
+ - [ErrorUnauthorized](docs/ErrorUnauthorized.md)
+ - [MyAccountInformation200Response](docs/MyAccountInformation200Response.md)
  - [Organization](docs/Organization.md)
  - [OrganizationAllOf](docs/OrganizationAllOf.md)
  - [OrganizationDraft](docs/OrganizationDraft.md)
@@ -131,7 +136,6 @@ Class | Method | HTTP request | Description
  - [OrganizationPaginatorAllOf](docs/OrganizationPaginatorAllOf.md)
  - [OrganizationUser](docs/OrganizationUser.md)
  - [OrganizationUserInvite](docs/OrganizationUserInvite.md)
- - [OrganizationUserInvite401Response](docs/OrganizationUserInvite401Response.md)
  - [OrganizationUserInviteDraft](docs/OrganizationUserInviteDraft.md)
  - [OrganizationUserPaginator](docs/OrganizationUserPaginator.md)
  - [OrganizationUserPaginatorAllOf](docs/OrganizationUserPaginatorAllOf.md)
