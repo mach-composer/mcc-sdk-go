@@ -1,7 +1,19 @@
 openapi: 3.0.0
 info:
-  title: MCC Public API
+  contact:
+    email: mach@labdigital.nl
+    name: MACH composer support
+    url: https://docs.machcomposer.io/
+  description: "# Introduction\n\nMACH composer Cloud is a platform and API to facilitate\
+    \ and coordinate work\nacross teams that build composable architectures using\
+    \ MACH technology. \n\nAll operations available in MACH composer cloud are available\
+    \ through this\nAPI. For more information about using it in your MACH architecture,\
+    \ have a\nlook at the [documentation\nwebsite](https://docs.machcomposer.io/cloud/index.html).\n"
+  title: MACH composer Cloud (MCC) Public API
   version: 0.1.0
+  x-logo:
+    url: https://docs.machcomposer.io/_img/logo.png
+    altText: MACH composer Cloud
 servers:
 - description: Live environment
   url: https://api.mach.cloud
@@ -518,6 +530,30 @@ paths:
           example: my-project
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
       responses:
         "200":
           content:
@@ -696,6 +732,30 @@ paths:
         schema:
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
       responses:
         "200":
           content:
@@ -825,6 +885,30 @@ paths:
         schema:
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
       responses:
         "200":
           content:
@@ -942,6 +1026,33 @@ components:
         example: my-project
         type: string
       style: simple
+    OffsetParam:
+      explode: true
+      in: query
+      name: offset
+      required: false
+      schema:
+        default: 0
+        type: integer
+      style: form
+    LimitParam:
+      explode: true
+      in: query
+      name: limit
+      required: false
+      schema:
+        type: integer
+      style: form
+    SortParam:
+      explode: true
+      in: query
+      name: sort
+      required: false
+      schema:
+        items:
+          type: string
+        type: array
+      style: form
   responses:
     ErrorResponse:
       content:

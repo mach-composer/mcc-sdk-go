@@ -165,7 +165,7 @@ Name | Type | Description  | Notes
 
 ## ComponentQuery
 
-> ComponentPaginator ComponentQuery(ctx, organization, project).Execute()
+> ComponentPaginator ComponentQuery(ctx, organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
 
 List all components
 
@@ -184,10 +184,13 @@ import (
 func main() {
     organization := "my-organization" // string | Organization Key
     project := "my-project" // string | Project Key
+    offset := int32(56) // int32 |  (optional) (default to 0)
+    limit := int32(56) // int32 |  (optional)
+    sort := []string{"Inner_example"} // []string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.ComponentsApi.ComponentQuery(context.Background(), organization, project).Execute()
+    resp, r, err := apiClient.ComponentsApi.ComponentQuery(context.Background(), organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentQuery``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -215,6 +218,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
+ **offset** | **int32** |  | [default to 0]
+ **limit** | **int32** |  | 
+ **sort** | **[]string** |  | 
 
 ### Return type
 
@@ -390,7 +396,7 @@ Name | Type | Description  | Notes
 
 ## ComponentVersionQuery
 
-> ComponentVersionPaginator ComponentVersionQuery(ctx, organization, project, component).Execute()
+> ComponentVersionPaginator ComponentVersionQuery(ctx, organization, project, component).Offset(offset).Limit(limit).Sort(sort).Execute()
 
 List all versions of a component
 
@@ -410,10 +416,13 @@ func main() {
     organization := "my-organization" // string | Organization Key
     project := "my-project" // string | Project Key
     component := "component_example" // string | Component key
+    offset := int32(56) // int32 |  (optional) (default to 0)
+    limit := int32(56) // int32 |  (optional)
+    sort := []string{"Inner_example"} // []string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.ComponentsApi.ComponentVersionQuery(context.Background(), organization, project, component).Execute()
+    resp, r, err := apiClient.ComponentsApi.ComponentVersionQuery(context.Background(), organization, project, component).Offset(offset).Limit(limit).Sort(sort).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionQuery``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -443,6 +452,9 @@ Name | Type | Description  | Notes
 
 
 
+ **offset** | **int32** |  | [default to 0]
+ **limit** | **int32** |  | 
+ **sort** | **[]string** |  | 
 
 ### Return type
 
@@ -464,7 +476,7 @@ Name | Type | Description  | Notes
 
 ## ComponentVersionQueryCommits
 
-> CommitDataPaginator ComponentVersionQueryCommits(ctx, organization, project, component, version).Execute()
+> CommitDataPaginator ComponentVersionQueryCommits(ctx, organization, project, component, version).Offset(offset).Limit(limit).Sort(sort).Execute()
 
 Get commits for this component version
 
@@ -485,10 +497,13 @@ func main() {
     project := "my-project" // string | Project Key
     component := "component_example" // string | Component key
     version := "version_example" // string | Component version
+    offset := int32(56) // int32 |  (optional) (default to 0)
+    limit := int32(56) // int32 |  (optional)
+    sort := []string{"Inner_example"} // []string |  (optional)
 
     configuration := openapiclient.NewConfiguration()
     apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.ComponentsApi.ComponentVersionQueryCommits(context.Background(), organization, project, component, version).Execute()
+    resp, r, err := apiClient.ComponentsApi.ComponentVersionQueryCommits(context.Background(), organization, project, component, version).Offset(offset).Limit(limit).Sort(sort).Execute()
     if err != nil {
         fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionQueryCommits``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -520,6 +535,9 @@ Name | Type | Description  | Notes
 
 
 
+ **offset** | **int32** |  | [default to 0]
+ **limit** | **int32** |  | 
+ **sort** | **[]string** |  | 
 
 ### Return type
 
