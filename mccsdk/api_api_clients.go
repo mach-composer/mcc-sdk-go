@@ -20,12 +20,43 @@ import (
 	"strings"
 )
 
+type APIClientsApi interface {
+
+	/*
+		ApiClientCreate Create new api client
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@return ApiApiClientCreateRequest
+	*/
+	ApiClientCreate(ctx context.Context, organization string, project string) ApiApiClientCreateRequest
+
+	// ApiClientCreateExecute executes the request
+	//  @return ApiClient
+	ApiClientCreateExecute(r ApiApiClientCreateRequest) (*ApiClient, *http.Response, error)
+
+	/*
+		ApiClientQuery List all api clients
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@return ApiApiClientQueryRequest
+	*/
+	ApiClientQuery(ctx context.Context, organization string, project string) ApiApiClientQueryRequest
+
+	// ApiClientQueryExecute executes the request
+	//  @return ApiClientPaginator
+	ApiClientQueryExecute(r ApiApiClientQueryRequest) (*ApiClientPaginator, *http.Response, error)
+}
+
 // APIClientsApiService APIClientsApi service
 type APIClientsApiService service
 
 type ApiApiClientCreateRequest struct {
 	ctx            context.Context
-	ApiService     *APIClientsApiService
+	ApiService     APIClientsApi
 	organization   string
 	project        string
 	apiClientDraft *ApiClientDraft
@@ -169,7 +200,7 @@ func (a *APIClientsApiService) ApiClientCreateExecute(r ApiApiClientCreateReques
 
 type ApiApiClientQueryRequest struct {
 	ctx          context.Context
-	ApiService   *APIClientsApiService
+	ApiService   APIClientsApi
 	organization string
 	project      string
 }

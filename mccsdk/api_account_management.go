@@ -20,12 +20,103 @@ import (
 	"strings"
 )
 
+type AccountManagementApi interface {
+
+	/*
+		MyAccountInformation Return user information from current user
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiMyAccountInformationRequest
+	*/
+	MyAccountInformation(ctx context.Context) ApiMyAccountInformationRequest
+
+	// MyAccountInformationExecute executes the request
+	//  @return MyAccountInformation200Response
+	MyAccountInformationExecute(r ApiMyAccountInformationRequest) (*MyAccountInformation200Response, *http.Response, error)
+
+	/*
+		OrganizationCreate Create new organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiOrganizationCreateRequest
+	*/
+	OrganizationCreate(ctx context.Context) ApiOrganizationCreateRequest
+
+	// OrganizationCreateExecute executes the request
+	//  @return Organization
+	OrganizationCreateExecute(r ApiOrganizationCreateRequest) (*Organization, *http.Response, error)
+
+	/*
+		OrganizationQuery List all organizations
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiOrganizationQueryRequest
+	*/
+	OrganizationQuery(ctx context.Context) ApiOrganizationQueryRequest
+
+	// OrganizationQueryExecute executes the request
+	//  @return OrganizationPaginator
+	OrganizationQueryExecute(r ApiOrganizationQueryRequest) (*OrganizationPaginator, *http.Response, error)
+
+	/*
+		OrganizationUserInvite Add user to an organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@return ApiOrganizationUserInviteRequest
+	*/
+	OrganizationUserInvite(ctx context.Context, organization string) ApiOrganizationUserInviteRequest
+
+	// OrganizationUserInviteExecute executes the request
+	//  @return OrganizationUserInvite
+	OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInvite, *http.Response, error)
+
+	/*
+		OrganizationUserQuery List all users in an organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@return ApiOrganizationUserQueryRequest
+	*/
+	OrganizationUserQuery(ctx context.Context, organization string) ApiOrganizationUserQueryRequest
+
+	// OrganizationUserQueryExecute executes the request
+	//  @return OrganizationUserPaginator
+	OrganizationUserQueryExecute(r ApiOrganizationUserQueryRequest) (*OrganizationUserPaginator, *http.Response, error)
+
+	/*
+		ProjectCreate Create new project in an organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@return ApiProjectCreateRequest
+	*/
+	ProjectCreate(ctx context.Context, organization string) ApiProjectCreateRequest
+
+	// ProjectCreateExecute executes the request
+	//  @return Project
+	ProjectCreateExecute(r ApiProjectCreateRequest) (*Project, *http.Response, error)
+
+	/*
+		ProjectQuery List all projects in an organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@return ApiProjectQueryRequest
+	*/
+	ProjectQuery(ctx context.Context, organization string) ApiProjectQueryRequest
+
+	// ProjectQueryExecute executes the request
+	//  @return ProjectPaginator
+	ProjectQueryExecute(r ApiProjectQueryRequest) (*ProjectPaginator, *http.Response, error)
+}
+
 // AccountManagementApiService AccountManagementApi service
 type AccountManagementApiService service
 
 type ApiMyAccountInformationRequest struct {
 	ctx        context.Context
-	ApiService *AccountManagementApiService
+	ApiService AccountManagementApi
 }
 
 func (r ApiMyAccountInformationRequest) Execute() (*MyAccountInformation200Response, *http.Response, error) {
@@ -152,7 +243,7 @@ func (a *AccountManagementApiService) MyAccountInformationExecute(r ApiMyAccount
 
 type ApiOrganizationCreateRequest struct {
 	ctx               context.Context
-	ApiService        *AccountManagementApiService
+	ApiService        AccountManagementApi
 	organizationDraft *OrganizationDraft
 }
 
@@ -290,7 +381,7 @@ func (a *AccountManagementApiService) OrganizationCreateExecute(r ApiOrganizatio
 
 type ApiOrganizationQueryRequest struct {
 	ctx        context.Context
-	ApiService *AccountManagementApiService
+	ApiService AccountManagementApi
 }
 
 func (r ApiOrganizationQueryRequest) Execute() (*OrganizationPaginator, *http.Response, error) {
@@ -407,7 +498,7 @@ func (a *AccountManagementApiService) OrganizationQueryExecute(r ApiOrganization
 
 type ApiOrganizationUserInviteRequest struct {
 	ctx                         context.Context
-	ApiService                  *AccountManagementApiService
+	ApiService                  AccountManagementApi
 	organization                string
 	organizationUserInviteDraft *OrganizationUserInviteDraft
 }
@@ -547,7 +638,7 @@ func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganiz
 
 type ApiOrganizationUserQueryRequest struct {
 	ctx          context.Context
-	ApiService   *AccountManagementApiService
+	ApiService   AccountManagementApi
 	organization string
 }
 
@@ -668,7 +759,7 @@ func (a *AccountManagementApiService) OrganizationUserQueryExecute(r ApiOrganiza
 
 type ApiProjectCreateRequest struct {
 	ctx          context.Context
-	ApiService   *AccountManagementApiService
+	ApiService   AccountManagementApi
 	organization string
 	projectDraft *ProjectDraft
 }
@@ -818,7 +909,7 @@ func (a *AccountManagementApiService) ProjectCreateExecute(r ApiProjectCreateReq
 
 type ApiProjectQueryRequest struct {
 	ctx          context.Context
-	ApiService   *AccountManagementApiService
+	ApiService   AccountManagementApi
 	organization string
 }
 

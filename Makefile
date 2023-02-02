@@ -14,7 +14,7 @@ generate:
 		--enable-post-process-file \
 		--model-package mccsdk/mccmodels \
 		--http-user-agent mcc-sdk-go \
-		--additional-properties=packageName=mccsdk
+		--additional-properties=packageName=mccsdk,generateInterfaces=true
 	mkdir mccsdk
 	mv *.go mccsdk
 	go mod tidy

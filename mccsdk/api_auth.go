@@ -19,12 +19,48 @@ import (
 	"net/url"
 )
 
+type AuthApi interface {
+
+	/*
+		Authorize Start authorization flow
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiAuthorizeRequest
+	*/
+	Authorize(ctx context.Context) ApiAuthorizeRequest
+
+	// AuthorizeExecute executes the request
+	AuthorizeExecute(r ApiAuthorizeRequest) (*http.Response, error)
+
+	/*
+		GetAuthToken Return a new token
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiGetAuthTokenRequest
+	*/
+	GetAuthToken(ctx context.Context) ApiGetAuthTokenRequest
+
+	// GetAuthTokenExecute executes the request
+	GetAuthTokenExecute(r ApiGetAuthTokenRequest) (*http.Response, error)
+
+	/*
+		IntrospectToken Introspect an existing token
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@return ApiIntrospectTokenRequest
+	*/
+	IntrospectToken(ctx context.Context) ApiIntrospectTokenRequest
+
+	// IntrospectTokenExecute executes the request
+	IntrospectTokenExecute(r ApiIntrospectTokenRequest) (*http.Response, error)
+}
+
 // AuthApiService AuthApi service
 type AuthApiService service
 
 type ApiAuthorizeRequest struct {
 	ctx                 context.Context
-	ApiService          *AuthApiService
+	ApiService          AuthApi
 	responseType        *string
 	scope               *string
 	redirectUri         *string
@@ -189,7 +225,7 @@ func (a *AuthApiService) AuthorizeExecute(r ApiAuthorizeRequest) (*http.Response
 
 type ApiGetAuthTokenRequest struct {
 	ctx          context.Context
-	ApiService   *AuthApiService
+	ApiService   AuthApi
 	grantType    *string
 	clientId     *string
 	codeVerifier *string
@@ -331,7 +367,7 @@ func (a *AuthApiService) GetAuthTokenExecute(r ApiGetAuthTokenRequest) (*http.Re
 
 type ApiIntrospectTokenRequest struct {
 	ctx        context.Context
-	ApiService *AuthApiService
+	ApiService AuthApi
 	token      *string
 }
 

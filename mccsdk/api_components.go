@@ -21,12 +21,119 @@ import (
 	"strings"
 )
 
+type ComponentsApi interface {
+
+	/*
+		ComponentCreate Create component
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@return ApiComponentCreateRequest
+	*/
+	ComponentCreate(ctx context.Context, organization string, project string) ApiComponentCreateRequest
+
+	// ComponentCreateExecute executes the request
+	//  @return Component
+	ComponentCreateExecute(r ApiComponentCreateRequest) (*Component, *http.Response, error)
+
+	/*
+		ComponentLatestVersion Get last component version.
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@return ApiComponentLatestVersionRequest
+	*/
+	ComponentLatestVersion(ctx context.Context, organization string, project string, component string) ApiComponentLatestVersionRequest
+
+	// ComponentLatestVersionExecute executes the request
+	//  @return ComponentVersion
+	ComponentLatestVersionExecute(r ApiComponentLatestVersionRequest) (*ComponentVersion, *http.Response, error)
+
+	/*
+		ComponentQuery List all components
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@return ApiComponentQueryRequest
+	*/
+	ComponentQuery(ctx context.Context, organization string, project string) ApiComponentQueryRequest
+
+	// ComponentQueryExecute executes the request
+	//  @return ComponentPaginator
+	ComponentQueryExecute(r ApiComponentQueryRequest) (*ComponentPaginator, *http.Response, error)
+
+	/*
+		ComponentVersionCreate Create component
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@return ApiComponentVersionCreateRequest
+	*/
+	ComponentVersionCreate(ctx context.Context, organization string, project string, component string) ApiComponentVersionCreateRequest
+
+	// ComponentVersionCreateExecute executes the request
+	//  @return ComponentVersion
+	ComponentVersionCreateExecute(r ApiComponentVersionCreateRequest) (*ComponentVersion, *http.Response, error)
+
+	/*
+		ComponentVersionPushCommits Push commits for this component version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@param version Component version
+		@return ApiComponentVersionPushCommitsRequest
+	*/
+	ComponentVersionPushCommits(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionPushCommitsRequest
+
+	// ComponentVersionPushCommitsExecute executes the request
+	ComponentVersionPushCommitsExecute(r ApiComponentVersionPushCommitsRequest) (*http.Response, error)
+
+	/*
+		ComponentVersionQuery List all versions of a component
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@return ApiComponentVersionQueryRequest
+	*/
+	ComponentVersionQuery(ctx context.Context, organization string, project string, component string) ApiComponentVersionQueryRequest
+
+	// ComponentVersionQueryExecute executes the request
+	//  @return ComponentVersionPaginator
+	ComponentVersionQueryExecute(r ApiComponentVersionQueryRequest) (*ComponentVersionPaginator, *http.Response, error)
+
+	/*
+		ComponentVersionQueryCommits Get commits for this component version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@param version Component version
+		@return ApiComponentVersionQueryCommitsRequest
+	*/
+	ComponentVersionQueryCommits(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionQueryCommitsRequest
+
+	// ComponentVersionQueryCommitsExecute executes the request
+	//  @return CommitDataPaginator
+	ComponentVersionQueryCommitsExecute(r ApiComponentVersionQueryCommitsRequest) (*CommitDataPaginator, *http.Response, error)
+}
+
 // ComponentsApiService ComponentsApi service
 type ComponentsApiService service
 
 type ApiComponentCreateRequest struct {
 	ctx            context.Context
-	ApiService     *ComponentsApiService
+	ApiService     ComponentsApi
 	organization   string
 	project        string
 	componentDraft *ComponentDraft
@@ -170,7 +277,7 @@ func (a *ComponentsApiService) ComponentCreateExecute(r ApiComponentCreateReques
 
 type ApiComponentLatestVersionRequest struct {
 	ctx          context.Context
-	ApiService   *ComponentsApiService
+	ApiService   ComponentsApi
 	organization string
 	project      string
 	component    string
@@ -317,7 +424,7 @@ func (a *ComponentsApiService) ComponentLatestVersionExecute(r ApiComponentLates
 
 type ApiComponentQueryRequest struct {
 	ctx          context.Context
-	ApiService   *ComponentsApiService
+	ApiService   ComponentsApi
 	organization string
 	project      string
 	offset       *int32
@@ -485,7 +592,7 @@ func (a *ComponentsApiService) ComponentQueryExecute(r ApiComponentQueryRequest)
 
 type ApiComponentVersionCreateRequest struct {
 	ctx                   context.Context
-	ApiService            *ComponentsApiService
+	ApiService            ComponentsApi
 	organization          string
 	project               string
 	component             string
@@ -633,7 +740,7 @@ func (a *ComponentsApiService) ComponentVersionCreateExecute(r ApiComponentVersi
 
 type ApiComponentVersionPushCommitsRequest struct {
 	ctx                     context.Context
-	ApiService              *ComponentsApiService
+	ApiService              ComponentsApi
 	organization            string
 	project                 string
 	component               string
@@ -773,7 +880,7 @@ func (a *ComponentsApiService) ComponentVersionPushCommitsExecute(r ApiComponent
 
 type ApiComponentVersionQueryRequest struct {
 	ctx          context.Context
-	ApiService   *ComponentsApiService
+	ApiService   ComponentsApi
 	organization string
 	project      string
 	component    string
@@ -945,7 +1052,7 @@ func (a *ComponentsApiService) ComponentVersionQueryExecute(r ApiComponentVersio
 
 type ApiComponentVersionQueryCommitsRequest struct {
 	ctx          context.Context
-	ApiService   *ComponentsApiService
+	ApiService   ComponentsApi
 	organization string
 	project      string
 	component    string

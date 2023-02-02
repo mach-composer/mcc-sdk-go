@@ -50,13 +50,13 @@ type APIClient struct {
 
 	// API Services
 
-	APIClientsApi *APIClientsApiService
+	APIClientsApi APIClientsApi
 
-	AccountManagementApi *AccountManagementApiService
+	AccountManagementApi AccountManagementApi
 
-	AuthApi *AuthApiService
+	AuthApi AuthApi
 
-	ComponentsApi *ComponentsApiService
+	ComponentsApi ComponentsApi
 }
 
 type service struct {
