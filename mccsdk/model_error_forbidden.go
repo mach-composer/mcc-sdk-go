@@ -17,20 +17,18 @@ import (
 
 // ErrorForbidden struct for ErrorForbidden
 type ErrorForbidden struct {
-	Status      int    `json:"status"`
-	Summary     string `json:"summary"`
-	Description string `json:"description"`
+	Status      *int    `json:"status,omitempty"`
+	Summary     *string `json:"summary,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Message     *string `json:"message,omitempty"`
 }
 
 // NewErrorForbidden instantiates a new ErrorForbidden object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewErrorForbidden(status int, summary string, description string) *ErrorForbidden {
+func NewErrorForbidden() *ErrorForbidden {
 	this := ErrorForbidden{}
-	this.Status = status
-	this.Summary = summary
-	this.Description = description
 	return &this
 }
 
@@ -42,88 +40,147 @@ func NewErrorForbiddenWithDefaults() *ErrorForbidden {
 	return &this
 }
 
-// GetStatus returns the Status field value
+// GetStatus returns the Status field value if set, zero value otherwise.
 func (o *ErrorForbidden) GetStatus() int {
-	if o == nil {
+	if o == nil || o.Status == nil {
 		var ret int
 		return ret
 	}
-
-	return o.Status
+	return *o.Status
 }
 
-// GetStatusOk returns a tuple with the Status field value
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorForbidden) GetStatusOk() (*int, bool) {
-	if o == nil {
+	if o == nil || o.Status == nil {
 		return nil, false
 	}
-	return &o.Status, true
+	return o.Status, true
 }
 
-// SetStatus sets field value
+// HasStatus returns a boolean if a field has been set.
+func (o *ErrorForbidden) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given int and assigns it to the Status field.
 func (o *ErrorForbidden) SetStatus(v int) {
-	o.Status = v
+	o.Status = &v
 }
 
-// GetSummary returns the Summary field value
+// GetSummary returns the Summary field value if set, zero value otherwise.
 func (o *ErrorForbidden) GetSummary() string {
-	if o == nil {
+	if o == nil || o.Summary == nil {
 		var ret string
 		return ret
 	}
-
-	return o.Summary
+	return *o.Summary
 }
 
-// GetSummaryOk returns a tuple with the Summary field value
+// GetSummaryOk returns a tuple with the Summary field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorForbidden) GetSummaryOk() (*string, bool) {
-	if o == nil {
+	if o == nil || o.Summary == nil {
 		return nil, false
 	}
-	return &o.Summary, true
+	return o.Summary, true
 }
 
-// SetSummary sets field value
+// HasSummary returns a boolean if a field has been set.
+func (o *ErrorForbidden) HasSummary() bool {
+	if o != nil && o.Summary != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSummary gets a reference to the given string and assigns it to the Summary field.
 func (o *ErrorForbidden) SetSummary(v string) {
-	o.Summary = v
+	o.Summary = &v
 }
 
-// GetDescription returns the Description field value
+// GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ErrorForbidden) GetDescription() string {
-	if o == nil {
+	if o == nil || o.Description == nil {
 		var ret string
 		return ret
 	}
-
-	return o.Description
+	return *o.Description
 }
 
-// GetDescriptionOk returns a tuple with the Description field value
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ErrorForbidden) GetDescriptionOk() (*string, bool) {
-	if o == nil {
+	if o == nil || o.Description == nil {
 		return nil, false
 	}
-	return &o.Description, true
+	return o.Description, true
 }
 
-// SetDescription sets field value
+// HasDescription returns a boolean if a field has been set.
+func (o *ErrorForbidden) HasDescription() bool {
+	if o != nil && o.Description != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
 func (o *ErrorForbidden) SetDescription(v string) {
-	o.Description = v
+	o.Description = &v
+}
+
+// GetMessage returns the Message field value if set, zero value otherwise.
+func (o *ErrorForbidden) GetMessage() string {
+	if o == nil || o.Message == nil {
+		var ret string
+		return ret
+	}
+	return *o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ErrorForbidden) GetMessageOk() (*string, bool) {
+	if o == nil || o.Message == nil {
+		return nil, false
+	}
+	return o.Message, true
+}
+
+// HasMessage returns a boolean if a field has been set.
+func (o *ErrorForbidden) HasMessage() bool {
+	if o != nil && o.Message != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMessage gets a reference to the given string and assigns it to the Message field.
+func (o *ErrorForbidden) SetMessage(v string) {
+	o.Message = &v
 }
 
 func (o ErrorForbidden) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if true {
+	if o.Status != nil {
 		toSerialize["status"] = o.Status
 	}
-	if true {
+	if o.Summary != nil {
 		toSerialize["summary"] = o.Summary
 	}
-	if true {
+	if o.Description != nil {
 		toSerialize["description"] = o.Description
+	}
+	if o.Message != nil {
+		toSerialize["message"] = o.Message
 	}
 	return json.Marshal(toSerialize)
 }

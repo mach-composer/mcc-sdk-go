@@ -1404,10 +1404,8 @@ components:
           type: string
         description:
           type: string
-      required:
-      - description
-      - status
-      - summary
+        message:
+          type: string
       title: ErrorForbidden
       type: object
     Organization_allOf:

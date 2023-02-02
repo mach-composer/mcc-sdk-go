@@ -4,15 +4,16 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Status** | **int** |  | 
-**Summary** | **string** |  | 
-**Description** | **string** |  | 
+**Status** | Pointer to **int** |  | [optional] 
+**Summary** | Pointer to **string** |  | [optional] 
+**Description** | Pointer to **string** |  | [optional] 
+**Message** | Pointer to **string** |  | [optional] 
 
 ## Methods
 
 ### NewErrorForbidden
 
-`func NewErrorForbidden(status int, summary string, description string, ) *ErrorForbidden`
+`func NewErrorForbidden() *ErrorForbidden`
 
 NewErrorForbidden instantiates a new ErrorForbidden object
 This constructor will assign default values to properties that have it defined,
@@ -46,6 +47,11 @@ and a boolean to check if the value has been set.
 
 SetStatus sets Status field to given value.
 
+### HasStatus
+
+`func (o *ErrorForbidden) HasStatus() bool`
+
+HasStatus returns a boolean if a field has been set.
 
 ### GetSummary
 
@@ -66,6 +72,11 @@ and a boolean to check if the value has been set.
 
 SetSummary sets Summary field to given value.
 
+### HasSummary
+
+`func (o *ErrorForbidden) HasSummary() bool`
+
+HasSummary returns a boolean if a field has been set.
 
 ### GetDescription
 
@@ -86,6 +97,36 @@ and a boolean to check if the value has been set.
 
 SetDescription sets Description field to given value.
 
+### HasDescription
+
+`func (o *ErrorForbidden) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
+
+### GetMessage
+
+`func (o *ErrorForbidden) GetMessage() string`
+
+GetMessage returns the Message field if non-nil, zero value otherwise.
+
+### GetMessageOk
+
+`func (o *ErrorForbidden) GetMessageOk() (*string, bool)`
+
+GetMessageOk returns a tuple with the Message field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMessage
+
+`func (o *ErrorForbidden) SetMessage(v string)`
+
+SetMessage sets Message field to given value.
+
+### HasMessage
+
+`func (o *ErrorForbidden) HasMessage() bool`
+
+HasMessage returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
