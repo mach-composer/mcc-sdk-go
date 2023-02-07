@@ -1,7 +1,7 @@
 /*
 MACH composer Cloud (MCC) Public API
 
-# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.   All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
+# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.  All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
 
 API version: 0.1.0
 Contact: mach@labdigital.nl
@@ -17,10 +17,10 @@ import (
 
 // ErrorForbidden struct for ErrorForbidden
 type ErrorForbidden struct {
-	Status      *int    `json:"status,omitempty"`
-	Summary     *string `json:"summary,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Message     *string `json:"message,omitempty"`
+	Status      *float32 `json:"status,omitempty"`
+	Summary     *string  `json:"summary,omitempty"`
+	Description *string  `json:"description,omitempty"`
+	Message     *string  `json:"message,omitempty"`
 }
 
 // NewErrorForbidden instantiates a new ErrorForbidden object
@@ -41,9 +41,9 @@ func NewErrorForbiddenWithDefaults() *ErrorForbidden {
 }
 
 // GetStatus returns the Status field value if set, zero value otherwise.
-func (o *ErrorForbidden) GetStatus() int {
+func (o *ErrorForbidden) GetStatus() float32 {
 	if o == nil || o.Status == nil {
-		var ret int
+		var ret float32
 		return ret
 	}
 	return *o.Status
@@ -51,7 +51,7 @@ func (o *ErrorForbidden) GetStatus() int {
 
 // GetStatusOk returns a tuple with the Status field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ErrorForbidden) GetStatusOk() (*int, bool) {
+func (o *ErrorForbidden) GetStatusOk() (*float32, bool) {
 	if o == nil || o.Status == nil {
 		return nil, false
 	}
@@ -67,8 +67,8 @@ func (o *ErrorForbidden) HasStatus() bool {
 	return false
 }
 
-// SetStatus gets a reference to the given int and assigns it to the Status field.
-func (o *ErrorForbidden) SetStatus(v int) {
+// SetStatus gets a reference to the given float32 and assigns it to the Status field.
+func (o *ErrorForbidden) SetStatus(v float32) {
 	o.Status = &v
 }
 

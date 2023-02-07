@@ -1,7 +1,7 @@
 /*
 MACH composer Cloud (MCC) Public API
 
-# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.   All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
+# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.  All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
 
 API version: 0.1.0
 Contact: mach@labdigital.nl
@@ -17,8 +17,13 @@ import (
 
 // OrganizationUserInvite struct for OrganizationUserInvite
 type OrganizationUserInvite struct {
+	CreatedBy *string `json:"created_by,omitempty"`
 	// E-mail address of the user
 	Email string `json:"email"`
+	// Key of the project to invite user to
+	ProjectKey *string `json:"project_key,omitempty"`
+	// Role for the user
+	Role *string `json:"role,omitempty"`
 }
 
 // NewOrganizationUserInvite instantiates a new OrganizationUserInvite object
@@ -37,6 +42,38 @@ func NewOrganizationUserInvite(email string) *OrganizationUserInvite {
 func NewOrganizationUserInviteWithDefaults() *OrganizationUserInvite {
 	this := OrganizationUserInvite{}
 	return &this
+}
+
+// GetCreatedBy returns the CreatedBy field value if set, zero value otherwise.
+func (o *OrganizationUserInvite) GetCreatedBy() string {
+	if o == nil || o.CreatedBy == nil {
+		var ret string
+		return ret
+	}
+	return *o.CreatedBy
+}
+
+// GetCreatedByOk returns a tuple with the CreatedBy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInvite) GetCreatedByOk() (*string, bool) {
+	if o == nil || o.CreatedBy == nil {
+		return nil, false
+	}
+	return o.CreatedBy, true
+}
+
+// HasCreatedBy returns a boolean if a field has been set.
+func (o *OrganizationUserInvite) HasCreatedBy() bool {
+	if o != nil && o.CreatedBy != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedBy gets a reference to the given string and assigns it to the CreatedBy field.
+func (o *OrganizationUserInvite) SetCreatedBy(v string) {
+	o.CreatedBy = &v
 }
 
 // GetEmail returns the Email field value
@@ -63,10 +100,83 @@ func (o *OrganizationUserInvite) SetEmail(v string) {
 	o.Email = v
 }
 
+// GetProjectKey returns the ProjectKey field value if set, zero value otherwise.
+func (o *OrganizationUserInvite) GetProjectKey() string {
+	if o == nil || o.ProjectKey == nil {
+		var ret string
+		return ret
+	}
+	return *o.ProjectKey
+}
+
+// GetProjectKeyOk returns a tuple with the ProjectKey field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInvite) GetProjectKeyOk() (*string, bool) {
+	if o == nil || o.ProjectKey == nil {
+		return nil, false
+	}
+	return o.ProjectKey, true
+}
+
+// HasProjectKey returns a boolean if a field has been set.
+func (o *OrganizationUserInvite) HasProjectKey() bool {
+	if o != nil && o.ProjectKey != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetProjectKey gets a reference to the given string and assigns it to the ProjectKey field.
+func (o *OrganizationUserInvite) SetProjectKey(v string) {
+	o.ProjectKey = &v
+}
+
+// GetRole returns the Role field value if set, zero value otherwise.
+func (o *OrganizationUserInvite) GetRole() string {
+	if o == nil || o.Role == nil {
+		var ret string
+		return ret
+	}
+	return *o.Role
+}
+
+// GetRoleOk returns a tuple with the Role field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInvite) GetRoleOk() (*string, bool) {
+	if o == nil || o.Role == nil {
+		return nil, false
+	}
+	return o.Role, true
+}
+
+// HasRole returns a boolean if a field has been set.
+func (o *OrganizationUserInvite) HasRole() bool {
+	if o != nil && o.Role != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRole gets a reference to the given string and assigns it to the Role field.
+func (o *OrganizationUserInvite) SetRole(v string) {
+	o.Role = &v
+}
+
 func (o OrganizationUserInvite) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
+	if o.CreatedBy != nil {
+		toSerialize["created_by"] = o.CreatedBy
+	}
 	if true {
 		toSerialize["email"] = o.Email
+	}
+	if o.ProjectKey != nil {
+		toSerialize["project_key"] = o.ProjectKey
+	}
+	if o.Role != nil {
+		toSerialize["role"] = o.Role
 	}
 	return json.Marshal(toSerialize)
 }

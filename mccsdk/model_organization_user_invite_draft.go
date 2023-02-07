@@ -1,7 +1,7 @@
 /*
 MACH composer Cloud (MCC) Public API
 
-# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.   All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
+# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.  All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
 
 API version: 0.1.0
 Contact: mach@labdigital.nl
@@ -19,6 +19,10 @@ import (
 type OrganizationUserInviteDraft struct {
 	// E-mail address of the user
 	Email string `json:"email"`
+	// Key of the project to invite user to
+	ProjectKey *string `json:"project_key,omitempty"`
+	// Role for the user
+	Role *string `json:"role,omitempty"`
 }
 
 // NewOrganizationUserInviteDraft instantiates a new OrganizationUserInviteDraft object
@@ -63,10 +67,80 @@ func (o *OrganizationUserInviteDraft) SetEmail(v string) {
 	o.Email = v
 }
 
+// GetProjectKey returns the ProjectKey field value if set, zero value otherwise.
+func (o *OrganizationUserInviteDraft) GetProjectKey() string {
+	if o == nil || o.ProjectKey == nil {
+		var ret string
+		return ret
+	}
+	return *o.ProjectKey
+}
+
+// GetProjectKeyOk returns a tuple with the ProjectKey field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInviteDraft) GetProjectKeyOk() (*string, bool) {
+	if o == nil || o.ProjectKey == nil {
+		return nil, false
+	}
+	return o.ProjectKey, true
+}
+
+// HasProjectKey returns a boolean if a field has been set.
+func (o *OrganizationUserInviteDraft) HasProjectKey() bool {
+	if o != nil && o.ProjectKey != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetProjectKey gets a reference to the given string and assigns it to the ProjectKey field.
+func (o *OrganizationUserInviteDraft) SetProjectKey(v string) {
+	o.ProjectKey = &v
+}
+
+// GetRole returns the Role field value if set, zero value otherwise.
+func (o *OrganizationUserInviteDraft) GetRole() string {
+	if o == nil || o.Role == nil {
+		var ret string
+		return ret
+	}
+	return *o.Role
+}
+
+// GetRoleOk returns a tuple with the Role field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInviteDraft) GetRoleOk() (*string, bool) {
+	if o == nil || o.Role == nil {
+		return nil, false
+	}
+	return o.Role, true
+}
+
+// HasRole returns a boolean if a field has been set.
+func (o *OrganizationUserInviteDraft) HasRole() bool {
+	if o != nil && o.Role != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRole gets a reference to the given string and assigns it to the Role field.
+func (o *OrganizationUserInviteDraft) SetRole(v string) {
+	o.Role = &v
+}
+
 func (o OrganizationUserInviteDraft) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
 		toSerialize["email"] = o.Email
+	}
+	if o.ProjectKey != nil {
+		toSerialize["project_key"] = o.ProjectKey
+	}
+	if o.Role != nil {
+		toSerialize["role"] = o.Role
 	}
 	return json.Marshal(toSerialize)
 }

@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Status** | Pointer to **int** |  | [optional] 
+**Status** | Pointer to **float32** |  | [optional] 
 **Summary** | Pointer to **string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **Message** | Pointer to **string** |  | [optional] 
@@ -30,20 +30,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetStatus
 
-`func (o *ErrorForbidden) GetStatus() int`
+`func (o *ErrorForbidden) GetStatus() float32`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *ErrorForbidden) GetStatusOk() (*int, bool)`
+`func (o *ErrorForbidden) GetStatusOk() (*float32, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *ErrorForbidden) SetStatus(v int)`
+`func (o *ErrorForbidden) SetStatus(v float32)`
 
 SetStatus sets Status field to given value.
 

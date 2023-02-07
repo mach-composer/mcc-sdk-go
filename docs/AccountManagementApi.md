@@ -7,7 +7,9 @@ Method | HTTP request | Description
 [**MyAccountInformation**](AccountManagementApi.md#MyAccountInformation) | **Get** /account/me | Return user information from current user
 [**OrganizationCreate**](AccountManagementApi.md#OrganizationCreate) | **Post** /account/organizations | Create new organization
 [**OrganizationQuery**](AccountManagementApi.md#OrganizationQuery) | **Get** /account/organizations | List all organizations
-[**OrganizationUserInvite**](AccountManagementApi.md#OrganizationUserInvite) | **Post** /account/organizations/{organization}/users | Add user to an organization
+[**OrganizationUserInvite**](AccountManagementApi.md#OrganizationUserInvite) | **Post** /account/organizations/{organization}/users/invite | Invite a user to the organization
+[**OrganizationUserInviteAccept**](AccountManagementApi.md#OrganizationUserInviteAccept) | **Post** /account/organizations/{organization}/users/invite/{id} | Accept a user invite
+[**OrganizationUserInviteGet**](AccountManagementApi.md#OrganizationUserInviteGet) | **Get** /account/organizations/{organization}/users/invite/{id} | View invite information
 [**OrganizationUserQuery**](AccountManagementApi.md#OrganizationUserQuery) | **Get** /account/organizations/{organization}/users | List all users in an organization
 [**ProjectCreate**](AccountManagementApi.md#ProjectCreate) | **Post** /account/organizations/{organization}/projects | Create new project in an organization
 [**ProjectQuery**](AccountManagementApi.md#ProjectQuery) | **Get** /account/organizations/{organization}/projects | List all projects in an organization
@@ -61,7 +63,7 @@ Other parameters are passed through a pointer to a apiMyAccountInformationReques
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
@@ -125,7 +127,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
@@ -184,7 +186,7 @@ Other parameters are passed through a pointer to a apiOrganizationQueryRequest s
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
@@ -198,9 +200,9 @@ Other parameters are passed through a pointer to a apiOrganizationQueryRequest s
 
 ## OrganizationUserInvite
 
-> OrganizationUserInvite OrganizationUserInvite(ctx, organization).OrganizationUserInviteDraft(organizationUserInviteDraft).Execute()
+> OrganizationUserInviteData OrganizationUserInvite(ctx, organization).OrganizationUserInviteDraft(organizationUserInviteDraft).Execute()
 
-Add user to an organization
+Invite a user to the organization
 
 ### Example
 
@@ -225,7 +227,7 @@ func main() {
         fmt.Fprintf(os.Stderr, "Error when calling `AccountManagementApi.OrganizationUserInvite``: %v\n", err)
         fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
     }
-    // response from `OrganizationUserInvite`: OrganizationUserInvite
+    // response from `OrganizationUserInvite`: OrganizationUserInviteData
     fmt.Fprintf(os.Stdout, "Response from `AccountManagementApi.OrganizationUserInvite`: %v\n", resp)
 }
 ```
@@ -250,15 +252,157 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**OrganizationUserInvite**](OrganizationUserInvite.md)
+[**OrganizationUserInviteData**](OrganizationUserInviteData.md)
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## OrganizationUserInviteAccept
+
+> OrganizationUserInvite OrganizationUserInviteAccept(ctx, organization, id).Execute()
+
+Accept a user invite
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    id := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | Invite ID
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.AccountManagementApi.OrganizationUserInviteAccept(context.Background(), organization, id).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AccountManagementApi.OrganizationUserInviteAccept``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `OrganizationUserInviteAccept`: OrganizationUserInvite
+    fmt.Fprintf(os.Stdout, "Response from `AccountManagementApi.OrganizationUserInviteAccept`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**id** | **string** | Invite ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiOrganizationUserInviteAcceptRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**OrganizationUserInvite**](OrganizationUserInvite.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## OrganizationUserInviteGet
+
+> OrganizationUserInviteData OrganizationUserInviteGet(ctx, organization, id).Execute()
+
+View invite information
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    id := "38400000-8cf0-11bd-b23e-10b96e4ef00d" // string | Invite ID
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.AccountManagementApi.OrganizationUserInviteGet(context.Background(), organization, id).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AccountManagementApi.OrganizationUserInviteGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `OrganizationUserInviteGet`: OrganizationUserInviteData
+    fmt.Fprintf(os.Stdout, "Response from `AccountManagementApi.OrganizationUserInviteGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**id** | **string** | Invite ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiOrganizationUserInviteGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**OrganizationUserInviteData**](OrganizationUserInviteData.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -322,7 +466,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
@@ -392,7 +536,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 
@@ -460,7 +604,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[bearerAuth](../README.md#bearerAuth)
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
 
 ### HTTP request headers
 

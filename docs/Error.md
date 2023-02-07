@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Status** | **int** |  | 
+**Status** | **float32** |  | 
 **Summary** | **string** |  | 
 **Description** | Pointer to **string** |  | [optional] 
 **Errors** | Pointer to [**[]ErrorObject**](ErrorObject.md) |  | [optional] 
@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 
 ### NewError
 
-`func NewError(status int, summary string, ) *Error`
+`func NewError(status float32, summary string, ) *Error`
 
 NewError instantiates a new Error object
 This constructor will assign default values to properties that have it defined,
@@ -30,20 +30,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetStatus
 
-`func (o *Error) GetStatus() int`
+`func (o *Error) GetStatus() float32`
 
 GetStatus returns the Status field if non-nil, zero value otherwise.
 
 ### GetStatusOk
 
-`func (o *Error) GetStatusOk() (*int, bool)`
+`func (o *Error) GetStatusOk() (*float32, bool)`
 
 GetStatusOk returns a tuple with the Status field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetStatus
 
-`func (o *Error) SetStatus(v int)`
+`func (o *Error) SetStatus(v float32)`
 
 SetStatus sets Status field to given value.
 

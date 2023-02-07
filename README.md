@@ -3,7 +3,7 @@
 # Introduction
 
 MACH composer Cloud is a platform and API to facilitate and coordinate work
-across teams that build composable architectures using MACH technology. 
+across teams that build composable architectures using MACH technology.
 
 All operations available in MACH composer cloud are available through this
 API. For more information about using it in your MACH architecture, have a
@@ -93,13 +93,12 @@ Class | Method | HTTP request | Description
 *AccountManagementApi* | [**MyAccountInformation**](docs/AccountManagementApi.md#myaccountinformation) | **Get** /account/me | Return user information from current user
 *AccountManagementApi* | [**OrganizationCreate**](docs/AccountManagementApi.md#organizationcreate) | **Post** /account/organizations | Create new organization
 *AccountManagementApi* | [**OrganizationQuery**](docs/AccountManagementApi.md#organizationquery) | **Get** /account/organizations | List all organizations
-*AccountManagementApi* | [**OrganizationUserInvite**](docs/AccountManagementApi.md#organizationuserinvite) | **Post** /account/organizations/{organization}/users | Add user to an organization
+*AccountManagementApi* | [**OrganizationUserInvite**](docs/AccountManagementApi.md#organizationuserinvite) | **Post** /account/organizations/{organization}/users/invite | Invite a user to the organization
+*AccountManagementApi* | [**OrganizationUserInviteAccept**](docs/AccountManagementApi.md#organizationuserinviteaccept) | **Post** /account/organizations/{organization}/users/invite/{id} | Accept a user invite
+*AccountManagementApi* | [**OrganizationUserInviteGet**](docs/AccountManagementApi.md#organizationuserinviteget) | **Get** /account/organizations/{organization}/users/invite/{id} | View invite information
 *AccountManagementApi* | [**OrganizationUserQuery**](docs/AccountManagementApi.md#organizationuserquery) | **Get** /account/organizations/{organization}/users | List all users in an organization
 *AccountManagementApi* | [**ProjectCreate**](docs/AccountManagementApi.md#projectcreate) | **Post** /account/organizations/{organization}/projects | Create new project in an organization
 *AccountManagementApi* | [**ProjectQuery**](docs/AccountManagementApi.md#projectquery) | **Get** /account/organizations/{organization}/projects | List all projects in an organization
-*AuthApi* | [**Authorize**](docs/AuthApi.md#authorize) | **Get** /authorize | Start authorization flow
-*AuthApi* | [**GetAuthToken**](docs/AuthApi.md#getauthtoken) | **Post** /oauth/token | Return a new token
-*AuthApi* | [**IntrospectToken**](docs/AuthApi.md#introspecttoken) | **Post** /oauth/introspect | Introspect an existing token
 *ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /{organization}/projects/{project}/components | Create component
 *ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
 *ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /{organization}/projects/{project}/components | List all components
@@ -146,6 +145,8 @@ Class | Method | HTTP request | Description
  - [OrganizationPaginatorAllOf](docs/OrganizationPaginatorAllOf.md)
  - [OrganizationUser](docs/OrganizationUser.md)
  - [OrganizationUserInvite](docs/OrganizationUserInvite.md)
+ - [OrganizationUserInviteData](docs/OrganizationUserInviteData.md)
+ - [OrganizationUserInviteDataOrganization](docs/OrganizationUserInviteDataOrganization.md)
  - [OrganizationUserInviteDraft](docs/OrganizationUserInviteDraft.md)
  - [OrganizationUserPaginator](docs/OrganizationUserPaginator.md)
  - [OrganizationUserPaginatorAllOf](docs/OrganizationUserPaginatorAllOf.md)
@@ -162,29 +163,60 @@ Class | Method | HTTP request | Description
 
 
 
-### basicAuth
+### OAuth2
 
-- **Type**: HTTP basic authentication
+
+- **Type**: OAuth
+- **Flow**: application
+- **Authorization URL**: 
+- **Scopes**: 
+ - **api**: Grants complete read/write access to the API
 
 Example
 
 ```golang
-auth := context.WithValue(context.Background(), sw.ContextBasicAuth, sw.BasicAuth{
-    UserName: "username",
-    Password: "password",
-})
+auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
+r, err := client.Service.Operation(auth, args)
+```
+
+Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+
+```golang
+import "golang.org/x/oauth2"
+
+/* Perform OAuth2 round trip request and obtain a token */
+
+tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
+auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
 
 
-### bearerAuth
+### OAuth2
 
-- **Type**: HTTP Bearer token authentication
+
+- **Type**: OAuth
+- **Flow**: accessCode
+- **Authorization URL**: http://localhost:3000
+- **Scopes**: 
+ - **api**: Grants complete read/write access to the API
 
 Example
 
 ```golang
-auth := context.WithValue(context.Background(), sw.ContextAccessToken, "BEARER_TOKEN_STRING")
+auth := context.WithValue(context.Background(), sw.ContextAccessToken, "ACCESSTOKENSTRING")
+r, err := client.Service.Operation(auth, args)
+```
+
+Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+
+```golang
+import "golang.org/x/oauth2"
+
+/* Perform OAuth2 round trip request and obtain a token */
+
+tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
+auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
 

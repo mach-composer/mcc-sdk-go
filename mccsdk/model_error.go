@@ -1,7 +1,7 @@
 /*
 MACH composer Cloud (MCC) Public API
 
-# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.   All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
+# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.  All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
 
 API version: 0.1.0
 Contact: mach@labdigital.nl
@@ -17,7 +17,7 @@ import (
 
 // Error struct for Error
 type Error struct {
-	Status      int           `json:"status"`
+	Status      float32       `json:"status"`
 	Summary     string        `json:"summary"`
 	Description *string       `json:"description,omitempty"`
 	Errors      []ErrorObject `json:"errors,omitempty"`
@@ -27,7 +27,7 @@ type Error struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewError(status int, summary string) *Error {
+func NewError(status float32, summary string) *Error {
 	this := Error{}
 	this.Status = status
 	this.Summary = summary
@@ -43,9 +43,9 @@ func NewErrorWithDefaults() *Error {
 }
 
 // GetStatus returns the Status field value
-func (o *Error) GetStatus() int {
+func (o *Error) GetStatus() float32 {
 	if o == nil {
-		var ret int
+		var ret float32
 		return ret
 	}
 
@@ -54,7 +54,7 @@ func (o *Error) GetStatus() int {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *Error) GetStatusOk() (*int, bool) {
+func (o *Error) GetStatusOk() (*float32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -62,7 +62,7 @@ func (o *Error) GetStatusOk() (*int, bool) {
 }
 
 // SetStatus sets field value
-func (o *Error) SetStatus(v int) {
+func (o *Error) SetStatus(v float32) {
 	o.Status = v
 }
 

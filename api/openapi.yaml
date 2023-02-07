@@ -4,11 +4,16 @@ info:
     email: mach@labdigital.nl
     name: MACH composer support
     url: https://docs.machcomposer.io/
-  description: "# Introduction\n\nMACH composer Cloud is a platform and API to facilitate\
-    \ and coordinate work\nacross teams that build composable architectures using\
-    \ MACH technology. \n\nAll operations available in MACH composer cloud are available\
-    \ through this\nAPI. For more information about using it in your MACH architecture,\
-    \ have a\nlook at the [documentation\nwebsite](https://docs.machcomposer.io/cloud/index.html).\n"
+  description: |
+    # Introduction
+
+    MACH composer Cloud is a platform and API to facilitate and coordinate work
+    across teams that build composable architectures using MACH technology.
+
+    All operations available in MACH composer cloud are available through this
+    API. For more information about using it in your MACH architecture, have a
+    look at the [documentation
+    website](https://docs.machcomposer.io/cloud/index.html).
   title: MACH composer Cloud (MCC) Public API
   version: 0.1.0
   x-logo:
@@ -18,122 +23,13 @@ servers:
 - description: Live environment
   url: https://api.mach.cloud
 security:
-- bearerAuth:
+- OAuth2:
   - api-client:read
   - api-client:write
   - component:read
   - component:write
   - component-version:write
 paths:
-  /authorize:
-    get:
-      operationId: Authorize
-      parameters:
-      - explode: true
-        in: query
-        name: response_type
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: scope
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: redirect_uri
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: state
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: client_id
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: code_challenge
-        required: true
-        schema:
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: code_challenge_method
-        required: true
-        schema:
-          example: S256
-          type: string
-        style: form
-      - explode: true
-        in: query
-        name: provider
-        required: false
-        schema:
-          type: string
-        style: form
-      responses:
-        "307":
-          description: OK
-      summary: Start authorization flow
-      tags:
-      - Auth
-    servers:
-    - description: Production server
-      url: https://auth.mach.cloud
-  /oauth/token:
-    post:
-      operationId: GetAuthToken
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenBody'
-        required: true
-      responses:
-        "200":
-          description: OK
-      security: []
-      summary: Return a new token
-      tags:
-      - Auth
-    servers:
-    - description: Production server
-      url: https://auth.mach.cloud
-  /oauth/introspect:
-    post:
-      operationId: IntrospectToken
-      parameters:
-      - explode: true
-        in: query
-        name: token
-        required: false
-        schema:
-          type: string
-        style: form
-      responses:
-        "200":
-          description: OK
-      summary: Introspect an existing token
-      tags:
-      - Auth
-    servers:
-    - description: Production server
-      url: https://auth.mach.cloud
   /account/me:
     get:
       operationId: MyAccountInformation
@@ -267,9 +163,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorForbidden'
           description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
       summary: List all users in an organization
       tags:
       - Account Management
+  /account/organizations/{organization}/users/invite:
     post:
       operationId: OrganizationUserInvite
       parameters:
@@ -288,6 +191,105 @@ paths:
             schema:
               $ref: '#/components/schemas/OrganizationUserInviteDraft'
         required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserInviteData'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Invite a user to the organization
+      tags:
+      - Account Management
+  /account/organizations/{organization}/users/invite/{id}:
+    get:
+      operationId: OrganizationUserInviteGet
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Invite ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUserInviteData'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: View invite information
+      tags:
+      - Account Management
+    post:
+      operationId: OrganizationUserInviteAccept
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Invite ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -313,7 +315,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
-      summary: Add user to an organization
+      summary: Accept a user invite
       tags:
       - Account Management
   /account/organizations/{organization}/projects:
@@ -444,9 +446,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorForbidden'
           description: Forbidden
-      security:
-      - bearerAuth:
-        - api-client:read
       summary: List all api clients
       tags:
       - API Clients
@@ -502,9 +501,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
-      security:
-      - bearerAuth:
-        - api-client:write
       summary: Create new api client
       tags:
       - API Clients
@@ -1006,7 +1002,7 @@ paths:
       - Components
 components:
   parameters:
-    organizationParam:
+    OrganizationParam:
       description: Organization Key
       explode: false
       in: path
@@ -1016,7 +1012,7 @@ components:
         example: my-organization
         type: string
       style: simple
-    projectParam:
+    ProjectParam:
       description: Project Key
       explode: false
       in: path
@@ -1073,24 +1069,6 @@ components:
             $ref: '#/components/schemas/ErrorForbidden'
       description: Forbidden
   schemas:
-    TokenBody:
-      properties:
-        grant_type:
-          type: string
-        client_id:
-          type: string
-        code_verifier:
-          type: string
-        code:
-          type: string
-        redirect_uri:
-          type: string
-        refresh_token:
-          type: string
-      required:
-      - client_id
-      - grant_type
-      type: object
     ErrorObject:
       properties:
         code:
@@ -1104,7 +1082,8 @@ components:
     Error:
       properties:
         status:
-          type: int
+          format: integer
+          type: number
         summary:
           type: string
         description:
@@ -1209,20 +1188,71 @@ components:
       - $ref: '#/components/schemas/OrganizationUserPaginator_allOf'
     OrganizationUserInviteDraft:
       example:
+        role: owner
+        project_key: project_key
         email: email
       properties:
         email:
           description: E-mail address of the user
+          format: email
+          type: string
+        project_key:
+          description: Key of the project to invite user to
+          type: string
+        role:
+          description: Role for the user
+          enum:
+          - owner
+          - member
+          - viewer
           type: string
       required:
       - email
       type: object
+    OrganizationUserInviteData:
+      example:
+        organization:
+          name: ACME Ltd.
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        created_by: John Doe
+      properties:
+        id:
+          format: uuid
+          type: string
+        created_by:
+          example: John Doe
+          type: string
+        organization:
+          $ref: '#/components/schemas/OrganizationUserInviteData_organization'
+      required:
+      - created_by
+      - id
+      - organization
+      type: object
     OrganizationUserInvite:
       example:
+        role: owner
+        project_key: project_key
+        created_by: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         email: email
       properties:
+        created_by:
+          format: uuid
+          type: string
         email:
           description: E-mail address of the user
+          format: email
+          type: string
+        project_key:
+          description: Key of the project to invite user to
+          type: string
+        role:
+          description: Role for the user
+          enum:
+          - owner
+          - member
+          - viewer
           type: string
       required:
       - email
@@ -1399,7 +1429,8 @@ components:
     ErrorForbidden:
       properties:
         status:
-          type: int
+          format: integer
+          type: number
         summary:
           type: string
         description:
@@ -1448,6 +1479,21 @@ components:
           type: array
       type: object
       example: null
+    OrganizationUserInviteData_organization:
+      example:
+        name: ACME Ltd.
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+        name:
+          example: ACME Ltd.
+          type: string
+      required:
+      - id
+      - name
+      type: object
     Project_allOf:
       properties:
         key:
@@ -1560,10 +1606,18 @@ components:
       type: object
       example: null
   securitySchemes:
-    bearerAuth:
-      bearerFormat: Opaque token
-      scheme: bearer
-      type: http
-    basicAuth:
-      scheme: basic
-      type: http
+    OAuth2:
+      flows:
+        authorizationCode:
+          authorizationUrl: http://localhost:3000
+          scopes:
+            api: Grants complete read/write access to the API
+          tokenUrl: http://localhost:3000/oauth/token
+          x-usePkce:
+            disableManualConfiguration: false
+            hideClientSecretInput: false
+        clientCredentials:
+          scopes:
+            api: Grants complete read/write access to the API
+          tokenUrl: http://localhost:3000/oauth/token
+      type: oauth2

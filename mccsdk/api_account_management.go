@@ -1,7 +1,7 @@
 /*
 MACH composer Cloud (MCC) Public API
 
-# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.   All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
+# Introduction  MACH composer Cloud is a platform and API to facilitate and coordinate work across teams that build composable architectures using MACH technology.  All operations available in MACH composer cloud are available through this API. For more information about using it in your MACH architecture, have a look at the [documentation website](https://docs.machcomposer.io/cloud/index.html).
 
 API version: 0.1.0
 Contact: mach@labdigital.nl
@@ -59,7 +59,7 @@ type AccountManagementApi interface {
 	OrganizationQueryExecute(r ApiOrganizationQueryRequest) (*OrganizationPaginator, *http.Response, error)
 
 	/*
-		OrganizationUserInvite Add user to an organization
+		OrganizationUserInvite Invite a user to the organization
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param organization Organization Key
@@ -68,8 +68,36 @@ type AccountManagementApi interface {
 	OrganizationUserInvite(ctx context.Context, organization string) ApiOrganizationUserInviteRequest
 
 	// OrganizationUserInviteExecute executes the request
+	//  @return OrganizationUserInviteData
+	OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInviteData, *http.Response, error)
+
+	/*
+		OrganizationUserInviteAccept Accept a user invite
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param id Invite ID
+		@return ApiOrganizationUserInviteAcceptRequest
+	*/
+	OrganizationUserInviteAccept(ctx context.Context, organization string, id string) ApiOrganizationUserInviteAcceptRequest
+
+	// OrganizationUserInviteAcceptExecute executes the request
 	//  @return OrganizationUserInvite
-	OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInvite, *http.Response, error)
+	OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInvite, *http.Response, error)
+
+	/*
+		OrganizationUserInviteGet View invite information
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param id Invite ID
+		@return ApiOrganizationUserInviteGetRequest
+	*/
+	OrganizationUserInviteGet(ctx context.Context, organization string, id string) ApiOrganizationUserInviteGetRequest
+
+	// OrganizationUserInviteGetExecute executes the request
+	//  @return OrganizationUserInviteData
+	OrganizationUserInviteGetExecute(r ApiOrganizationUserInviteGetRequest) (*OrganizationUserInviteData, *http.Response, error)
 
 	/*
 		OrganizationUserQuery List all users in an organization
@@ -508,12 +536,12 @@ func (r ApiOrganizationUserInviteRequest) OrganizationUserInviteDraft(organizati
 	return r
 }
 
-func (r ApiOrganizationUserInviteRequest) Execute() (*OrganizationUserInvite, *http.Response, error) {
+func (r ApiOrganizationUserInviteRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
 	return r.ApiService.OrganizationUserInviteExecute(r)
 }
 
 /*
-OrganizationUserInvite Add user to an organization
+OrganizationUserInvite Invite a user to the organization
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param organization Organization Key
@@ -529,13 +557,13 @@ func (a *AccountManagementApiService) OrganizationUserInvite(ctx context.Context
 
 // Execute executes the request
 //
-//	@return OrganizationUserInvite
-func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInvite, *http.Response, error) {
+//	@return OrganizationUserInviteData
+func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInviteData, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *OrganizationUserInvite
+		localVarReturnValue *OrganizationUserInviteData
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInvite")
@@ -543,7 +571,7 @@ func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganiz
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/users"
+	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -572,6 +600,272 @@ func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganiz
 	}
 	// body params
 	localVarPostBody = r.organizationUserInviteDraft
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiOrganizationUserInviteAcceptRequest struct {
+	ctx          context.Context
+	ApiService   AccountManagementApi
+	organization string
+	id           string
+}
+
+func (r ApiOrganizationUserInviteAcceptRequest) Execute() (*OrganizationUserInvite, *http.Response, error) {
+	return r.ApiService.OrganizationUserInviteAcceptExecute(r)
+}
+
+/*
+OrganizationUserInviteAccept Accept a user invite
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param id Invite ID
+	@return ApiOrganizationUserInviteAcceptRequest
+*/
+func (a *AccountManagementApiService) OrganizationUserInviteAccept(ctx context.Context, organization string, id string) ApiOrganizationUserInviteAcceptRequest {
+	return ApiOrganizationUserInviteAcceptRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		id:           id,
+	}
+}
+
+// Execute executes the request
+//
+//	@return OrganizationUserInvite
+func (a *AccountManagementApiService) OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInvite, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *OrganizationUserInvite
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInviteAccept")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiOrganizationUserInviteGetRequest struct {
+	ctx          context.Context
+	ApiService   AccountManagementApi
+	organization string
+	id           string
+}
+
+func (r ApiOrganizationUserInviteGetRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
+	return r.ApiService.OrganizationUserInviteGetExecute(r)
+}
+
+/*
+OrganizationUserInviteGet View invite information
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param id Invite ID
+	@return ApiOrganizationUserInviteGetRequest
+*/
+func (a *AccountManagementApiService) OrganizationUserInviteGet(ctx context.Context, organization string, id string) ApiOrganizationUserInviteGetRequest {
+	return ApiOrganizationUserInviteGetRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		id:           id,
+	}
+}
+
+// Execute executes the request
+//
+//	@return OrganizationUserInviteData
+func (a *AccountManagementApiService) OrganizationUserInviteGetExecute(r ApiOrganizationUserInviteGetRequest) (*OrganizationUserInviteData, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *OrganizationUserInviteData
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInviteGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite/{id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -741,7 +1035,15 @@ func (a *AccountManagementApiService) OrganizationUserQueryExecute(r ApiOrganiza
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
 			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
