@@ -38,7 +38,7 @@ type ComponentsApi interface {
 	ComponentCreateExecute(r ApiComponentCreateRequest) (*Component, *http.Response, error)
 
 	/*
-		ComponentLatestVersion Get last component version.
+		ComponentLatestVersion Get last component version
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param organization Organization Key
@@ -51,6 +51,21 @@ type ComponentsApi interface {
 	// ComponentLatestVersionExecute executes the request
 	//  @return ComponentVersion
 	ComponentLatestVersionExecute(r ApiComponentLatestVersionRequest) (*ComponentVersion, *http.Response, error)
+
+	/*
+		ComponentPatch Patch an existing component
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@return ApiComponentPatchRequest
+	*/
+	ComponentPatch(ctx context.Context, organization string, project string, component string) ApiComponentPatchRequest
+
+	// ComponentPatchExecute executes the request
+	//  @return Component
+	ComponentPatchExecute(r ApiComponentPatchRequest) (*Component, *http.Response, error)
 
 	/*
 		ComponentQuery List all components
@@ -80,6 +95,38 @@ type ComponentsApi interface {
 	// ComponentVersionCreateExecute executes the request
 	//  @return ComponentVersion
 	ComponentVersionCreateExecute(r ApiComponentVersionCreateRequest) (*ComponentVersion, *http.Response, error)
+
+	/*
+		ComponentVersionDelete Delete component version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@param version Version
+		@return ApiComponentVersionDeleteRequest
+	*/
+	ComponentVersionDelete(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionDeleteRequest
+
+	// ComponentVersionDeleteExecute executes the request
+	//  @return ComponentVersion
+	ComponentVersionDeleteExecute(r ApiComponentVersionDeleteRequest) (*ComponentVersion, *http.Response, error)
+
+	/*
+		ComponentVersionGet Get component version
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@param component Component key
+		@param version Version
+		@return ApiComponentVersionGetRequest
+	*/
+	ComponentVersionGet(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionGetRequest
+
+	// ComponentVersionGetExecute executes the request
+	//  @return ComponentVersion
+	ComponentVersionGetExecute(r ApiComponentVersionGetRequest) (*ComponentVersion, *http.Response, error)
 
 	/*
 		ComponentVersionPushCommits Push commits for this component version
@@ -181,7 +228,7 @@ func (a *ComponentsApiService) ComponentCreateExecute(r ApiComponentCreateReques
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 
@@ -294,7 +341,7 @@ func (r ApiComponentLatestVersionRequest) Execute() (*ComponentVersion, *http.Re
 }
 
 /*
-ComponentLatestVersion Get last component version.
+ComponentLatestVersion Get last component version
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param organization Organization Key
@@ -328,7 +375,7 @@ func (a *ComponentsApiService) ComponentLatestVersionExecute(r ApiComponentLates
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/latest"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/latest"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
@@ -422,6 +469,143 @@ func (a *ComponentsApiService) ComponentLatestVersionExecute(r ApiComponentLates
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiComponentPatchRequest struct {
+	ctx               context.Context
+	ApiService        ComponentsApi
+	organization      string
+	project           string
+	component         string
+	patchRequestInner *[]PatchRequestInner
+}
+
+func (r ApiComponentPatchRequest) PatchRequestInner(patchRequestInner []PatchRequestInner) ApiComponentPatchRequest {
+	r.patchRequestInner = &patchRequestInner
+	return r
+}
+
+func (r ApiComponentPatchRequest) Execute() (*Component, *http.Response, error) {
+	return r.ApiService.ComponentPatchExecute(r)
+}
+
+/*
+ComponentPatch Patch an existing component
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@return ApiComponentPatchRequest
+*/
+func (a *ComponentsApiService) ComponentPatch(ctx context.Context, organization string, project string, component string) ApiComponentPatchRequest {
+	return ApiComponentPatchRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Component
+func (a *ComponentsApiService) ComponentPatchExecute(r ApiComponentPatchRequest) (*Component, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Component
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentPatch")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json-patch+json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.patchRequestInner
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiComponentQueryRequest struct {
 	ctx          context.Context
 	ApiService   ComponentsApi
@@ -484,7 +668,7 @@ func (a *ComponentsApiService) ComponentQueryExecute(r ApiComponentQueryRequest)
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 
@@ -643,7 +827,7 @@ func (a *ComponentsApiService) ComponentVersionCreateExecute(r ApiComponentVersi
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
@@ -674,6 +858,288 @@ func (a *ComponentsApiService) ComponentVersionCreateExecute(r ApiComponentVersi
 	}
 	// body params
 	localVarPostBody = r.componentVersionDraft
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiComponentVersionDeleteRequest struct {
+	ctx          context.Context
+	ApiService   ComponentsApi
+	organization string
+	project      string
+	component    string
+	version      string
+}
+
+func (r ApiComponentVersionDeleteRequest) Execute() (*ComponentVersion, *http.Response, error) {
+	return r.ApiService.ComponentVersionDeleteExecute(r)
+}
+
+/*
+ComponentVersionDelete Delete component version
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@param version Version
+	@return ApiComponentVersionDeleteRequest
+*/
+func (a *ComponentsApiService) ComponentVersionDelete(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionDeleteRequest {
+	return ApiComponentVersionDeleteRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+		version:      version,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ComponentVersion
+func (a *ComponentsApiService) ComponentVersionDeleteExecute(r ApiComponentVersionDeleteRequest) (*ComponentVersion, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodDelete
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ComponentVersion
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentVersionDelete")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions/{version}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterToString(r.version, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		var v Error
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiComponentVersionGetRequest struct {
+	ctx          context.Context
+	ApiService   ComponentsApi
+	organization string
+	project      string
+	component    string
+	version      string
+}
+
+func (r ApiComponentVersionGetRequest) Execute() (*ComponentVersion, *http.Response, error) {
+	return r.ApiService.ComponentVersionGetExecute(r)
+}
+
+/*
+ComponentVersionGet Get component version
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@param component Component key
+	@param version Version
+	@return ApiComponentVersionGetRequest
+*/
+func (a *ComponentsApiService) ComponentVersionGet(ctx context.Context, organization string, project string, component string, version string) ApiComponentVersionGetRequest {
+	return ApiComponentVersionGetRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+		component:    component,
+		version:      version,
+	}
+}
+
+// Execute executes the request
+//
+//	@return ComponentVersion
+func (a *ComponentsApiService) ComponentVersionGetExecute(r ApiComponentVersionGetRequest) (*ComponentVersion, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ComponentVersion
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ComponentsApiService.ComponentVersionGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions/{version}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"version"+"}", url.PathEscape(parameterToString(r.version, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -791,7 +1257,7 @@ func (a *ComponentsApiService) ComponentVersionPushCommitsExecute(r ApiComponent
 		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
@@ -943,7 +1409,7 @@ func (a *ComponentsApiService) ComponentVersionQueryExecute(r ApiComponentVersio
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)
@@ -1118,7 +1584,7 @@ func (a *ComponentsApiService) ComponentVersionQueryCommitsExecute(r ApiComponen
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"component"+"}", url.PathEscape(parameterToString(r.component, "")), -1)

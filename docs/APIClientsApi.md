@@ -4,8 +4,8 @@ All URIs are relative to *https://api.mach.cloud*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ApiClientCreate**](APIClientsApi.md#ApiClientCreate) | **Post** /{organization}/projects/{project}/api-clients | Create new api client
-[**ApiClientQuery**](APIClientsApi.md#ApiClientQuery) | **Get** /{organization}/projects/{project}/api-clients | List all api clients
+[**ApiClientCreate**](APIClientsApi.md#ApiClientCreate) | **Post** /organizations/{organization}/projects/{project}/api-clients | Create new api client
+[**ApiClientQuery**](APIClientsApi.md#ApiClientQuery) | **Get** /organizations/{organization}/projects/{project}/api-clients | List all api clients
 
 
 

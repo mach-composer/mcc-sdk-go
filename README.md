@@ -88,24 +88,29 @@ All URIs are relative to *https://api.mach.cloud*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*APIClientsApi* | [**ApiClientCreate**](docs/APIClientsApi.md#apiclientcreate) | **Post** /{organization}/projects/{project}/api-clients | Create new api client
-*APIClientsApi* | [**ApiClientQuery**](docs/APIClientsApi.md#apiclientquery) | **Get** /{organization}/projects/{project}/api-clients | List all api clients
-*AccountManagementApi* | [**MyAccountInformation**](docs/AccountManagementApi.md#myaccountinformation) | **Get** /account/me | Return user information from current user
-*AccountManagementApi* | [**OrganizationCreate**](docs/AccountManagementApi.md#organizationcreate) | **Post** /account/organizations | Create new organization
-*AccountManagementApi* | [**OrganizationQuery**](docs/AccountManagementApi.md#organizationquery) | **Get** /account/organizations | List all organizations
-*AccountManagementApi* | [**OrganizationUserInvite**](docs/AccountManagementApi.md#organizationuserinvite) | **Post** /account/organizations/{organization}/users/invite | Invite a user to the organization
-*AccountManagementApi* | [**OrganizationUserInviteAccept**](docs/AccountManagementApi.md#organizationuserinviteaccept) | **Post** /account/organizations/{organization}/users/invite/{id} | Accept a user invite
-*AccountManagementApi* | [**OrganizationUserInviteGet**](docs/AccountManagementApi.md#organizationuserinviteget) | **Get** /account/organizations/{organization}/users/invite/{id} | View invite information
-*AccountManagementApi* | [**OrganizationUserQuery**](docs/AccountManagementApi.md#organizationuserquery) | **Get** /account/organizations/{organization}/users | List all users in an organization
-*AccountManagementApi* | [**ProjectCreate**](docs/AccountManagementApi.md#projectcreate) | **Post** /account/organizations/{organization}/projects | Create new project in an organization
-*AccountManagementApi* | [**ProjectQuery**](docs/AccountManagementApi.md#projectquery) | **Get** /account/organizations/{organization}/projects | List all projects in an organization
-*ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /{organization}/projects/{project}/components | Create component
-*ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
-*ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /{organization}/projects/{project}/components | List all components
-*ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /{organization}/projects/{project}/components/{component}/versions | Create component
-*ComponentsApi* | [**ComponentVersionPushCommits**](docs/ComponentsApi.md#componentversionpushcommits) | **Post** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
-*ComponentsApi* | [**ComponentVersionQuery**](docs/ComponentsApi.md#componentversionquery) | **Get** /{organization}/projects/{project}/components/{component}/versions | List all versions of a component
-*ComponentsApi* | [**ComponentVersionQueryCommits**](docs/ComponentsApi.md#componentversionquerycommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
+*APIClientsApi* | [**ApiClientCreate**](docs/APIClientsApi.md#apiclientcreate) | **Post** /organizations/{organization}/projects/{project}/api-clients | Create new api client
+*APIClientsApi* | [**ApiClientQuery**](docs/APIClientsApi.md#apiclientquery) | **Get** /organizations/{organization}/projects/{project}/api-clients | List all api clients
+*ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /organizations/{organization}/projects/{project}/components | Create component
+*ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /organizations/{organization}/projects/{project}/components/{component}/latest | Get last component version
+*ComponentsApi* | [**ComponentPatch**](docs/ComponentsApi.md#componentpatch) | **Patch** /organizations/{organization}/projects/{project}/components/{component} | Patch an existing component
+*ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /organizations/{organization}/projects/{project}/components | List all components
+*ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions | Create component
+*ComponentsApi* | [**ComponentVersionDelete**](docs/ComponentsApi.md#componentversiondelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Delete component version
+*ComponentsApi* | [**ComponentVersionGet**](docs/ComponentsApi.md#componentversionget) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Get component version
+*ComponentsApi* | [**ComponentVersionPushCommits**](docs/ComponentsApi.md#componentversionpushcommits) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
+*ComponentsApi* | [**ComponentVersionQuery**](docs/ComponentsApi.md#componentversionquery) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions | List all versions of a component
+*ComponentsApi* | [**ComponentVersionQueryCommits**](docs/ComponentsApi.md#componentversionquerycommits) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
+*MyAccountApi* | [**MyAccountInformation**](docs/MyAccountApi.md#myaccountinformation) | **Get** /account/me | Get user information
+*OrganizationManagementApi* | [**OrganizationCreate**](docs/OrganizationManagementApi.md#organizationcreate) | **Post** /organizations | Create new organization
+*OrganizationManagementApi* | [**OrganizationPatch**](docs/OrganizationManagementApi.md#organizationpatch) | **Patch** /organizations/{organization} | Update an organization
+*OrganizationManagementApi* | [**OrganizationQuery**](docs/OrganizationManagementApi.md#organizationquery) | **Get** /organizations | List all organizations
+*OrganizationManagementApi* | [**OrganizationUserInvite**](docs/OrganizationManagementApi.md#organizationuserinvite) | **Post** /organizations/{organization}/users/invite | Invite a user to the organization
+*OrganizationManagementApi* | [**OrganizationUserInviteAccept**](docs/OrganizationManagementApi.md#organizationuserinviteaccept) | **Post** /organizations/{organization}/users/invite/{id} | Accept a user invite
+*OrganizationManagementApi* | [**OrganizationUserInviteView**](docs/OrganizationManagementApi.md#organizationuserinviteview) | **Get** /organizations/{organization}/users/invite/{id} | View invite information
+*OrganizationManagementApi* | [**OrganizationUserQuery**](docs/OrganizationManagementApi.md#organizationuserquery) | **Get** /organizations/{organization}/users | List all users in an organization
+*OrganizationManagementApi* | [**ProjectCreate**](docs/OrganizationManagementApi.md#projectcreate) | **Post** /organizations/{organization}/projects | Create new project in an organization
+*OrganizationManagementApi* | [**ProjectPatch**](docs/OrganizationManagementApi.md#projectpatch) | **Patch** /organizations/{organization}/projects/{project} | Update a Project
+*OrganizationManagementApi* | [**ProjectQuery**](docs/OrganizationManagementApi.md#projectquery) | **Get** /organizations/{organization}/projects | List all projects in an organization
 
 
 ## Documentation For Models
@@ -137,6 +142,9 @@ Class | Method | HTTP request | Description
  - [ErrorForbidden](docs/ErrorForbidden.md)
  - [ErrorObject](docs/ErrorObject.md)
  - [ErrorUnauthorized](docs/ErrorUnauthorized.md)
+ - [JSONPatchRequestAddReplaceTest](docs/JSONPatchRequestAddReplaceTest.md)
+ - [JSONPatchRequestMoveCopy](docs/JSONPatchRequestMoveCopy.md)
+ - [JSONPatchRequestRemove](docs/JSONPatchRequestRemove.md)
  - [MyAccountInformation200Response](docs/MyAccountInformation200Response.md)
  - [Organization](docs/Organization.md)
  - [OrganizationAllOf](docs/OrganizationAllOf.md)
@@ -152,6 +160,7 @@ Class | Method | HTTP request | Description
  - [OrganizationUserPaginatorAllOf](docs/OrganizationUserPaginatorAllOf.md)
  - [OrganizationUserProjectsInner](docs/OrganizationUserProjectsInner.md)
  - [Paginator](docs/Paginator.md)
+ - [PatchRequestInner](docs/PatchRequestInner.md)
  - [Project](docs/Project.md)
  - [ProjectAllOf](docs/ProjectAllOf.md)
  - [ProjectDraft](docs/ProjectDraft.md)

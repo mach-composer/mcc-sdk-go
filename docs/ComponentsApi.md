@@ -4,13 +4,16 @@ All URIs are relative to *https://api.mach.cloud*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ComponentCreate**](ComponentsApi.md#ComponentCreate) | **Post** /{organization}/projects/{project}/components | Create component
-[**ComponentLatestVersion**](ComponentsApi.md#ComponentLatestVersion) | **Get** /{organization}/projects/{project}/components/{component}/latest | Get last component version.
-[**ComponentQuery**](ComponentsApi.md#ComponentQuery) | **Get** /{organization}/projects/{project}/components | List all components
-[**ComponentVersionCreate**](ComponentsApi.md#ComponentVersionCreate) | **Post** /{organization}/projects/{project}/components/{component}/versions | Create component
-[**ComponentVersionPushCommits**](ComponentsApi.md#ComponentVersionPushCommits) | **Post** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
-[**ComponentVersionQuery**](ComponentsApi.md#ComponentVersionQuery) | **Get** /{organization}/projects/{project}/components/{component}/versions | List all versions of a component
-[**ComponentVersionQueryCommits**](ComponentsApi.md#ComponentVersionQueryCommits) | **Get** /{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
+[**ComponentCreate**](ComponentsApi.md#ComponentCreate) | **Post** /organizations/{organization}/projects/{project}/components | Create component
+[**ComponentLatestVersion**](ComponentsApi.md#ComponentLatestVersion) | **Get** /organizations/{organization}/projects/{project}/components/{component}/latest | Get last component version
+[**ComponentPatch**](ComponentsApi.md#ComponentPatch) | **Patch** /organizations/{organization}/projects/{project}/components/{component} | Patch an existing component
+[**ComponentQuery**](ComponentsApi.md#ComponentQuery) | **Get** /organizations/{organization}/projects/{project}/components | List all components
+[**ComponentVersionCreate**](ComponentsApi.md#ComponentVersionCreate) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions | Create component
+[**ComponentVersionDelete**](ComponentsApi.md#ComponentVersionDelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Delete component version
+[**ComponentVersionGet**](ComponentsApi.md#ComponentVersionGet) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Get component version
+[**ComponentVersionPushCommits**](ComponentsApi.md#ComponentVersionPushCommits) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
+[**ComponentVersionQuery**](ComponentsApi.md#ComponentVersionQuery) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions | List all versions of a component
+[**ComponentVersionQueryCommits**](ComponentsApi.md#ComponentVersionQueryCommits) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
 
 
 
@@ -91,7 +94,7 @@ Name | Type | Description  | Notes
 
 > ComponentVersion ComponentLatestVersion(ctx, organization, project, component).Branch(branch).Execute()
 
-Get last component version.
+Get last component version
 
 ### Example
 
@@ -156,6 +159,82 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentPatch
+
+> Component ComponentPatch(ctx, organization, project, component).PatchRequestInner(patchRequestInner).Execute()
+
+Patch an existing component
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+    component := "component_example" // string | Component key
+    patchRequestInner := []openapiclient.PatchRequestInner{openapiclient.PatchRequest_inner{JSONPatchRequestAddReplaceTest: openapiclient.NewJSONPatchRequestAddReplaceTest("Path_example", interface{}(123), "Op_example")}} // []PatchRequestInner |  (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.ComponentsApi.ComponentPatch(context.Background(), organization, project, component).PatchRequestInner(patchRequestInner).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentPatch``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ComponentPatch`: Component
+    fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentPatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+**component** | **string** | Component key | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentPatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **patchRequestInner** | [**[]PatchRequestInner**](PatchRequestInner.md) |  | 
+
+### Return type
+
+[**Component**](Component.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: application/json-patch+json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -309,6 +388,160 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionDelete
+
+> ComponentVersion ComponentVersionDelete(ctx, organization, project, component, version).Execute()
+
+Delete component version
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+    component := "component_example" // string | Component key
+    version := "version_example" // string | Version
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.ComponentsApi.ComponentVersionDelete(context.Background(), organization, project, component, version).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionDelete``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ComponentVersionDelete`: ComponentVersion
+    fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+**component** | **string** | Component key | 
+**version** | **string** | Version | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+### Return type
+
+[**ComponentVersion**](ComponentVersion.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionGet
+
+> ComponentVersion ComponentVersionGet(ctx, organization, project, component, version).Execute()
+
+Get component version
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+    component := "component_example" // string | Component key
+    version := "version_example" // string | Version
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.ComponentsApi.ComponentVersionGet(context.Background(), organization, project, component, version).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionGet``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ComponentVersionGet`: ComponentVersion
+    fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+**component** | **string** | Component key | 
+**version** | **string** | Version | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+### Return type
+
+[**ComponentVersion**](ComponentVersion.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

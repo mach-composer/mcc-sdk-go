@@ -14,6 +14,10 @@ info:
     API. For more information about using it in your MACH architecture, have a
     look at the [documentation
     website](https://docs.machcomposer.io/cloud/index.html).
+  license:
+    name: Private
+    url: https://www.labdigital.nl/general-terms-and-conditions/
+  termsOfService: https://www.labdigital.nl/general-terms-and-conditions/
   title: MACH composer Cloud (MCC) Public API
   version: 0.1.0
   x-logo:
@@ -32,6 +36,7 @@ security:
 paths:
   /account/me:
     get:
+      description: Return user information from current user
       operationId: MyAccountInformation
       responses:
         "200":
@@ -58,10 +63,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorForbidden'
           description: Forbidden
-      summary: Return user information from current user
+      summary: Get user information
       tags:
-      - Account Management
-  /account/organizations:
+      - My Account
+  /organizations:
     get:
       operationId: OrganizationQuery
       responses:
@@ -85,7 +90,7 @@ paths:
           description: Forbidden
       summary: List all organizations
       tags:
-      - Account Management
+      - Organization Management
     post:
       operationId: OrganizationCreate
       requestBody:
@@ -130,8 +135,52 @@ paths:
           description: Forbidden
       summary: Create new organization
       tags:
-      - Account Management
-  /account/organizations/{organization}/users:
+      - Organization Management
+  /organizations/{organization}:
+    patch:
+      operationId: OrganizationPatch
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+            - op: replace
+              path: /name
+              value: New Organization Name
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Update an organization
+      tags:
+      - Organization Management
+  /organizations/{organization}/users:
     get:
       operationId: OrganizationUserQuery
       parameters:
@@ -171,8 +220,8 @@ paths:
           description: Invalid request
       summary: List all users in an organization
       tags:
-      - Account Management
-  /account/organizations/{organization}/users/invite:
+      - Organization Management
+  /organizations/{organization}/users/invite:
     post:
       operationId: OrganizationUserInvite
       parameters:
@@ -196,7 +245,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrganizationUserInviteData'
+                $ref: '#/components/schemas/OrganizationUserInvite'
           description: OK
         "401":
           content:
@@ -218,10 +267,10 @@ paths:
           description: Invalid request
       summary: Invite a user to the organization
       tags:
-      - Account Management
-  /account/organizations/{organization}/users/invite/{id}:
+      - Organization Management
+  /organizations/{organization}/users/invite/{id}:
     get:
-      operationId: OrganizationUserInviteGet
+      operationId: OrganizationUserInviteView
       parameters:
       - description: Organization Key
         explode: false
@@ -266,9 +315,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
+      security: []
       summary: View invite information
       tags:
-      - Account Management
+      - Organization Management
     post:
       operationId: OrganizationUserInviteAccept
       parameters:
@@ -295,7 +345,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrganizationUserInvite'
+                $ref: '#/components/schemas/OrganizationUserInviteData'
           description: OK
         "401":
           content:
@@ -317,8 +367,8 @@ paths:
           description: Invalid request
       summary: Accept a user invite
       tags:
-      - Account Management
-  /account/organizations/{organization}/projects:
+      - Organization Management
+  /organizations/{organization}/projects:
     get:
       operationId: ProjectQuery
       parameters:
@@ -352,7 +402,7 @@ paths:
           description: Forbidden
       summary: List all projects in an organization
       tags:
-      - Account Management
+      - Organization Management
     post:
       operationId: ProjectCreate
       parameters:
@@ -404,8 +454,61 @@ paths:
           description: Invalid request
       summary: Create new project in an organization
       tags:
-      - Account Management
-  /{organization}/projects/{project}/api-clients:
+      - Organization Management
+  /organizations/{organization}/projects/{project}:
+    patch:
+      operationId: ProjectPatch
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+            - op: replace
+              path: /name
+              value: New Project Name
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Update a Project
+      tags:
+      - Organization Management
+  /organizations/{organization}/projects/{project}/api-clients:
     get:
       operationId: ApiClientQuery
       parameters:
@@ -504,7 +607,7 @@ paths:
       summary: Create new api client
       tags:
       - API Clients
-  /{organization}/projects/{project}/components:
+  /organizations/{organization}/projects/{project}/components:
     get:
       operationId: ComponentQuery
       parameters:
@@ -633,7 +736,68 @@ paths:
       summary: Create component
       tags:
       - Components
-  /{organization}/projects/{project}/components/{component}/latest:
+  /organizations/{organization}/projects/{project}/components/{component}:
+    patch:
+      operationId: ComponentPatch
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+            - op: replace
+              path: /key
+              value: foobar
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Patch an existing component
+      tags:
+      - Components
+  /organizations/{organization}/projects/{project}/components/{component}/latest:
     get:
       operationId: ComponentLatestVersion
       parameters:
@@ -695,10 +859,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
-      summary: Get last component version.
+      summary: Get last component version
       tags:
       - Components
-  /{organization}/projects/{project}/components/{component}/versions:
+  /organizations/{organization}/projects/{project}/components/{component}/versions:
     get:
       operationId: ComponentVersionQuery
       parameters:
@@ -843,7 +1007,138 @@ paths:
       summary: Create component
       tags:
       - Components
-  /{organization}/projects/{project}/components/{component}/versions/{version}/commits:
+  /organizations/{organization}/projects/{project}/components/{component}/versions/{version}:
+    delete:
+      operationId: ComponentVersionDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Version
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersion'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Delete component version
+      tags:
+      - Components
+    get:
+      operationId: ComponentVersionGet
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Version
+        explode: false
+        in: path
+        name: version
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentVersion'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Get component version
+      tags:
+      - Components
+  /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits:
     get:
       operationId: ComponentVersionQueryCommits
       parameters:
@@ -1148,6 +1443,63 @@ components:
       - key
       - name
       type: object
+    JSONPatchRequestAddReplaceTest:
+      additionalProperties: false
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        value:
+          description: "The value to add, replace or test."
+        op:
+          description: The operation to perform.
+          enum:
+          - add
+          - replace
+          - test
+          type: string
+      required:
+      - op
+      - path
+      - value
+      type: object
+    JSONPatchRequestRemove:
+      additionalProperties: false
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        op:
+          description: The operation to perform.
+          enum:
+          - remove
+          type: string
+      required:
+      - op
+      - path
+      type: object
+    JSONPatchRequestMoveCopy:
+      additionalProperties: false
+      properties:
+        path:
+          description: A JSON Pointer path.
+          type: string
+        op:
+          description: The operation to perform.
+          enum:
+          - move
+          - copy
+          type: string
+      required:
+      - from
+      - op
+      - path
+      type: object
+    PatchRequest:
+      description: JSON Patch is specified in RFC 6902 from the IETF.
+      items:
+        $ref: '#/components/schemas/PatchRequest_inner'
+      type: array
     OrganizationUser:
       properties:
         client_id:
@@ -1209,27 +1561,6 @@ components:
       required:
       - email
       type: object
-    OrganizationUserInviteData:
-      example:
-        organization:
-          name: ACME Ltd.
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        created_by: John Doe
-      properties:
-        id:
-          format: uuid
-          type: string
-        created_by:
-          example: John Doe
-          type: string
-        organization:
-          $ref: '#/components/schemas/OrganizationUserInviteData_organization'
-      required:
-      - created_by
-      - id
-      - organization
-      type: object
     OrganizationUserInvite:
       example:
         role: owner
@@ -1256,6 +1587,27 @@ components:
           type: string
       required:
       - email
+      type: object
+    OrganizationUserInviteData:
+      example:
+        organization:
+          name: ACME Ltd.
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        created_by: John Doe
+      properties:
+        id:
+          format: uuid
+          type: string
+        created_by:
+          example: John Doe
+          type: string
+        organization:
+          $ref: '#/components/schemas/OrganizationUserInviteData_organization'
+      required:
+      - created_by
+      - id
+      - organization
       type: object
     Project:
       allOf:
@@ -1460,6 +1812,11 @@ components:
           type: array
       type: object
       example: null
+    PatchRequest_inner:
+      oneOf:
+      - $ref: '#/components/schemas/JSONPatchRequestAddReplaceTest'
+      - $ref: '#/components/schemas/JSONPatchRequestRemove'
+      - $ref: '#/components/schemas/JSONPatchRequestMoveCopy'
     OrganizationUser_projects_inner:
       properties:
         name:

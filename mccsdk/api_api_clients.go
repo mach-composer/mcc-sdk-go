@@ -104,7 +104,7 @@ func (a *APIClientsApiService) ApiClientCreateExecute(r ApiApiClientCreateReques
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/api-clients"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/api-clients"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 
@@ -242,7 +242,7 @@ func (a *APIClientsApiService) ApiClientQueryExecute(r ApiApiClientQueryRequest)
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/{organization}/projects/{project}/api-clients"
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}/api-clients"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
 

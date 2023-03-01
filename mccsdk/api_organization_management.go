@@ -20,19 +20,7 @@ import (
 	"strings"
 )
 
-type AccountManagementApi interface {
-
-	/*
-		MyAccountInformation Return user information from current user
-
-		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-		@return ApiMyAccountInformationRequest
-	*/
-	MyAccountInformation(ctx context.Context) ApiMyAccountInformationRequest
-
-	// MyAccountInformationExecute executes the request
-	//  @return MyAccountInformation200Response
-	MyAccountInformationExecute(r ApiMyAccountInformationRequest) (*MyAccountInformation200Response, *http.Response, error)
+type OrganizationManagementApi interface {
 
 	/*
 		OrganizationCreate Create new organization
@@ -45,6 +33,19 @@ type AccountManagementApi interface {
 	// OrganizationCreateExecute executes the request
 	//  @return Organization
 	OrganizationCreateExecute(r ApiOrganizationCreateRequest) (*Organization, *http.Response, error)
+
+	/*
+		OrganizationPatch Update an organization
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@return ApiOrganizationPatchRequest
+	*/
+	OrganizationPatch(ctx context.Context, organization string) ApiOrganizationPatchRequest
+
+	// OrganizationPatchExecute executes the request
+	//  @return Organization
+	OrganizationPatchExecute(r ApiOrganizationPatchRequest) (*Organization, *http.Response, error)
 
 	/*
 		OrganizationQuery List all organizations
@@ -68,8 +69,8 @@ type AccountManagementApi interface {
 	OrganizationUserInvite(ctx context.Context, organization string) ApiOrganizationUserInviteRequest
 
 	// OrganizationUserInviteExecute executes the request
-	//  @return OrganizationUserInviteData
-	OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInviteData, *http.Response, error)
+	//  @return OrganizationUserInvite
+	OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInvite, *http.Response, error)
 
 	/*
 		OrganizationUserInviteAccept Accept a user invite
@@ -82,22 +83,22 @@ type AccountManagementApi interface {
 	OrganizationUserInviteAccept(ctx context.Context, organization string, id string) ApiOrganizationUserInviteAcceptRequest
 
 	// OrganizationUserInviteAcceptExecute executes the request
-	//  @return OrganizationUserInvite
-	OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInvite, *http.Response, error)
+	//  @return OrganizationUserInviteData
+	OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInviteData, *http.Response, error)
 
 	/*
-		OrganizationUserInviteGet View invite information
+		OrganizationUserInviteView View invite information
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 		@param organization Organization Key
 		@param id Invite ID
-		@return ApiOrganizationUserInviteGetRequest
+		@return ApiOrganizationUserInviteViewRequest
 	*/
-	OrganizationUserInviteGet(ctx context.Context, organization string, id string) ApiOrganizationUserInviteGetRequest
+	OrganizationUserInviteView(ctx context.Context, organization string, id string) ApiOrganizationUserInviteViewRequest
 
-	// OrganizationUserInviteGetExecute executes the request
+	// OrganizationUserInviteViewExecute executes the request
 	//  @return OrganizationUserInviteData
-	OrganizationUserInviteGetExecute(r ApiOrganizationUserInviteGetRequest) (*OrganizationUserInviteData, *http.Response, error)
+	OrganizationUserInviteViewExecute(r ApiOrganizationUserInviteViewRequest) (*OrganizationUserInviteData, *http.Response, error)
 
 	/*
 		OrganizationUserQuery List all users in an organization
@@ -126,6 +127,20 @@ type AccountManagementApi interface {
 	ProjectCreateExecute(r ApiProjectCreateRequest) (*Project, *http.Response, error)
 
 	/*
+		ProjectPatch Update a Project
+
+		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+		@param organization Organization Key
+		@param project Project Key
+		@return ApiProjectPatchRequest
+	*/
+	ProjectPatch(ctx context.Context, organization string, project string) ApiProjectPatchRequest
+
+	// ProjectPatchExecute executes the request
+	//  @return Project
+	ProjectPatchExecute(r ApiProjectPatchRequest) (*Project, *http.Response, error)
+
+	/*
 		ProjectQuery List all projects in an organization
 
 		@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -139,139 +154,12 @@ type AccountManagementApi interface {
 	ProjectQueryExecute(r ApiProjectQueryRequest) (*ProjectPaginator, *http.Response, error)
 }
 
-// AccountManagementApiService AccountManagementApi service
-type AccountManagementApiService service
-
-type ApiMyAccountInformationRequest struct {
-	ctx        context.Context
-	ApiService AccountManagementApi
-}
-
-func (r ApiMyAccountInformationRequest) Execute() (*MyAccountInformation200Response, *http.Response, error) {
-	return r.ApiService.MyAccountInformationExecute(r)
-}
-
-/*
-MyAccountInformation Return user information from current user
-
-	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-	@return ApiMyAccountInformationRequest
-*/
-func (a *AccountManagementApiService) MyAccountInformation(ctx context.Context) ApiMyAccountInformationRequest {
-	return ApiMyAccountInformationRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-// Execute executes the request
-//
-//	@return MyAccountInformation200Response
-func (a *AccountManagementApiService) MyAccountInformationExecute(r ApiMyAccountInformationRequest) (*MyAccountInformation200Response, *http.Response, error) {
-	var (
-		localVarHTTPMethod  = http.MethodGet
-		localVarPostBody    interface{}
-		formFiles           []formFile
-		localVarReturnValue *MyAccountInformation200Response
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.MyAccountInformation")
-	if err != nil {
-		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/account/me"
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v Error
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 401 {
-			var v ErrorUnauthorized
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 403 {
-			var v ErrorForbidden
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := &GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
+// OrganizationManagementApiService OrganizationManagementApi service
+type OrganizationManagementApiService service
 
 type ApiOrganizationCreateRequest struct {
 	ctx               context.Context
-	ApiService        AccountManagementApi
+	ApiService        OrganizationManagementApi
 	organizationDraft *OrganizationDraft
 }
 
@@ -290,7 +178,7 @@ OrganizationCreate Create new organization
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiOrganizationCreateRequest
 */
-func (a *AccountManagementApiService) OrganizationCreate(ctx context.Context) ApiOrganizationCreateRequest {
+func (a *OrganizationManagementApiService) OrganizationCreate(ctx context.Context) ApiOrganizationCreateRequest {
 	return ApiOrganizationCreateRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -300,7 +188,7 @@ func (a *AccountManagementApiService) OrganizationCreate(ctx context.Context) Ap
 // Execute executes the request
 //
 //	@return Organization
-func (a *AccountManagementApiService) OrganizationCreateExecute(r ApiOrganizationCreateRequest) (*Organization, *http.Response, error) {
+func (a *OrganizationManagementApiService) OrganizationCreateExecute(r ApiOrganizationCreateRequest) (*Organization, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -308,12 +196,12 @@ func (a *AccountManagementApiService) OrganizationCreateExecute(r ApiOrganizatio
 		localVarReturnValue *Organization
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations"
+	localVarPath := localBasePath + "/organizations"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -407,9 +295,138 @@ func (a *AccountManagementApiService) OrganizationCreateExecute(r ApiOrganizatio
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiOrganizationPatchRequest struct {
+	ctx               context.Context
+	ApiService        OrganizationManagementApi
+	organization      string
+	patchRequestInner *[]PatchRequestInner
+}
+
+func (r ApiOrganizationPatchRequest) PatchRequestInner(patchRequestInner []PatchRequestInner) ApiOrganizationPatchRequest {
+	r.patchRequestInner = &patchRequestInner
+	return r
+}
+
+func (r ApiOrganizationPatchRequest) Execute() (*Organization, *http.Response, error) {
+	return r.ApiService.OrganizationPatchExecute(r)
+}
+
+/*
+OrganizationPatch Update an organization
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@return ApiOrganizationPatchRequest
+*/
+func (a *OrganizationManagementApiService) OrganizationPatch(ctx context.Context, organization string) ApiOrganizationPatchRequest {
+	return ApiOrganizationPatchRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Organization
+func (a *OrganizationManagementApiService) OrganizationPatchExecute(r ApiOrganizationPatchRequest) (*Organization, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Organization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationPatch")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/organizations/{organization}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json-patch+json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.patchRequestInner
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiOrganizationQueryRequest struct {
 	ctx        context.Context
-	ApiService AccountManagementApi
+	ApiService OrganizationManagementApi
 }
 
 func (r ApiOrganizationQueryRequest) Execute() (*OrganizationPaginator, *http.Response, error) {
@@ -422,7 +439,7 @@ OrganizationQuery List all organizations
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@return ApiOrganizationQueryRequest
 */
-func (a *AccountManagementApiService) OrganizationQuery(ctx context.Context) ApiOrganizationQueryRequest {
+func (a *OrganizationManagementApiService) OrganizationQuery(ctx context.Context) ApiOrganizationQueryRequest {
 	return ApiOrganizationQueryRequest{
 		ApiService: a,
 		ctx:        ctx,
@@ -432,7 +449,7 @@ func (a *AccountManagementApiService) OrganizationQuery(ctx context.Context) Api
 // Execute executes the request
 //
 //	@return OrganizationPaginator
-func (a *AccountManagementApiService) OrganizationQueryExecute(r ApiOrganizationQueryRequest) (*OrganizationPaginator, *http.Response, error) {
+func (a *OrganizationManagementApiService) OrganizationQueryExecute(r ApiOrganizationQueryRequest) (*OrganizationPaginator, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -440,12 +457,12 @@ func (a *AccountManagementApiService) OrganizationQueryExecute(r ApiOrganization
 		localVarReturnValue *OrganizationPaginator
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationQuery")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationQuery")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations"
+	localVarPath := localBasePath + "/organizations"
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
@@ -526,7 +543,7 @@ func (a *AccountManagementApiService) OrganizationQueryExecute(r ApiOrganization
 
 type ApiOrganizationUserInviteRequest struct {
 	ctx                         context.Context
-	ApiService                  AccountManagementApi
+	ApiService                  OrganizationManagementApi
 	organization                string
 	organizationUserInviteDraft *OrganizationUserInviteDraft
 }
@@ -536,7 +553,7 @@ func (r ApiOrganizationUserInviteRequest) OrganizationUserInviteDraft(organizati
 	return r
 }
 
-func (r ApiOrganizationUserInviteRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
+func (r ApiOrganizationUserInviteRequest) Execute() (*OrganizationUserInvite, *http.Response, error) {
 	return r.ApiService.OrganizationUserInviteExecute(r)
 }
 
@@ -547,7 +564,7 @@ OrganizationUserInvite Invite a user to the organization
 	@param organization Organization Key
 	@return ApiOrganizationUserInviteRequest
 */
-func (a *AccountManagementApiService) OrganizationUserInvite(ctx context.Context, organization string) ApiOrganizationUserInviteRequest {
+func (a *OrganizationManagementApiService) OrganizationUserInvite(ctx context.Context, organization string) ApiOrganizationUserInviteRequest {
 	return ApiOrganizationUserInviteRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -557,21 +574,21 @@ func (a *AccountManagementApiService) OrganizationUserInvite(ctx context.Context
 
 // Execute executes the request
 //
-//	@return OrganizationUserInviteData
-func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInviteData, *http.Response, error) {
+//	@return OrganizationUserInvite
+func (a *OrganizationManagementApiService) OrganizationUserInviteExecute(r ApiOrganizationUserInviteRequest) (*OrganizationUserInvite, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *OrganizationUserInviteData
+		localVarReturnValue *OrganizationUserInvite
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInvite")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationUserInvite")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite"
+	localVarPath := localBasePath + "/organizations/{organization}/users/invite"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -666,12 +683,12 @@ func (a *AccountManagementApiService) OrganizationUserInviteExecute(r ApiOrganiz
 
 type ApiOrganizationUserInviteAcceptRequest struct {
 	ctx          context.Context
-	ApiService   AccountManagementApi
+	ApiService   OrganizationManagementApi
 	organization string
 	id           string
 }
 
-func (r ApiOrganizationUserInviteAcceptRequest) Execute() (*OrganizationUserInvite, *http.Response, error) {
+func (r ApiOrganizationUserInviteAcceptRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
 	return r.ApiService.OrganizationUserInviteAcceptExecute(r)
 }
 
@@ -683,7 +700,7 @@ OrganizationUserInviteAccept Accept a user invite
 	@param id Invite ID
 	@return ApiOrganizationUserInviteAcceptRequest
 */
-func (a *AccountManagementApiService) OrganizationUserInviteAccept(ctx context.Context, organization string, id string) ApiOrganizationUserInviteAcceptRequest {
+func (a *OrganizationManagementApiService) OrganizationUserInviteAccept(ctx context.Context, organization string, id string) ApiOrganizationUserInviteAcceptRequest {
 	return ApiOrganizationUserInviteAcceptRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -694,21 +711,21 @@ func (a *AccountManagementApiService) OrganizationUserInviteAccept(ctx context.C
 
 // Execute executes the request
 //
-//	@return OrganizationUserInvite
-func (a *AccountManagementApiService) OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInvite, *http.Response, error) {
+//	@return OrganizationUserInviteData
+func (a *OrganizationManagementApiService) OrganizationUserInviteAcceptExecute(r ApiOrganizationUserInviteAcceptRequest) (*OrganizationUserInviteData, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
-		localVarReturnValue *OrganizationUserInvite
+		localVarReturnValue *OrganizationUserInviteData
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInviteAccept")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationUserInviteAccept")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite/{id}"
+	localVarPath := localBasePath + "/organizations/{organization}/users/invite/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
 
@@ -797,27 +814,27 @@ func (a *AccountManagementApiService) OrganizationUserInviteAcceptExecute(r ApiO
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiOrganizationUserInviteGetRequest struct {
+type ApiOrganizationUserInviteViewRequest struct {
 	ctx          context.Context
-	ApiService   AccountManagementApi
+	ApiService   OrganizationManagementApi
 	organization string
 	id           string
 }
 
-func (r ApiOrganizationUserInviteGetRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
-	return r.ApiService.OrganizationUserInviteGetExecute(r)
+func (r ApiOrganizationUserInviteViewRequest) Execute() (*OrganizationUserInviteData, *http.Response, error) {
+	return r.ApiService.OrganizationUserInviteViewExecute(r)
 }
 
 /*
-OrganizationUserInviteGet View invite information
+OrganizationUserInviteView View invite information
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param organization Organization Key
 	@param id Invite ID
-	@return ApiOrganizationUserInviteGetRequest
+	@return ApiOrganizationUserInviteViewRequest
 */
-func (a *AccountManagementApiService) OrganizationUserInviteGet(ctx context.Context, organization string, id string) ApiOrganizationUserInviteGetRequest {
-	return ApiOrganizationUserInviteGetRequest{
+func (a *OrganizationManagementApiService) OrganizationUserInviteView(ctx context.Context, organization string, id string) ApiOrganizationUserInviteViewRequest {
+	return ApiOrganizationUserInviteViewRequest{
 		ApiService:   a,
 		ctx:          ctx,
 		organization: organization,
@@ -828,7 +845,7 @@ func (a *AccountManagementApiService) OrganizationUserInviteGet(ctx context.Cont
 // Execute executes the request
 //
 //	@return OrganizationUserInviteData
-func (a *AccountManagementApiService) OrganizationUserInviteGetExecute(r ApiOrganizationUserInviteGetRequest) (*OrganizationUserInviteData, *http.Response, error) {
+func (a *OrganizationManagementApiService) OrganizationUserInviteViewExecute(r ApiOrganizationUserInviteViewRequest) (*OrganizationUserInviteData, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -836,12 +853,12 @@ func (a *AccountManagementApiService) OrganizationUserInviteGetExecute(r ApiOrga
 		localVarReturnValue *OrganizationUserInviteData
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserInviteGet")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationUserInviteView")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/users/invite/{id}"
+	localVarPath := localBasePath + "/organizations/{organization}/users/invite/{id}"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 	localVarPath = strings.Replace(localVarPath, "{"+"id"+"}", url.PathEscape(parameterToString(r.id, "")), -1)
 
@@ -932,7 +949,7 @@ func (a *AccountManagementApiService) OrganizationUserInviteGetExecute(r ApiOrga
 
 type ApiOrganizationUserQueryRequest struct {
 	ctx          context.Context
-	ApiService   AccountManagementApi
+	ApiService   OrganizationManagementApi
 	organization string
 }
 
@@ -947,7 +964,7 @@ OrganizationUserQuery List all users in an organization
 	@param organization Organization Key
 	@return ApiOrganizationUserQueryRequest
 */
-func (a *AccountManagementApiService) OrganizationUserQuery(ctx context.Context, organization string) ApiOrganizationUserQueryRequest {
+func (a *OrganizationManagementApiService) OrganizationUserQuery(ctx context.Context, organization string) ApiOrganizationUserQueryRequest {
 	return ApiOrganizationUserQueryRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -958,7 +975,7 @@ func (a *AccountManagementApiService) OrganizationUserQuery(ctx context.Context,
 // Execute executes the request
 //
 //	@return OrganizationUserPaginator
-func (a *AccountManagementApiService) OrganizationUserQueryExecute(r ApiOrganizationUserQueryRequest) (*OrganizationUserPaginator, *http.Response, error) {
+func (a *OrganizationManagementApiService) OrganizationUserQueryExecute(r ApiOrganizationUserQueryRequest) (*OrganizationUserPaginator, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -966,12 +983,12 @@ func (a *AccountManagementApiService) OrganizationUserQueryExecute(r ApiOrganiza
 		localVarReturnValue *OrganizationUserPaginator
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.OrganizationUserQuery")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.OrganizationUserQuery")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/users"
+	localVarPath := localBasePath + "/organizations/{organization}/users"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1061,7 +1078,7 @@ func (a *AccountManagementApiService) OrganizationUserQueryExecute(r ApiOrganiza
 
 type ApiProjectCreateRequest struct {
 	ctx          context.Context
-	ApiService   AccountManagementApi
+	ApiService   OrganizationManagementApi
 	organization string
 	projectDraft *ProjectDraft
 }
@@ -1082,7 +1099,7 @@ ProjectCreate Create new project in an organization
 	@param organization Organization Key
 	@return ApiProjectCreateRequest
 */
-func (a *AccountManagementApiService) ProjectCreate(ctx context.Context, organization string) ApiProjectCreateRequest {
+func (a *OrganizationManagementApiService) ProjectCreate(ctx context.Context, organization string) ApiProjectCreateRequest {
 	return ApiProjectCreateRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -1093,7 +1110,7 @@ func (a *AccountManagementApiService) ProjectCreate(ctx context.Context, organiz
 // Execute executes the request
 //
 //	@return Project
-func (a *AccountManagementApiService) ProjectCreateExecute(r ApiProjectCreateRequest) (*Project, *http.Response, error) {
+func (a *OrganizationManagementApiService) ProjectCreateExecute(r ApiProjectCreateRequest) (*Project, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
@@ -1101,12 +1118,12 @@ func (a *AccountManagementApiService) ProjectCreateExecute(r ApiProjectCreateReq
 		localVarReturnValue *Project
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.ProjectCreate")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.ProjectCreate")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/projects"
+	localVarPath := localBasePath + "/organizations/{organization}/projects"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
@@ -1209,9 +1226,142 @@ func (a *AccountManagementApiService) ProjectCreateExecute(r ApiProjectCreateReq
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiProjectPatchRequest struct {
+	ctx               context.Context
+	ApiService        OrganizationManagementApi
+	organization      string
+	project           string
+	patchRequestInner *[]PatchRequestInner
+}
+
+func (r ApiProjectPatchRequest) PatchRequestInner(patchRequestInner []PatchRequestInner) ApiProjectPatchRequest {
+	r.patchRequestInner = &patchRequestInner
+	return r
+}
+
+func (r ApiProjectPatchRequest) Execute() (*Project, *http.Response, error) {
+	return r.ApiService.ProjectPatchExecute(r)
+}
+
+/*
+ProjectPatch Update a Project
+
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param organization Organization Key
+	@param project Project Key
+	@return ApiProjectPatchRequest
+*/
+func (a *OrganizationManagementApiService) ProjectPatch(ctx context.Context, organization string, project string) ApiProjectPatchRequest {
+	return ApiProjectPatchRequest{
+		ApiService:   a,
+		ctx:          ctx,
+		organization: organization,
+		project:      project,
+	}
+}
+
+// Execute executes the request
+//
+//	@return Project
+func (a *OrganizationManagementApiService) ProjectPatchExecute(r ApiProjectPatchRequest) (*Project, *http.Response, error) {
+	var (
+		localVarHTTPMethod  = http.MethodPatch
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *Project
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.ProjectPatch")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/organizations/{organization}/projects/{project}"
+	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"project"+"}", url.PathEscape(parameterToString(r.project, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json-patch+json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.patchRequestInner
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 401 {
+			var v ErrorUnauthorized
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 403 {
+			var v ErrorForbidden
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiProjectQueryRequest struct {
 	ctx          context.Context
-	ApiService   AccountManagementApi
+	ApiService   OrganizationManagementApi
 	organization string
 }
 
@@ -1226,7 +1376,7 @@ ProjectQuery List all projects in an organization
 	@param organization Organization Key
 	@return ApiProjectQueryRequest
 */
-func (a *AccountManagementApiService) ProjectQuery(ctx context.Context, organization string) ApiProjectQueryRequest {
+func (a *OrganizationManagementApiService) ProjectQuery(ctx context.Context, organization string) ApiProjectQueryRequest {
 	return ApiProjectQueryRequest{
 		ApiService:   a,
 		ctx:          ctx,
@@ -1237,7 +1387,7 @@ func (a *AccountManagementApiService) ProjectQuery(ctx context.Context, organiza
 // Execute executes the request
 //
 //	@return ProjectPaginator
-func (a *AccountManagementApiService) ProjectQueryExecute(r ApiProjectQueryRequest) (*ProjectPaginator, *http.Response, error) {
+func (a *OrganizationManagementApiService) ProjectQueryExecute(r ApiProjectQueryRequest) (*ProjectPaginator, *http.Response, error) {
 	var (
 		localVarHTTPMethod  = http.MethodGet
 		localVarPostBody    interface{}
@@ -1245,12 +1395,12 @@ func (a *AccountManagementApiService) ProjectQueryExecute(r ApiProjectQueryReque
 		localVarReturnValue *ProjectPaginator
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AccountManagementApiService.ProjectQuery")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OrganizationManagementApiService.ProjectQuery")
 	if err != nil {
 		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/account/organizations/{organization}/projects"
+	localVarPath := localBasePath + "/organizations/{organization}/projects"
 	localVarPath = strings.Replace(localVarPath, "{"+"organization"+"}", url.PathEscape(parameterToString(r.organization, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
