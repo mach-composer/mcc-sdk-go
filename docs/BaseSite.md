@@ -1,94 +1,94 @@
-# ProjectAllOf
+# BaseSite
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Key** | **string** | The organization key (must be unique) | 
-**Name** | **string** | The name of the organization | 
-**Description** | Pointer to **string** | description about the api client | [optional] 
+**Key** | **string** | The key for the site | 
+**Name** | **string** | The name for the site | 
+**Description** | Pointer to **string** | The description for the site | [optional] 
 
 ## Methods
 
-### NewProjectAllOf
+### NewBaseSite
 
-`func NewProjectAllOf(key string, name string, ) *ProjectAllOf`
+`func NewBaseSite(key string, name string, ) *BaseSite`
 
-NewProjectAllOf instantiates a new ProjectAllOf object
+NewBaseSite instantiates a new BaseSite object
 This constructor will assign default values to properties that have it defined,
 and makes sure properties required by API are set, but the set of arguments
 will change when the set of required properties is changed
 
-### NewProjectAllOfWithDefaults
+### NewBaseSiteWithDefaults
 
-`func NewProjectAllOfWithDefaults() *ProjectAllOf`
+`func NewBaseSiteWithDefaults() *BaseSite`
 
-NewProjectAllOfWithDefaults instantiates a new ProjectAllOf object
+NewBaseSiteWithDefaults instantiates a new BaseSite object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
 ### GetKey
 
-`func (o *ProjectAllOf) GetKey() string`
+`func (o *BaseSite) GetKey() string`
 
 GetKey returns the Key field if non-nil, zero value otherwise.
 
 ### GetKeyOk
 
-`func (o *ProjectAllOf) GetKeyOk() (*string, bool)`
+`func (o *BaseSite) GetKeyOk() (*string, bool)`
 
 GetKeyOk returns a tuple with the Key field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetKey
 
-`func (o *ProjectAllOf) SetKey(v string)`
+`func (o *BaseSite) SetKey(v string)`
 
 SetKey sets Key field to given value.
 
 
 ### GetName
 
-`func (o *ProjectAllOf) GetName() string`
+`func (o *BaseSite) GetName() string`
 
 GetName returns the Name field if non-nil, zero value otherwise.
 
 ### GetNameOk
 
-`func (o *ProjectAllOf) GetNameOk() (*string, bool)`
+`func (o *BaseSite) GetNameOk() (*string, bool)`
 
 GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetName
 
-`func (o *ProjectAllOf) SetName(v string)`
+`func (o *BaseSite) SetName(v string)`
 
 SetName sets Name field to given value.
 
 
 ### GetDescription
 
-`func (o *ProjectAllOf) GetDescription() string`
+`func (o *BaseSite) GetDescription() string`
 
 GetDescription returns the Description field if non-nil, zero value otherwise.
 
 ### GetDescriptionOk
 
-`func (o *ProjectAllOf) GetDescriptionOk() (*string, bool)`
+`func (o *BaseSite) GetDescriptionOk() (*string, bool)`
 
 GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetDescription
 
-`func (o *ProjectAllOf) SetDescription(v string)`
+`func (o *BaseSite) SetDescription(v string)`
 
 SetDescription sets Description field to given value.
 
 ### HasDescription
 
-`func (o *ProjectAllOf) HasDescription() bool`
+`func (o *BaseSite) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
 

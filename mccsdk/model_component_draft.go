@@ -15,18 +15,24 @@ import (
 	"encoding/json"
 )
 
+// checks if the ComponentDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ComponentDraft{}
+
 // ComponentDraft struct for ComponentDraft
 type ComponentDraft struct {
-	Key string `json:"key"`
+	Key         string  `json:"key"`
+	Name        string  `json:"name"`
+	Description *string `json:"description,omitempty"`
 }
 
 // NewComponentDraft instantiates a new ComponentDraft object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponentDraft(key string) *ComponentDraft {
+func NewComponentDraft(key string, name string) *ComponentDraft {
 	this := ComponentDraft{}
 	this.Key = key
+	this.Name = name
 	return &this
 }
 
@@ -62,12 +68,78 @@ func (o *ComponentDraft) SetKey(v string) {
 	o.Key = v
 }
 
+// GetName returns the Name field value
+func (o *ComponentDraft) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *ComponentDraft) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *ComponentDraft) SetName(v string) {
+	o.Name = v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *ComponentDraft) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ComponentDraft) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *ComponentDraft) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *ComponentDraft) SetDescription(v string) {
+	o.Description = &v
+}
+
 func (o ComponentDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["key"] = o.Key
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ComponentDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	return toSerialize, nil
 }
 
 type NullableComponentDraft struct {

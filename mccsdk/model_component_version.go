@@ -16,8 +16,12 @@ import (
 	"time"
 )
 
+// checks if the ComponentVersion type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ComponentVersion{}
+
 // ComponentVersion struct for ComponentVersion
 type ComponentVersion struct {
+	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	// key of the component
 	Component string `json:"component"`
@@ -31,8 +35,9 @@ type ComponentVersion struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponentVersion(createdAt time.Time, component string, version string) *ComponentVersion {
+func NewComponentVersion(id string, createdAt time.Time, component string, version string) *ComponentVersion {
 	this := ComponentVersion{}
+	this.Id = id
 	this.CreatedAt = createdAt
 	this.Component = component
 	this.Version = version
@@ -45,6 +50,30 @@ func NewComponentVersion(createdAt time.Time, component string, version string) 
 func NewComponentVersionWithDefaults() *ComponentVersion {
 	this := ComponentVersion{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *ComponentVersion) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *ComponentVersion) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *ComponentVersion) SetId(v string) {
+	o.Id = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -121,7 +150,7 @@ func (o *ComponentVersion) SetVersion(v string) {
 
 // GetBranch returns the Branch field value if set, zero value otherwise.
 func (o *ComponentVersion) GetBranch() string {
-	if o == nil || o.Branch == nil {
+	if o == nil || IsNil(o.Branch) {
 		var ret string
 		return ret
 	}
@@ -131,7 +160,7 @@ func (o *ComponentVersion) GetBranch() string {
 // GetBranchOk returns a tuple with the Branch field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ComponentVersion) GetBranchOk() (*string, bool) {
-	if o == nil || o.Branch == nil {
+	if o == nil || IsNil(o.Branch) {
 		return nil, false
 	}
 	return o.Branch, true
@@ -139,7 +168,7 @@ func (o *ComponentVersion) GetBranchOk() (*string, bool) {
 
 // HasBranch returns a boolean if a field has been set.
 func (o *ComponentVersion) HasBranch() bool {
-	if o != nil && o.Branch != nil {
+	if o != nil && !IsNil(o.Branch) {
 		return true
 	}
 
@@ -152,20 +181,23 @@ func (o *ComponentVersion) SetBranch(v string) {
 }
 
 func (o ComponentVersion) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["component"] = o.Component
-	}
-	if true {
-		toSerialize["version"] = o.Version
-	}
-	if o.Branch != nil {
-		toSerialize["branch"] = o.Branch
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ComponentVersion) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["component"] = o.Component
+	toSerialize["version"] = o.Version
+	if !IsNil(o.Branch) {
+		toSerialize["branch"] = o.Branch
+	}
+	return toSerialize, nil
 }
 
 type NullableComponentVersion struct {

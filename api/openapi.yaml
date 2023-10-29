@@ -347,6 +347,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrganizationUserInviteData'
           description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid invite
         "401":
           content:
             application/json:
@@ -456,6 +462,50 @@ paths:
       tags:
       - Organization Management
   /organizations/{organization}/projects/{project}:
+    delete:
+      description: This action will delete the project and all related resources.
+      operationId: ProjectDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Delete a project
+      tags:
+      - Organization Management
     patch:
       operationId: ProjectPatch
       parameters:
@@ -530,6 +580,30 @@ paths:
           example: my-project
           type: string
         style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
       responses:
         "200":
           content:
@@ -605,6 +679,58 @@ paths:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
       summary: Create new api client
+      tags:
+      - API Clients
+  /organizations/{organization}/projects/{project}/api-clients/{id}:
+    delete:
+      operationId: ApiClientDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: API Client ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiClient'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Delete an API Client
       tags:
       - API Clients
   /organizations/{organization}/projects/{project}/components:
@@ -737,6 +863,58 @@ paths:
       tags:
       - Components
   /organizations/{organization}/projects/{project}/components/{component}:
+    delete:
+      description: This action will delete the component and all versions.
+      operationId: ComponentDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Component key
+        explode: false
+        in: path
+        name: component
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Component'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+      summary: Delete a component
+      tags:
+      - Components
     patch:
       operationId: ComponentPatch
       parameters:
@@ -1004,7 +1182,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
           description: Invalid request
-      summary: Create component
+      summary: Create component version
       tags:
       - Components
   /organizations/{organization}/projects/{project}/components/{component}/versions/{version}:
@@ -1295,6 +1473,710 @@ paths:
       summary: Push commits for this component version
       tags:
       - Components
+  /organizations/{organization}/projects/{project}/sites:
+    get:
+      operationId: SiteQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SitePaginator'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: List all sites
+      tags:
+      - Sites
+    post:
+      operationId: SiteCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteDraft'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+          description: New site created
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Create site
+      tags:
+      - Sites
+  /organizations/{organization}/projects/{project}/sites/{site}:
+    delete:
+      description: This action will delete the site and all child resources.
+      operationId: SiteDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site key
+        explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Delete a site
+      tags:
+      - Sites
+    get:
+      operationId: SiteGet
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site key
+        explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Get an existing site
+      tags:
+      - Sites
+    patch:
+      operationId: SitePatch
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site key
+        explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+            - op: replace
+              path: /key
+              value: foobar
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Patch an existing site
+      tags:
+      - Sites
+  /organizations/{organization}/projects/{project}/sites/{site}/components:
+    get:
+      operationId: SiteComponentSiteQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site key
+        explode: false
+        in: path
+        name: site
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponentPaginator'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: List all components for the given site
+      tags:
+      - Sites
+  /organizations/{organization}/projects/{project}/site-components:
+    get:
+      operationId: SiteComponentQuery
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: offset
+        required: false
+        schema:
+          default: 0
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponentPaginator'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: List all sites components
+      tags:
+      - SiteComponents
+    post:
+      operationId: SiteComponentCreate
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteComponentDraft'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponent'
+          description: New site component created
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Create site component
+      tags:
+      - SiteComponents
+  /organizations/{organization}/projects/{project}/site-components/{site-component}:
+    delete:
+      description: This action will delete the site component.
+      operationId: SiteComponentDelete
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site component key
+        explode: false
+        in: path
+        name: site-component
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponent'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Delete a site component
+      tags:
+      - SiteComponents
+    get:
+      operationId: SiteComponentGet
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site component key
+        explode: false
+        in: path
+        name: site-component
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponent'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Get an existing site component
+      tags:
+      - SiteComponents
+    patch:
+      operationId: SiteComponentPatch
+      parameters:
+      - description: Organization Key
+        explode: false
+        in: path
+        name: organization
+        required: true
+        schema:
+          example: my-organization
+          type: string
+        style: simple
+      - description: Project Key
+        explode: false
+        in: path
+        name: project
+        required: true
+        schema:
+          example: my-project
+          type: string
+        style: simple
+      - description: Site component key
+        explode: false
+        in: path
+        name: site-component
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json-patch+json:
+            example:
+            - op: replace
+              path: /key
+              value: foobar
+            schema:
+              $ref: '#/components/schemas/PatchRequest'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteComponent'
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorForbidden'
+          description: Forbidden
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Invalid request
+      summary: Patch an existing site component
+      tags:
+      - SiteComponents
 components:
   parameters:
     OrganizationParam:
@@ -1344,6 +2226,24 @@ components:
           type: string
         type: array
       style: form
+    SiteParam:
+      description: Site key
+      explode: false
+      in: path
+      name: site
+      required: true
+      schema:
+        type: string
+      style: simple
+    SiteComponentParam:
+      description: Site component key
+      explode: false
+      in: path
+      name: site-component
+      required: true
+      schema:
+        type: string
+      style: simple
   responses:
     ErrorResponse:
       content:
@@ -1377,8 +2277,7 @@ components:
     Error:
       properties:
         status:
-          format: integer
-          type: number
+          type: integer
         summary:
           type: string
         description:
@@ -1395,16 +2294,17 @@ components:
       properties:
         count:
           description: Number of items in the current page
-          type: number
+          type: integer
         total:
           description: Total number of items found
-          type: number
+          format: int64
+          type: integer
         offset:
           default: 0
-          type: number
+          type: integer
         limit:
           default: 20
-          type: number
+          type: integer
       required:
       - count
       - limit
@@ -1414,20 +2314,39 @@ components:
       type: object
     BaseResource:
       properties:
+        id:
+          format: uuid
+          type: string
         created_at:
           format: date-time
           type: string
       required:
       - created_at
+      - id
       type: object
     Organization:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/Organization_allOf'
+      - properties:
+          key:
+            description: The organization key (must be unique)
+            type: string
+          name:
+            description: The name of the organization
+            type: string
+        required:
+        - key
+        - name
+        type: object
     OrganizationPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/OrganizationPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Organization'
+            type: array
+        type: object
     OrganizationDraft:
       example:
         name: name
@@ -1537,7 +2456,12 @@ components:
     OrganizationUserPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/OrganizationUserPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/OrganizationUser'
+            type: array
+        type: object
     OrganizationUserInviteDraft:
       example:
         role: owner
@@ -1590,6 +2514,7 @@ components:
       type: object
     OrganizationUserInviteData:
       example:
+        valid: true
         organization:
           name: ACME Ltd.
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -1599,6 +2524,11 @@ components:
         id:
           format: uuid
           type: string
+        valid:
+          description: |
+            If the invite is still valid. False if the invite expired or
+            was already used.
+          type: boolean
         created_by:
           example: John Doe
           type: string
@@ -1612,11 +2542,29 @@ components:
     Project:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/Project_allOf'
+      - properties:
+          key:
+            description: The organization key (must be unique)
+            type: string
+          name:
+            description: The name of the organization
+            type: string
+          description:
+            description: description about the api client
+            type: string
+        required:
+        - key
+        - name
+        type: object
     ProjectPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ProjectPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Project'
+            type: array
+        type: object
     ProjectDraft:
       example:
         name: name
@@ -1635,11 +2583,38 @@ components:
     ApiClient:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/ApiClient_allOf'
+      - properties:
+          description:
+            description: description about the api client
+            type: string
+          client_id:
+            description: the client id
+            type: string
+          client_secret:
+            description: the client id
+            type: string
+          last_used_at:
+            format: date-time
+            type: string
+          scope:
+            description: Scope
+            items:
+              type: string
+            type: array
+        required:
+        - client_id
+        - client_secret
+        - scope
+        type: object
     ApiClientPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ApiClientPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/ApiClient'
+            type: array
+        type: object
     ApiClientDraft:
       example:
         scope:
@@ -1659,43 +2634,79 @@ components:
     Component:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/Component_allOf'
+      - properties:
+          key:
+            description: key of the component
+            type: string
+          name:
+            description: name of the component
+            type: string
+          description:
+            description: short description of the component
+            type: string
+        type: object
     ComponentPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ComponentPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Component'
+            type: array
+        type: object
     ComponentDraft:
       example:
+        name: name
+        description: description
         key: key
       properties:
         key:
           type: string
+        name:
+          type: string
+        description:
+          type: string
       required:
       - key
+      - name
       type: object
     ComponentVersion:
       allOf:
       - $ref: '#/components/schemas/BaseResource'
-      - $ref: '#/components/schemas/ComponentVersion_allOf'
+      - properties:
+          component:
+            description: key of the component
+            type: string
+          version:
+            description: version of the component
+            type: string
+          branch:
+            description: branch of the version
+            type: string
+        required:
+        - component
+        - version
+        type: object
     ComponentVersionPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/ComponentVersionPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/ComponentVersion'
+            type: array
+        type: object
     ComponentVersionDraft:
       example:
-        component: component
         version: version
         branch: branch
       properties:
-        component:
-          type: string
         version:
           type: string
         branch:
           type: string
       required:
       - branch
-      - component
       - version
       type: object
     CommitDataAuthor:
@@ -1736,11 +2747,20 @@ components:
     CommitData:
       allOf:
       - $ref: '#/components/schemas/CommitDataDraft'
-      - $ref: '#/components/schemas/CommitData_allOf'
+      - properties:
+          created_at:
+            format: date-time
+            type: string
+        type: object
     CommitDataPaginator:
       allOf:
       - $ref: '#/components/schemas/Paginator'
-      - $ref: '#/components/schemas/CommitDataPaginator_allOf'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/CommitData'
+            type: array
+        type: object
     ComponentVersionCommits:
       example:
         commits:
@@ -1753,6 +2773,91 @@ components:
           type: array
       required:
       - commits
+      type: object
+    BaseSite:
+      properties:
+        key:
+          description: The key for the site
+          type: string
+        name:
+          description: The name for the site
+          type: string
+        description:
+          description: The description for the site
+          type: string
+      required:
+      - key
+      - name
+      type: object
+    Site:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/BaseSite'
+      type: object
+    SitePaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/Site'
+            type: array
+        type: object
+    SiteDraft:
+      allOf:
+      - $ref: '#/components/schemas/BaseSite'
+      type: object
+    BaseSiteComponent:
+      properties:
+        key:
+          description: key of the site component
+          type: string
+        name:
+          description: name of the site component
+          type: string
+      required:
+      - key
+      - name
+      type: object
+    SiteComponent:
+      allOf:
+      - $ref: '#/components/schemas/BaseResource'
+      - $ref: '#/components/schemas/BaseSiteComponent'
+      - properties:
+          site_id:
+            description: id of the site
+            type: string
+          component_id:
+            description: id of the component
+            type: string
+        required:
+        - component_id
+        - site_id
+        type: object
+      type: object
+    SiteComponentPaginator:
+      allOf:
+      - $ref: '#/components/schemas/Paginator'
+      - properties:
+          results:
+            items:
+              $ref: '#/components/schemas/SiteComponent'
+            type: array
+        type: object
+    SiteComponentDraft:
+      allOf:
+      - $ref: '#/components/schemas/BaseSiteComponent'
+      - properties:
+          site_key:
+            description: key of the site
+            type: string
+          component_key:
+            description: key of the component
+            type: string
+        required:
+        - component_key
+        - site_key
+        type: object
       type: object
     MyAccountInformation_200_response:
       example:
@@ -1781,8 +2886,7 @@ components:
     ErrorForbidden:
       properties:
         status:
-          format: integer
-          type: number
+          type: integer
         summary:
           type: string
         description:
@@ -1791,27 +2895,6 @@ components:
           type: string
       title: ErrorForbidden
       type: object
-    Organization_allOf:
-      properties:
-        key:
-          description: The organization key (must be unique)
-          type: string
-        name:
-          description: The name of the organization
-          type: string
-      required:
-      - key
-      - name
-      type: object
-      example: null
-    OrganizationPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/Organization'
-          type: array
-      type: object
-      example: null
     PatchRequest_inner:
       oneOf:
       - $ref: '#/components/schemas/JSONPatchRequestAddReplaceTest'
@@ -1828,14 +2911,6 @@ components:
             type: string
           type: array
       type: object
-    OrganizationUserPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/OrganizationUser'
-          type: array
-      type: object
-      example: null
     OrganizationUserInviteData_organization:
       example:
         name: ACME Ltd.
@@ -1851,117 +2926,6 @@ components:
       - id
       - name
       type: object
-    Project_allOf:
-      properties:
-        key:
-          description: The organization key (must be unique)
-          type: string
-        name:
-          description: The name of the organization
-          type: string
-        description:
-          description: description about the api client
-          type: string
-      required:
-      - key
-      - name
-      type: object
-      example: null
-    ProjectPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/Project'
-          type: array
-      type: object
-      example: null
-    ApiClient_allOf:
-      properties:
-        description:
-          description: description about the api client
-          type: string
-        client_id:
-          description: the client id
-          type: string
-        client_secret:
-          description: the client id
-          type: string
-        last_used_at:
-          format: date-time
-          type: string
-        scope:
-          description: Scope
-          items:
-            type: string
-          type: array
-      required:
-      - client_id
-      - client_secret
-      - scope
-      type: object
-      example: null
-    ApiClientPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ApiClient'
-          type: array
-      type: object
-      example: null
-    Component_allOf:
-      properties:
-        key:
-          description: key of the component
-          type: string
-      type: object
-      example: null
-    ComponentPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/Component'
-          type: array
-      type: object
-      example: null
-    ComponentVersion_allOf:
-      properties:
-        component:
-          description: key of the component
-          type: string
-        version:
-          description: version of the component
-          type: string
-        branch:
-          description: branch of the version
-          type: string
-      required:
-      - component
-      - version
-      type: object
-      example: null
-    ComponentVersionPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/ComponentVersion'
-          type: array
-      type: object
-      example: null
-    CommitData_allOf:
-      properties:
-        created_at:
-          format: date-time
-          type: string
-      type: object
-      example: null
-    CommitDataPaginator_allOf:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/CommitData'
-          type: array
-      type: object
-      example: null
   securitySchemes:
     OAuth2:
       flows:

@@ -4,6 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**Id** | **string** |  | 
 **CreatedAt** | **time.Time** |  | 
 **Component** | **string** | key of the component | 
 **Version** | **string** | version of the component | 
@@ -13,7 +14,7 @@ Name | Type | Description | Notes
 
 ### NewComponentVersion
 
-`func NewComponentVersion(createdAt time.Time, component string, version string, ) *ComponentVersion`
+`func NewComponentVersion(id string, createdAt time.Time, component string, version string, ) *ComponentVersion`
 
 NewComponentVersion instantiates a new ComponentVersion object
 This constructor will assign default values to properties that have it defined,
@@ -27,6 +28,26 @@ will change when the set of required properties is changed
 NewComponentVersionWithDefaults instantiates a new ComponentVersion object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetId
+
+`func (o *ComponentVersion) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *ComponentVersion) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *ComponentVersion) SetId(v string)`
+
+SetId sets Id field to given value.
+
 
 ### GetCreatedAt
 

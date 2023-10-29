@@ -14,7 +14,11 @@ generate:
 		--enable-post-process-file \
 		--model-package mccsdk/mccmodels \
 		--http-user-agent mcc-sdk-go \
-		--additional-properties=packageName=mccsdk,generateInterfaces=true
+		--additional-properties=packageName=mccsdk,generateInterfaces=true \
+	 	--git-repo-id mcc-sdk-go \
+		--git-user-id mach-composer \
+		--api-name-suffix Api
 	mkdir mccsdk
 	mv *.go mccsdk
+	rm -rf test
 	go mod tidy

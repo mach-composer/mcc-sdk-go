@@ -15,14 +15,17 @@ import (
 	"encoding/json"
 )
 
+// checks if the OrganizationPaginator type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationPaginator{}
+
 // OrganizationPaginator struct for OrganizationPaginator
 type OrganizationPaginator struct {
 	// Number of items in the current page
-	Count float32 `json:"count"`
+	Count int32 `json:"count"`
 	// Total number of items found
-	Total   float32        `json:"total"`
-	Offset  float32        `json:"offset"`
-	Limit   float32        `json:"limit"`
+	Total   int64          `json:"total"`
+	Offset  int32          `json:"offset"`
+	Limit   int32          `json:"limit"`
 	Results []Organization `json:"results"`
 }
 
@@ -30,7 +33,7 @@ type OrganizationPaginator struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrganizationPaginator(count float32, total float32, offset float32, limit float32, results []Organization) *OrganizationPaginator {
+func NewOrganizationPaginator(count int32, total int64, offset int32, limit int32, results []Organization) *OrganizationPaginator {
 	this := OrganizationPaginator{}
 	this.Count = count
 	this.Total = total
@@ -45,17 +48,17 @@ func NewOrganizationPaginator(count float32, total float32, offset float32, limi
 // but it doesn't guarantee that properties required by API are set
 func NewOrganizationPaginatorWithDefaults() *OrganizationPaginator {
 	this := OrganizationPaginator{}
-	var offset float32 = 0
+	var offset int32 = 0
 	this.Offset = offset
-	var limit float32 = 20
+	var limit int32 = 20
 	this.Limit = limit
 	return &this
 }
 
 // GetCount returns the Count field value
-func (o *OrganizationPaginator) GetCount() float32 {
+func (o *OrganizationPaginator) GetCount() int32 {
 	if o == nil {
-		var ret float32
+		var ret int32
 		return ret
 	}
 
@@ -64,7 +67,7 @@ func (o *OrganizationPaginator) GetCount() float32 {
 
 // GetCountOk returns a tuple with the Count field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationPaginator) GetCountOk() (*float32, bool) {
+func (o *OrganizationPaginator) GetCountOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -72,14 +75,14 @@ func (o *OrganizationPaginator) GetCountOk() (*float32, bool) {
 }
 
 // SetCount sets field value
-func (o *OrganizationPaginator) SetCount(v float32) {
+func (o *OrganizationPaginator) SetCount(v int32) {
 	o.Count = v
 }
 
 // GetTotal returns the Total field value
-func (o *OrganizationPaginator) GetTotal() float32 {
+func (o *OrganizationPaginator) GetTotal() int64 {
 	if o == nil {
-		var ret float32
+		var ret int64
 		return ret
 	}
 
@@ -88,7 +91,7 @@ func (o *OrganizationPaginator) GetTotal() float32 {
 
 // GetTotalOk returns a tuple with the Total field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationPaginator) GetTotalOk() (*float32, bool) {
+func (o *OrganizationPaginator) GetTotalOk() (*int64, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -96,14 +99,14 @@ func (o *OrganizationPaginator) GetTotalOk() (*float32, bool) {
 }
 
 // SetTotal sets field value
-func (o *OrganizationPaginator) SetTotal(v float32) {
+func (o *OrganizationPaginator) SetTotal(v int64) {
 	o.Total = v
 }
 
 // GetOffset returns the Offset field value
-func (o *OrganizationPaginator) GetOffset() float32 {
+func (o *OrganizationPaginator) GetOffset() int32 {
 	if o == nil {
-		var ret float32
+		var ret int32
 		return ret
 	}
 
@@ -112,7 +115,7 @@ func (o *OrganizationPaginator) GetOffset() float32 {
 
 // GetOffsetOk returns a tuple with the Offset field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationPaginator) GetOffsetOk() (*float32, bool) {
+func (o *OrganizationPaginator) GetOffsetOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -120,14 +123,14 @@ func (o *OrganizationPaginator) GetOffsetOk() (*float32, bool) {
 }
 
 // SetOffset sets field value
-func (o *OrganizationPaginator) SetOffset(v float32) {
+func (o *OrganizationPaginator) SetOffset(v int32) {
 	o.Offset = v
 }
 
 // GetLimit returns the Limit field value
-func (o *OrganizationPaginator) GetLimit() float32 {
+func (o *OrganizationPaginator) GetLimit() int32 {
 	if o == nil {
-		var ret float32
+		var ret int32
 		return ret
 	}
 
@@ -136,7 +139,7 @@ func (o *OrganizationPaginator) GetLimit() float32 {
 
 // GetLimitOk returns a tuple with the Limit field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationPaginator) GetLimitOk() (*float32, bool) {
+func (o *OrganizationPaginator) GetLimitOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -144,7 +147,7 @@ func (o *OrganizationPaginator) GetLimitOk() (*float32, bool) {
 }
 
 // SetLimit sets field value
-func (o *OrganizationPaginator) SetLimit(v float32) {
+func (o *OrganizationPaginator) SetLimit(v int32) {
 	o.Limit = v
 }
 
@@ -173,23 +176,21 @@ func (o *OrganizationPaginator) SetResults(v []Organization) {
 }
 
 func (o OrganizationPaginator) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["count"] = o.Count
-	}
-	if true {
-		toSerialize["total"] = o.Total
-	}
-	if true {
-		toSerialize["offset"] = o.Offset
-	}
-	if true {
-		toSerialize["limit"] = o.Limit
-	}
-	if true {
-		toSerialize["results"] = o.Results
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationPaginator) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["count"] = o.Count
+	toSerialize["total"] = o.Total
+	toSerialize["offset"] = o.Offset
+	toSerialize["limit"] = o.Limit
+	toSerialize["results"] = o.Results
+	return toSerialize, nil
 }
 
 type NullableOrganizationPaginator struct {

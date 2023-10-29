@@ -32,7 +32,7 @@ go get golang.org/x/net/context
 Put the package under your project folder and add the following in import:
 
 ```golang
-import mccsdk "github.com/GIT_USER_ID/GIT_REPO_ID"
+import mccsdk "github.com/mach-composer/mcc-sdk-go"
 ```
 
 To use a proxy, set the environment variable `HTTP_PROXY`:
@@ -89,12 +89,14 @@ All URIs are relative to *https://api.mach.cloud*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *APIClientsApi* | [**ApiClientCreate**](docs/APIClientsApi.md#apiclientcreate) | **Post** /organizations/{organization}/projects/{project}/api-clients | Create new api client
+*APIClientsApi* | [**ApiClientDelete**](docs/APIClientsApi.md#apiclientdelete) | **Delete** /organizations/{organization}/projects/{project}/api-clients/{id} | Delete an API Client
 *APIClientsApi* | [**ApiClientQuery**](docs/APIClientsApi.md#apiclientquery) | **Get** /organizations/{organization}/projects/{project}/api-clients | List all api clients
 *ComponentsApi* | [**ComponentCreate**](docs/ComponentsApi.md#componentcreate) | **Post** /organizations/{organization}/projects/{project}/components | Create component
+*ComponentsApi* | [**ComponentDelete**](docs/ComponentsApi.md#componentdelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component} | Delete a component
 *ComponentsApi* | [**ComponentLatestVersion**](docs/ComponentsApi.md#componentlatestversion) | **Get** /organizations/{organization}/projects/{project}/components/{component}/latest | Get last component version
 *ComponentsApi* | [**ComponentPatch**](docs/ComponentsApi.md#componentpatch) | **Patch** /organizations/{organization}/projects/{project}/components/{component} | Patch an existing component
 *ComponentsApi* | [**ComponentQuery**](docs/ComponentsApi.md#componentquery) | **Get** /organizations/{organization}/projects/{project}/components | List all components
-*ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions | Create component
+*ComponentsApi* | [**ComponentVersionCreate**](docs/ComponentsApi.md#componentversioncreate) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions | Create component version
 *ComponentsApi* | [**ComponentVersionDelete**](docs/ComponentsApi.md#componentversiondelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Delete component version
 *ComponentsApi* | [**ComponentVersionGet**](docs/ComponentsApi.md#componentversionget) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Get component version
 *ComponentsApi* | [**ComponentVersionPushCommits**](docs/ComponentsApi.md#componentversionpushcommits) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
@@ -109,35 +111,41 @@ Class | Method | HTTP request | Description
 *OrganizationManagementApi* | [**OrganizationUserInviteView**](docs/OrganizationManagementApi.md#organizationuserinviteview) | **Get** /organizations/{organization}/users/invite/{id} | View invite information
 *OrganizationManagementApi* | [**OrganizationUserQuery**](docs/OrganizationManagementApi.md#organizationuserquery) | **Get** /organizations/{organization}/users | List all users in an organization
 *OrganizationManagementApi* | [**ProjectCreate**](docs/OrganizationManagementApi.md#projectcreate) | **Post** /organizations/{organization}/projects | Create new project in an organization
+*OrganizationManagementApi* | [**ProjectDelete**](docs/OrganizationManagementApi.md#projectdelete) | **Delete** /organizations/{organization}/projects/{project} | Delete a project
 *OrganizationManagementApi* | [**ProjectPatch**](docs/OrganizationManagementApi.md#projectpatch) | **Patch** /organizations/{organization}/projects/{project} | Update a Project
 *OrganizationManagementApi* | [**ProjectQuery**](docs/OrganizationManagementApi.md#projectquery) | **Get** /organizations/{organization}/projects | List all projects in an organization
+*SiteComponentsApi* | [**SiteComponentCreate**](docs/SiteComponentsApi.md#sitecomponentcreate) | **Post** /organizations/{organization}/projects/{project}/site-components | Create site component
+*SiteComponentsApi* | [**SiteComponentDelete**](docs/SiteComponentsApi.md#sitecomponentdelete) | **Delete** /organizations/{organization}/projects/{project}/site-components/{site-component} | Delete a site component
+*SiteComponentsApi* | [**SiteComponentGet**](docs/SiteComponentsApi.md#sitecomponentget) | **Get** /organizations/{organization}/projects/{project}/site-components/{site-component} | Get an existing site component
+*SiteComponentsApi* | [**SiteComponentPatch**](docs/SiteComponentsApi.md#sitecomponentpatch) | **Patch** /organizations/{organization}/projects/{project}/site-components/{site-component} | Patch an existing site component
+*SiteComponentsApi* | [**SiteComponentQuery**](docs/SiteComponentsApi.md#sitecomponentquery) | **Get** /organizations/{organization}/projects/{project}/site-components | List all sites components
+*SitesApi* | [**SiteComponentSiteQuery**](docs/SitesApi.md#sitecomponentsitequery) | **Get** /organizations/{organization}/projects/{project}/sites/{site}/components | List all components for the given site
+*SitesApi* | [**SiteCreate**](docs/SitesApi.md#sitecreate) | **Post** /organizations/{organization}/projects/{project}/sites | Create site
+*SitesApi* | [**SiteDelete**](docs/SitesApi.md#sitedelete) | **Delete** /organizations/{organization}/projects/{project}/sites/{site} | Delete a site
+*SitesApi* | [**SiteGet**](docs/SitesApi.md#siteget) | **Get** /organizations/{organization}/projects/{project}/sites/{site} | Get an existing site
+*SitesApi* | [**SitePatch**](docs/SitesApi.md#sitepatch) | **Patch** /organizations/{organization}/projects/{project}/sites/{site} | Patch an existing site
+*SitesApi* | [**SiteQuery**](docs/SitesApi.md#sitequery) | **Get** /organizations/{organization}/projects/{project}/sites | List all sites
 
 
 ## Documentation For Models
 
  - [ApiClient](docs/ApiClient.md)
- - [ApiClientAllOf](docs/ApiClientAllOf.md)
  - [ApiClientDraft](docs/ApiClientDraft.md)
  - [ApiClientPaginator](docs/ApiClientPaginator.md)
- - [ApiClientPaginatorAllOf](docs/ApiClientPaginatorAllOf.md)
  - [BaseResource](docs/BaseResource.md)
+ - [BaseSite](docs/BaseSite.md)
+ - [BaseSiteComponent](docs/BaseSiteComponent.md)
  - [CommitData](docs/CommitData.md)
- - [CommitDataAllOf](docs/CommitDataAllOf.md)
  - [CommitDataAuthor](docs/CommitDataAuthor.md)
  - [CommitDataDraft](docs/CommitDataDraft.md)
  - [CommitDataPaginator](docs/CommitDataPaginator.md)
- - [CommitDataPaginatorAllOf](docs/CommitDataPaginatorAllOf.md)
  - [Component](docs/Component.md)
- - [ComponentAllOf](docs/ComponentAllOf.md)
  - [ComponentDraft](docs/ComponentDraft.md)
  - [ComponentPaginator](docs/ComponentPaginator.md)
- - [ComponentPaginatorAllOf](docs/ComponentPaginatorAllOf.md)
  - [ComponentVersion](docs/ComponentVersion.md)
- - [ComponentVersionAllOf](docs/ComponentVersionAllOf.md)
  - [ComponentVersionCommits](docs/ComponentVersionCommits.md)
  - [ComponentVersionDraft](docs/ComponentVersionDraft.md)
  - [ComponentVersionPaginator](docs/ComponentVersionPaginator.md)
- - [ComponentVersionPaginatorAllOf](docs/ComponentVersionPaginatorAllOf.md)
  - [Error](docs/Error.md)
  - [ErrorForbidden](docs/ErrorForbidden.md)
  - [ErrorObject](docs/ErrorObject.md)
@@ -147,31 +155,32 @@ Class | Method | HTTP request | Description
  - [JSONPatchRequestRemove](docs/JSONPatchRequestRemove.md)
  - [MyAccountInformation200Response](docs/MyAccountInformation200Response.md)
  - [Organization](docs/Organization.md)
- - [OrganizationAllOf](docs/OrganizationAllOf.md)
  - [OrganizationDraft](docs/OrganizationDraft.md)
  - [OrganizationPaginator](docs/OrganizationPaginator.md)
- - [OrganizationPaginatorAllOf](docs/OrganizationPaginatorAllOf.md)
  - [OrganizationUser](docs/OrganizationUser.md)
  - [OrganizationUserInvite](docs/OrganizationUserInvite.md)
  - [OrganizationUserInviteData](docs/OrganizationUserInviteData.md)
  - [OrganizationUserInviteDataOrganization](docs/OrganizationUserInviteDataOrganization.md)
  - [OrganizationUserInviteDraft](docs/OrganizationUserInviteDraft.md)
  - [OrganizationUserPaginator](docs/OrganizationUserPaginator.md)
- - [OrganizationUserPaginatorAllOf](docs/OrganizationUserPaginatorAllOf.md)
  - [OrganizationUserProjectsInner](docs/OrganizationUserProjectsInner.md)
  - [Paginator](docs/Paginator.md)
  - [PatchRequestInner](docs/PatchRequestInner.md)
  - [Project](docs/Project.md)
- - [ProjectAllOf](docs/ProjectAllOf.md)
  - [ProjectDraft](docs/ProjectDraft.md)
  - [ProjectPaginator](docs/ProjectPaginator.md)
- - [ProjectPaginatorAllOf](docs/ProjectPaginatorAllOf.md)
+ - [Site](docs/Site.md)
+ - [SiteComponent](docs/SiteComponent.md)
+ - [SiteComponentDraft](docs/SiteComponentDraft.md)
+ - [SiteComponentPaginator](docs/SiteComponentPaginator.md)
+ - [SiteDraft](docs/SiteDraft.md)
+ - [SitePaginator](docs/SitePaginator.md)
 
 
 ## Documentation For Authorization
 
 
-
+Authentication schemes defined for the API:
 ### OAuth2
 
 
@@ -199,7 +208,6 @@ tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
 auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
 r, err := client.Service.Operation(auth, args)
 ```
-
 
 ### OAuth2
 

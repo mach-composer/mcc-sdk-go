@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ComponentVersionCommits type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ComponentVersionCommits{}
+
 // ComponentVersionCommits struct for ComponentVersionCommits
 type ComponentVersionCommits struct {
 	Commits []CommitData `json:"commits"`
@@ -63,11 +66,17 @@ func (o *ComponentVersionCommits) SetCommits(v []CommitData) {
 }
 
 func (o ComponentVersionCommits) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["commits"] = o.Commits
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ComponentVersionCommits) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["commits"] = o.Commits
+	return toSerialize, nil
 }
 
 type NullableComponentVersionCommits struct {

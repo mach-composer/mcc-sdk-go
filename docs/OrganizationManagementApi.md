@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**OrganizationUserInviteView**](OrganizationManagementApi.md#OrganizationUserInviteView) | **Get** /organizations/{organization}/users/invite/{id} | View invite information
 [**OrganizationUserQuery**](OrganizationManagementApi.md#OrganizationUserQuery) | **Get** /organizations/{organization}/users | List all users in an organization
 [**ProjectCreate**](OrganizationManagementApi.md#ProjectCreate) | **Post** /organizations/{organization}/projects | Create new project in an organization
+[**ProjectDelete**](OrganizationManagementApi.md#ProjectDelete) | **Delete** /organizations/{organization}/projects/{project} | Delete a project
 [**ProjectPatch**](OrganizationManagementApi.md#ProjectPatch) | **Patch** /organizations/{organization}/projects/{project} | Update a Project
 [**ProjectQuery**](OrganizationManagementApi.md#ProjectQuery) | **Get** /organizations/{organization}/projects | List all projects in an organization
 
@@ -32,7 +33,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -96,7 +97,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -166,7 +167,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -225,7 +226,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -295,7 +296,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -366,7 +367,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -437,7 +438,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -505,7 +506,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -560,6 +561,79 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
+## ProjectDelete
+
+> Project ProjectDelete(ctx, organization, project).Execute()
+
+Delete a project
+
+
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
+)
+
+func main() {
+    organization := "my-organization" // string | Organization Key
+    project := "my-project" // string | Project Key
+
+    configuration := openapiclient.NewConfiguration()
+    apiClient := openapiclient.NewAPIClient(configuration)
+    resp, r, err := apiClient.OrganizationManagementApi.ProjectDelete(context.Background(), organization, project).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `OrganizationManagementApi.ProjectDelete``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ProjectDelete`: Project
+    fmt.Fprintf(os.Stdout, "Response from `OrganizationManagementApi.ProjectDelete`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** | Organization Key | 
+**project** | **string** | Project Key | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiProjectDeleteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+### Return type
+
+[**Project**](Project.md)
+
+### Authorization
+
+[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
 ## ProjectPatch
 
 > Project ProjectPatch(ctx, organization, project).PatchRequestInner(patchRequestInner).Execute()
@@ -575,7 +649,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {
@@ -648,7 +722,7 @@ import (
     "context"
     "fmt"
     "os"
-    openapiclient "./openapi"
+    openapiclient "github.com/mach-composer/mcc-sdk-go"
 )
 
 func main() {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the ApiClientDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ApiClientDraft{}
+
 // ApiClientDraft struct for ApiClientDraft
 type ApiClientDraft struct {
 	// description about the api client
@@ -42,7 +45,7 @@ func NewApiClientDraftWithDefaults() *ApiClientDraft {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ApiClientDraft) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -52,7 +55,7 @@ func (o *ApiClientDraft) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientDraft) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
@@ -60,7 +63,7 @@ func (o *ApiClientDraft) GetDescriptionOk() (*string, bool) {
 
 // HasDescription returns a boolean if a field has been set.
 func (o *ApiClientDraft) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -74,7 +77,7 @@ func (o *ApiClientDraft) SetDescription(v string) {
 
 // GetScope returns the Scope field value if set, zero value otherwise.
 func (o *ApiClientDraft) GetScope() []string {
-	if o == nil || o.Scope == nil {
+	if o == nil || IsNil(o.Scope) {
 		var ret []string
 		return ret
 	}
@@ -84,7 +87,7 @@ func (o *ApiClientDraft) GetScope() []string {
 // GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientDraft) GetScopeOk() ([]string, bool) {
-	if o == nil || o.Scope == nil {
+	if o == nil || IsNil(o.Scope) {
 		return nil, false
 	}
 	return o.Scope, true
@@ -92,7 +95,7 @@ func (o *ApiClientDraft) GetScopeOk() ([]string, bool) {
 
 // HasScope returns a boolean if a field has been set.
 func (o *ApiClientDraft) HasScope() bool {
-	if o != nil && o.Scope != nil {
+	if o != nil && !IsNil(o.Scope) {
 		return true
 	}
 
@@ -105,14 +108,22 @@ func (o *ApiClientDraft) SetScope(v []string) {
 }
 
 func (o ApiClientDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
-	}
-	if o.Scope != nil {
-		toSerialize["scope"] = o.Scope
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ApiClientDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.Scope) {
+		toSerialize["scope"] = o.Scope
+	}
+	return toSerialize, nil
 }
 
 type NullableApiClientDraft struct {

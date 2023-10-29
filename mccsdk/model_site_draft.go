@@ -15,37 +15,40 @@ import (
 	"encoding/json"
 )
 
-// ProjectAllOf struct for ProjectAllOf
-type ProjectAllOf struct {
-	// The organization key (must be unique)
+// checks if the SiteDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &SiteDraft{}
+
+// SiteDraft struct for SiteDraft
+type SiteDraft struct {
+	// The key for the site
 	Key string `json:"key"`
-	// The name of the organization
+	// The name for the site
 	Name string `json:"name"`
-	// description about the api client
+	// The description for the site
 	Description *string `json:"description,omitempty"`
 }
 
-// NewProjectAllOf instantiates a new ProjectAllOf object
+// NewSiteDraft instantiates a new SiteDraft object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProjectAllOf(key string, name string) *ProjectAllOf {
-	this := ProjectAllOf{}
+func NewSiteDraft(key string, name string) *SiteDraft {
+	this := SiteDraft{}
 	this.Key = key
 	this.Name = name
 	return &this
 }
 
-// NewProjectAllOfWithDefaults instantiates a new ProjectAllOf object
+// NewSiteDraftWithDefaults instantiates a new SiteDraft object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewProjectAllOfWithDefaults() *ProjectAllOf {
-	this := ProjectAllOf{}
+func NewSiteDraftWithDefaults() *SiteDraft {
+	this := SiteDraft{}
 	return &this
 }
 
 // GetKey returns the Key field value
-func (o *ProjectAllOf) GetKey() string {
+func (o *SiteDraft) GetKey() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -56,7 +59,7 @@ func (o *ProjectAllOf) GetKey() string {
 
 // GetKeyOk returns a tuple with the Key field value
 // and a boolean to check if the value has been set.
-func (o *ProjectAllOf) GetKeyOk() (*string, bool) {
+func (o *SiteDraft) GetKeyOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -64,12 +67,12 @@ func (o *ProjectAllOf) GetKeyOk() (*string, bool) {
 }
 
 // SetKey sets field value
-func (o *ProjectAllOf) SetKey(v string) {
+func (o *SiteDraft) SetKey(v string) {
 	o.Key = v
 }
 
 // GetName returns the Name field value
-func (o *ProjectAllOf) GetName() string {
+func (o *SiteDraft) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -80,7 +83,7 @@ func (o *ProjectAllOf) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *ProjectAllOf) GetNameOk() (*string, bool) {
+func (o *SiteDraft) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -88,13 +91,13 @@ func (o *ProjectAllOf) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *ProjectAllOf) SetName(v string) {
+func (o *SiteDraft) SetName(v string) {
 	o.Name = v
 }
 
 // GetDescription returns the Description field value if set, zero value otherwise.
-func (o *ProjectAllOf) GetDescription() string {
-	if o == nil || o.Description == nil {
+func (o *SiteDraft) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -103,16 +106,16 @@ func (o *ProjectAllOf) GetDescription() string {
 
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ProjectAllOf) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+func (o *SiteDraft) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
-func (o *ProjectAllOf) HasDescription() bool {
-	if o != nil && o.Description != nil {
+func (o *SiteDraft) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -120,56 +123,60 @@ func (o *ProjectAllOf) HasDescription() bool {
 }
 
 // SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *ProjectAllOf) SetDescription(v string) {
+func (o *SiteDraft) SetDescription(v string) {
 	o.Description = &v
 }
 
-func (o ProjectAllOf) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
+func (o SiteDraft) MarshalJSON() ([]byte, error) {
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
 }
 
-type NullableProjectAllOf struct {
-	value *ProjectAllOf
+func (o SiteDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	return toSerialize, nil
+}
+
+type NullableSiteDraft struct {
+	value *SiteDraft
 	isSet bool
 }
 
-func (v NullableProjectAllOf) Get() *ProjectAllOf {
+func (v NullableSiteDraft) Get() *SiteDraft {
 	return v.value
 }
 
-func (v *NullableProjectAllOf) Set(val *ProjectAllOf) {
+func (v *NullableSiteDraft) Set(val *SiteDraft) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableProjectAllOf) IsSet() bool {
+func (v NullableSiteDraft) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableProjectAllOf) Unset() {
+func (v *NullableSiteDraft) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableProjectAllOf(val *ProjectAllOf) *NullableProjectAllOf {
-	return &NullableProjectAllOf{value: val, isSet: true}
+func NewNullableSiteDraft(val *SiteDraft) *NullableSiteDraft {
+	return &NullableSiteDraft{value: val, isSet: true}
 }
 
-func (v NullableProjectAllOf) MarshalJSON() ([]byte, error) {
+func (v NullableSiteDraft) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableProjectAllOf) UnmarshalJSON(src []byte) error {
+func (v *NullableSiteDraft) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

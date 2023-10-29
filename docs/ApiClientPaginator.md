@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Count** | **float32** | Number of items in the current page | 
-**Total** | **float32** | Total number of items found | 
-**Offset** | **float32** |  | [default to 0]
-**Limit** | **float32** |  | [default to 20]
+**Count** | **int32** | Number of items in the current page | 
+**Total** | **int64** | Total number of items found | 
+**Offset** | **int32** |  | [default to 0]
+**Limit** | **int32** |  | [default to 20]
 **Results** | [**[]ApiClient**](ApiClient.md) |  | 
 
 ## Methods
 
 ### NewApiClientPaginator
 
-`func NewApiClientPaginator(count float32, total float32, offset float32, limit float32, results []ApiClient, ) *ApiClientPaginator`
+`func NewApiClientPaginator(count int32, total int64, offset int32, limit int32, results []ApiClient, ) *ApiClientPaginator`
 
 NewApiClientPaginator instantiates a new ApiClientPaginator object
 This constructor will assign default values to properties that have it defined,
@@ -31,80 +31,80 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetCount
 
-`func (o *ApiClientPaginator) GetCount() float32`
+`func (o *ApiClientPaginator) GetCount() int32`
 
 GetCount returns the Count field if non-nil, zero value otherwise.
 
 ### GetCountOk
 
-`func (o *ApiClientPaginator) GetCountOk() (*float32, bool)`
+`func (o *ApiClientPaginator) GetCountOk() (*int32, bool)`
 
 GetCountOk returns a tuple with the Count field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCount
 
-`func (o *ApiClientPaginator) SetCount(v float32)`
+`func (o *ApiClientPaginator) SetCount(v int32)`
 
 SetCount sets Count field to given value.
 
 
 ### GetTotal
 
-`func (o *ApiClientPaginator) GetTotal() float32`
+`func (o *ApiClientPaginator) GetTotal() int64`
 
 GetTotal returns the Total field if non-nil, zero value otherwise.
 
 ### GetTotalOk
 
-`func (o *ApiClientPaginator) GetTotalOk() (*float32, bool)`
+`func (o *ApiClientPaginator) GetTotalOk() (*int64, bool)`
 
 GetTotalOk returns a tuple with the Total field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetTotal
 
-`func (o *ApiClientPaginator) SetTotal(v float32)`
+`func (o *ApiClientPaginator) SetTotal(v int64)`
 
 SetTotal sets Total field to given value.
 
 
 ### GetOffset
 
-`func (o *ApiClientPaginator) GetOffset() float32`
+`func (o *ApiClientPaginator) GetOffset() int32`
 
 GetOffset returns the Offset field if non-nil, zero value otherwise.
 
 ### GetOffsetOk
 
-`func (o *ApiClientPaginator) GetOffsetOk() (*float32, bool)`
+`func (o *ApiClientPaginator) GetOffsetOk() (*int32, bool)`
 
 GetOffsetOk returns a tuple with the Offset field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetOffset
 
-`func (o *ApiClientPaginator) SetOffset(v float32)`
+`func (o *ApiClientPaginator) SetOffset(v int32)`
 
 SetOffset sets Offset field to given value.
 
 
 ### GetLimit
 
-`func (o *ApiClientPaginator) GetLimit() float32`
+`func (o *ApiClientPaginator) GetLimit() int32`
 
 GetLimit returns the Limit field if non-nil, zero value otherwise.
 
 ### GetLimitOk
 
-`func (o *ApiClientPaginator) GetLimitOk() (*float32, bool)`
+`func (o *ApiClientPaginator) GetLimitOk() (*int32, bool)`
 
 GetLimitOk returns a tuple with the Limit field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetLimit
 
-`func (o *ApiClientPaginator) SetLimit(v float32)`
+`func (o *ApiClientPaginator) SetLimit(v int32)`
 
 SetLimit sets Limit field to given value.
 

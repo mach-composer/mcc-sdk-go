@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the OrganizationUserProjectsInner type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUserProjectsInner{}
+
 // OrganizationUserProjectsInner struct for OrganizationUserProjectsInner
 type OrganizationUserProjectsInner struct {
 	Name   *string  `json:"name,omitempty"`
@@ -41,7 +44,7 @@ func NewOrganizationUserProjectsInnerWithDefaults() *OrganizationUserProjectsInn
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *OrganizationUserProjectsInner) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -51,7 +54,7 @@ func (o *OrganizationUserProjectsInner) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserProjectsInner) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -59,7 +62,7 @@ func (o *OrganizationUserProjectsInner) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *OrganizationUserProjectsInner) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -73,7 +76,7 @@ func (o *OrganizationUserProjectsInner) SetName(v string) {
 
 // GetKey returns the Key field value if set, zero value otherwise.
 func (o *OrganizationUserProjectsInner) GetKey() string {
-	if o == nil || o.Key == nil {
+	if o == nil || IsNil(o.Key) {
 		var ret string
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *OrganizationUserProjectsInner) GetKey() string {
 // GetKeyOk returns a tuple with the Key field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserProjectsInner) GetKeyOk() (*string, bool) {
-	if o == nil || o.Key == nil {
+	if o == nil || IsNil(o.Key) {
 		return nil, false
 	}
 	return o.Key, true
@@ -91,7 +94,7 @@ func (o *OrganizationUserProjectsInner) GetKeyOk() (*string, bool) {
 
 // HasKey returns a boolean if a field has been set.
 func (o *OrganizationUserProjectsInner) HasKey() bool {
-	if o != nil && o.Key != nil {
+	if o != nil && !IsNil(o.Key) {
 		return true
 	}
 
@@ -105,7 +108,7 @@ func (o *OrganizationUserProjectsInner) SetKey(v string) {
 
 // GetScopes returns the Scopes field value if set, zero value otherwise.
 func (o *OrganizationUserProjectsInner) GetScopes() []string {
-	if o == nil || o.Scopes == nil {
+	if o == nil || IsNil(o.Scopes) {
 		var ret []string
 		return ret
 	}
@@ -115,7 +118,7 @@ func (o *OrganizationUserProjectsInner) GetScopes() []string {
 // GetScopesOk returns a tuple with the Scopes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserProjectsInner) GetScopesOk() ([]string, bool) {
-	if o == nil || o.Scopes == nil {
+	if o == nil || IsNil(o.Scopes) {
 		return nil, false
 	}
 	return o.Scopes, true
@@ -123,7 +126,7 @@ func (o *OrganizationUserProjectsInner) GetScopesOk() ([]string, bool) {
 
 // HasScopes returns a boolean if a field has been set.
 func (o *OrganizationUserProjectsInner) HasScopes() bool {
-	if o != nil && o.Scopes != nil {
+	if o != nil && !IsNil(o.Scopes) {
 		return true
 	}
 
@@ -136,17 +139,25 @@ func (o *OrganizationUserProjectsInner) SetScopes(v []string) {
 }
 
 func (o OrganizationUserProjectsInner) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if o.Key != nil {
-		toSerialize["key"] = o.Key
-	}
-	if o.Scopes != nil {
-		toSerialize["scopes"] = o.Scopes
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUserProjectsInner) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Key) {
+		toSerialize["key"] = o.Key
+	}
+	if !IsNil(o.Scopes) {
+		toSerialize["scopes"] = o.Scopes
+	}
+	return toSerialize, nil
 }
 
 type NullableOrganizationUserProjectsInner struct {

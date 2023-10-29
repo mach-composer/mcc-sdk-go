@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the JSONPatchRequestAddReplaceTest type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &JSONPatchRequestAddReplaceTest{}
+
 // JSONPatchRequestAddReplaceTest struct for JSONPatchRequestAddReplaceTest
 type JSONPatchRequestAddReplaceTest struct {
 	// A JSON Pointer path.
@@ -84,7 +87,7 @@ func (o *JSONPatchRequestAddReplaceTest) GetValue() interface{} {
 // and a boolean to check if the value has been set.
 // NOTE: If the value is an explicit nil, `nil, true` will be returned
 func (o *JSONPatchRequestAddReplaceTest) GetValueOk() (*interface{}, bool) {
-	if o == nil || o.Value == nil {
+	if o == nil || IsNil(o.Value) {
 		return nil, false
 	}
 	return &o.Value, true
@@ -120,17 +123,21 @@ func (o *JSONPatchRequestAddReplaceTest) SetOp(v string) {
 }
 
 func (o JSONPatchRequestAddReplaceTest) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["path"] = o.Path
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
+	return json.Marshal(toSerialize)
+}
+
+func (o JSONPatchRequestAddReplaceTest) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["path"] = o.Path
 	if o.Value != nil {
 		toSerialize["value"] = o.Value
 	}
-	if true {
-		toSerialize["op"] = o.Op
-	}
-	return json.Marshal(toSerialize)
+	toSerialize["op"] = o.Op
+	return toSerialize, nil
 }
 
 type NullableJSONPatchRequestAddReplaceTest struct {

@@ -15,20 +15,21 @@ import (
 	"encoding/json"
 )
 
+// checks if the ComponentVersionDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ComponentVersionDraft{}
+
 // ComponentVersionDraft struct for ComponentVersionDraft
 type ComponentVersionDraft struct {
-	Component string `json:"component"`
-	Version   string `json:"version"`
-	Branch    string `json:"branch"`
+	Version string `json:"version"`
+	Branch  string `json:"branch"`
 }
 
 // NewComponentVersionDraft instantiates a new ComponentVersionDraft object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponentVersionDraft(component string, version string, branch string) *ComponentVersionDraft {
+func NewComponentVersionDraft(version string, branch string) *ComponentVersionDraft {
 	this := ComponentVersionDraft{}
-	this.Component = component
 	this.Version = version
 	this.Branch = branch
 	return &this
@@ -40,30 +41,6 @@ func NewComponentVersionDraft(component string, version string, branch string) *
 func NewComponentVersionDraftWithDefaults() *ComponentVersionDraft {
 	this := ComponentVersionDraft{}
 	return &this
-}
-
-// GetComponent returns the Component field value
-func (o *ComponentVersionDraft) GetComponent() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Component
-}
-
-// GetComponentOk returns a tuple with the Component field value
-// and a boolean to check if the value has been set.
-func (o *ComponentVersionDraft) GetComponentOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Component, true
-}
-
-// SetComponent sets field value
-func (o *ComponentVersionDraft) SetComponent(v string) {
-	o.Component = v
 }
 
 // GetVersion returns the Version field value
@@ -115,17 +92,18 @@ func (o *ComponentVersionDraft) SetBranch(v string) {
 }
 
 func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["component"] = o.Component
-	}
-	if true {
-		toSerialize["version"] = o.Version
-	}
-	if true {
-		toSerialize["branch"] = o.Branch
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ComponentVersionDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["version"] = o.Version
+	toSerialize["branch"] = o.Branch
+	return toSerialize, nil
 }
 
 type NullableComponentVersionDraft struct {

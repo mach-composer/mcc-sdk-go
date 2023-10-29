@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the JSONPatchRequestRemove type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &JSONPatchRequestRemove{}
+
 // JSONPatchRequestRemove struct for JSONPatchRequestRemove
 type JSONPatchRequestRemove struct {
 	// A JSON Pointer path.
@@ -91,14 +94,18 @@ func (o *JSONPatchRequestRemove) SetOp(v string) {
 }
 
 func (o JSONPatchRequestRemove) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["path"] = o.Path
-	}
-	if true {
-		toSerialize["op"] = o.Op
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o JSONPatchRequestRemove) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["path"] = o.Path
+	toSerialize["op"] = o.Op
+	return toSerialize, nil
 }
 
 type NullableJSONPatchRequestRemove struct {

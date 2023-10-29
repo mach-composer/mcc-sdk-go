@@ -16,6 +16,9 @@ import (
 	"time"
 )
 
+// checks if the MyAccountInformation200Response type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &MyAccountInformation200Response{}
+
 // MyAccountInformation200Response struct for MyAccountInformation200Response
 type MyAccountInformation200Response struct {
 	CreatedAt *time.Time `json:"created_at,omitempty"`
@@ -45,7 +48,7 @@ func NewMyAccountInformation200ResponseWithDefaults() *MyAccountInformation200Re
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *MyAccountInformation200Response) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -55,7 +58,7 @@ func (o *MyAccountInformation200Response) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MyAccountInformation200Response) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -63,7 +66,7 @@ func (o *MyAccountInformation200Response) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *MyAccountInformation200Response) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -77,7 +80,7 @@ func (o *MyAccountInformation200Response) SetCreatedAt(v time.Time) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *MyAccountInformation200Response) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -87,7 +90,7 @@ func (o *MyAccountInformation200Response) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MyAccountInformation200Response) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -95,7 +98,7 @@ func (o *MyAccountInformation200Response) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *MyAccountInformation200Response) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -109,7 +112,7 @@ func (o *MyAccountInformation200Response) SetName(v string) {
 
 // GetEmail returns the Email field value if set, zero value otherwise.
 func (o *MyAccountInformation200Response) GetEmail() string {
-	if o == nil || o.Email == nil {
+	if o == nil || IsNil(o.Email) {
 		var ret string
 		return ret
 	}
@@ -119,7 +122,7 @@ func (o *MyAccountInformation200Response) GetEmail() string {
 // GetEmailOk returns a tuple with the Email field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MyAccountInformation200Response) GetEmailOk() (*string, bool) {
-	if o == nil || o.Email == nil {
+	if o == nil || IsNil(o.Email) {
 		return nil, false
 	}
 	return o.Email, true
@@ -127,7 +130,7 @@ func (o *MyAccountInformation200Response) GetEmailOk() (*string, bool) {
 
 // HasEmail returns a boolean if a field has been set.
 func (o *MyAccountInformation200Response) HasEmail() bool {
-	if o != nil && o.Email != nil {
+	if o != nil && !IsNil(o.Email) {
 		return true
 	}
 
@@ -141,7 +144,7 @@ func (o *MyAccountInformation200Response) SetEmail(v string) {
 
 // GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
 func (o *MyAccountInformation200Response) GetAvatarUrl() string {
-	if o == nil || o.AvatarUrl == nil {
+	if o == nil || IsNil(o.AvatarUrl) {
 		var ret string
 		return ret
 	}
@@ -151,7 +154,7 @@ func (o *MyAccountInformation200Response) GetAvatarUrl() string {
 // GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MyAccountInformation200Response) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || o.AvatarUrl == nil {
+	if o == nil || IsNil(o.AvatarUrl) {
 		return nil, false
 	}
 	return o.AvatarUrl, true
@@ -159,7 +162,7 @@ func (o *MyAccountInformation200Response) GetAvatarUrlOk() (*string, bool) {
 
 // HasAvatarUrl returns a boolean if a field has been set.
 func (o *MyAccountInformation200Response) HasAvatarUrl() bool {
-	if o != nil && o.AvatarUrl != nil {
+	if o != nil && !IsNil(o.AvatarUrl) {
 		return true
 	}
 
@@ -172,20 +175,28 @@ func (o *MyAccountInformation200Response) SetAvatarUrl(v string) {
 }
 
 func (o MyAccountInformation200Response) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.CreatedAt != nil {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if o.Email != nil {
-		toSerialize["email"] = o.Email
-	}
-	if o.AvatarUrl != nil {
-		toSerialize["avatar_url"] = o.AvatarUrl
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o MyAccountInformation200Response) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.CreatedAt) {
+		toSerialize["created_at"] = o.CreatedAt
+	}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.Email) {
+		toSerialize["email"] = o.Email
+	}
+	if !IsNil(o.AvatarUrl) {
+		toSerialize["avatar_url"] = o.AvatarUrl
+	}
+	return toSerialize, nil
 }
 
 type NullableMyAccountInformation200Response struct {

@@ -16,6 +16,9 @@ import (
 	"time"
 )
 
+// checks if the CommitDataAuthor type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitDataAuthor{}
+
 // CommitDataAuthor struct for CommitDataAuthor
 type CommitDataAuthor struct {
 	Name  string    `json:"name"`
@@ -116,17 +119,19 @@ func (o *CommitDataAuthor) SetDate(v time.Time) {
 }
 
 func (o CommitDataAuthor) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if true {
-		toSerialize["date"] = o.Date
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitDataAuthor) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["email"] = o.Email
+	toSerialize["date"] = o.Date
+	return toSerialize, nil
 }
 
 type NullableCommitDataAuthor struct {

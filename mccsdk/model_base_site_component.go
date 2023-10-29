@@ -15,35 +15,38 @@ import (
 	"encoding/json"
 )
 
-// OrganizationAllOf struct for OrganizationAllOf
-type OrganizationAllOf struct {
-	// The organization key (must be unique)
+// checks if the BaseSiteComponent type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BaseSiteComponent{}
+
+// BaseSiteComponent struct for BaseSiteComponent
+type BaseSiteComponent struct {
+	// key of the site component
 	Key string `json:"key"`
-	// The name of the organization
+	// name of the site component
 	Name string `json:"name"`
 }
 
-// NewOrganizationAllOf instantiates a new OrganizationAllOf object
+// NewBaseSiteComponent instantiates a new BaseSiteComponent object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrganizationAllOf(key string, name string) *OrganizationAllOf {
-	this := OrganizationAllOf{}
+func NewBaseSiteComponent(key string, name string) *BaseSiteComponent {
+	this := BaseSiteComponent{}
 	this.Key = key
 	this.Name = name
 	return &this
 }
 
-// NewOrganizationAllOfWithDefaults instantiates a new OrganizationAllOf object
+// NewBaseSiteComponentWithDefaults instantiates a new BaseSiteComponent object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewOrganizationAllOfWithDefaults() *OrganizationAllOf {
-	this := OrganizationAllOf{}
+func NewBaseSiteComponentWithDefaults() *BaseSiteComponent {
+	this := BaseSiteComponent{}
 	return &this
 }
 
 // GetKey returns the Key field value
-func (o *OrganizationAllOf) GetKey() string {
+func (o *BaseSiteComponent) GetKey() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -54,7 +57,7 @@ func (o *OrganizationAllOf) GetKey() string {
 
 // GetKeyOk returns a tuple with the Key field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationAllOf) GetKeyOk() (*string, bool) {
+func (o *BaseSiteComponent) GetKeyOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -62,12 +65,12 @@ func (o *OrganizationAllOf) GetKeyOk() (*string, bool) {
 }
 
 // SetKey sets field value
-func (o *OrganizationAllOf) SetKey(v string) {
+func (o *BaseSiteComponent) SetKey(v string) {
 	o.Key = v
 }
 
 // GetName returns the Name field value
-func (o *OrganizationAllOf) GetName() string {
+func (o *BaseSiteComponent) GetName() string {
 	if o == nil {
 		var ret string
 		return ret
@@ -78,7 +81,7 @@ func (o *OrganizationAllOf) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationAllOf) GetNameOk() (*string, bool) {
+func (o *BaseSiteComponent) GetNameOk() (*string, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -86,53 +89,57 @@ func (o *OrganizationAllOf) GetNameOk() (*string, bool) {
 }
 
 // SetName sets field value
-func (o *OrganizationAllOf) SetName(v string) {
+func (o *BaseSiteComponent) SetName(v string) {
 	o.Name = v
 }
 
-func (o OrganizationAllOf) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
+func (o BaseSiteComponent) MarshalJSON() ([]byte, error) {
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
 }
 
-type NullableOrganizationAllOf struct {
-	value *OrganizationAllOf
+func (o BaseSiteComponent) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
+}
+
+type NullableBaseSiteComponent struct {
+	value *BaseSiteComponent
 	isSet bool
 }
 
-func (v NullableOrganizationAllOf) Get() *OrganizationAllOf {
+func (v NullableBaseSiteComponent) Get() *BaseSiteComponent {
 	return v.value
 }
 
-func (v *NullableOrganizationAllOf) Set(val *OrganizationAllOf) {
+func (v *NullableBaseSiteComponent) Set(val *BaseSiteComponent) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableOrganizationAllOf) IsSet() bool {
+func (v NullableBaseSiteComponent) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableOrganizationAllOf) Unset() {
+func (v *NullableBaseSiteComponent) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableOrganizationAllOf(val *OrganizationAllOf) *NullableOrganizationAllOf {
-	return &NullableOrganizationAllOf{value: val, isSet: true}
+func NewNullableBaseSiteComponent(val *BaseSiteComponent) *NullableBaseSiteComponent {
+	return &NullableBaseSiteComponent{value: val, isSet: true}
 }
 
-func (v NullableOrganizationAllOf) MarshalJSON() ([]byte, error) {
+func (v NullableBaseSiteComponent) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableOrganizationAllOf) UnmarshalJSON(src []byte) error {
+func (v *NullableBaseSiteComponent) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the OrganizationUserInviteDataOrganization type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUserInviteDataOrganization{}
+
 // OrganizationUserInviteDataOrganization struct for OrganizationUserInviteDataOrganization
 type OrganizationUserInviteDataOrganization struct {
 	Id   string `json:"id"`
@@ -89,14 +92,18 @@ func (o *OrganizationUserInviteDataOrganization) SetName(v string) {
 }
 
 func (o OrganizationUserInviteDataOrganization) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUserInviteDataOrganization) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableOrganizationUserInviteDataOrganization struct {

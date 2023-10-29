@@ -16,8 +16,12 @@ import (
 	"time"
 )
 
+// checks if the Project type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Project{}
+
 // Project struct for Project
 type Project struct {
+	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	// The organization key (must be unique)
 	Key string `json:"key"`
@@ -31,8 +35,9 @@ type Project struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewProject(createdAt time.Time, key string, name string) *Project {
+func NewProject(id string, createdAt time.Time, key string, name string) *Project {
 	this := Project{}
+	this.Id = id
 	this.CreatedAt = createdAt
 	this.Key = key
 	this.Name = name
@@ -45,6 +50,30 @@ func NewProject(createdAt time.Time, key string, name string) *Project {
 func NewProjectWithDefaults() *Project {
 	this := Project{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *Project) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *Project) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *Project) SetId(v string) {
+	o.Id = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -121,7 +150,7 @@ func (o *Project) SetName(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Project) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -131,7 +160,7 @@ func (o *Project) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Project) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
@@ -139,7 +168,7 @@ func (o *Project) GetDescriptionOk() (*string, bool) {
 
 // HasDescription returns a boolean if a field has been set.
 func (o *Project) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -152,20 +181,23 @@ func (o *Project) SetDescription(v string) {
 }
 
 func (o Project) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Project) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	return toSerialize, nil
 }
 
 type NullableProject struct {

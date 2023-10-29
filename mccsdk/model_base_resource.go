@@ -16,8 +16,12 @@ import (
 	"time"
 )
 
+// checks if the BaseResource type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BaseResource{}
+
 // BaseResource struct for BaseResource
 type BaseResource struct {
+	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
@@ -25,8 +29,9 @@ type BaseResource struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseResource(createdAt time.Time) *BaseResource {
+func NewBaseResource(id string, createdAt time.Time) *BaseResource {
 	this := BaseResource{}
+	this.Id = id
 	this.CreatedAt = createdAt
 	return &this
 }
@@ -37,6 +42,30 @@ func NewBaseResource(createdAt time.Time) *BaseResource {
 func NewBaseResourceWithDefaults() *BaseResource {
 	this := BaseResource{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *BaseResource) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *BaseResource) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *BaseResource) SetId(v string) {
+	o.Id = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -64,11 +93,18 @@ func (o *BaseResource) SetCreatedAt(v time.Time) {
 }
 
 func (o BaseResource) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BaseResource) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	return toSerialize, nil
 }
 
 type NullableBaseResource struct {

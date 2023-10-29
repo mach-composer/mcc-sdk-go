@@ -16,8 +16,12 @@ import (
 	"time"
 )
 
+// checks if the Organization type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Organization{}
+
 // Organization struct for Organization
 type Organization struct {
+	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	// The organization key (must be unique)
 	Key string `json:"key"`
@@ -29,8 +33,9 @@ type Organization struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrganization(createdAt time.Time, key string, name string) *Organization {
+func NewOrganization(id string, createdAt time.Time, key string, name string) *Organization {
 	this := Organization{}
+	this.Id = id
 	this.CreatedAt = createdAt
 	this.Key = key
 	this.Name = name
@@ -43,6 +48,30 @@ func NewOrganization(createdAt time.Time, key string, name string) *Organization
 func NewOrganizationWithDefaults() *Organization {
 	this := Organization{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *Organization) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *Organization) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *Organization) SetId(v string) {
+	o.Id = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -118,17 +147,20 @@ func (o *Organization) SetName(v string) {
 }
 
 func (o Organization) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Organization) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableOrganization struct {

@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the CommitDataDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitDataDraft{}
+
 // CommitDataDraft struct for CommitDataDraft
 type CommitDataDraft struct {
 	Commit    string           `json:"commit"`
@@ -71,7 +74,7 @@ func (o *CommitDataDraft) SetCommit(v string) {
 
 // GetParents returns the Parents field value if set, zero value otherwise.
 func (o *CommitDataDraft) GetParents() []string {
-	if o == nil || o.Parents == nil {
+	if o == nil || IsNil(o.Parents) {
 		var ret []string
 		return ret
 	}
@@ -81,7 +84,7 @@ func (o *CommitDataDraft) GetParents() []string {
 // GetParentsOk returns a tuple with the Parents field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CommitDataDraft) GetParentsOk() ([]string, bool) {
-	if o == nil || o.Parents == nil {
+	if o == nil || IsNil(o.Parents) {
 		return nil, false
 	}
 	return o.Parents, true
@@ -89,7 +92,7 @@ func (o *CommitDataDraft) GetParentsOk() ([]string, bool) {
 
 // HasParents returns a boolean if a field has been set.
 func (o *CommitDataDraft) HasParents() bool {
-	if o != nil && o.Parents != nil {
+	if o != nil && !IsNil(o.Parents) {
 		return true
 	}
 
@@ -174,23 +177,23 @@ func (o *CommitDataDraft) SetCommitter(v CommitDataAuthor) {
 }
 
 func (o CommitDataDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["commit"] = o.Commit
-	}
-	if o.Parents != nil {
-		toSerialize["parents"] = o.Parents
-	}
-	if true {
-		toSerialize["subject"] = o.Subject
-	}
-	if true {
-		toSerialize["author"] = o.Author
-	}
-	if true {
-		toSerialize["committer"] = o.Committer
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitDataDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["commit"] = o.Commit
+	if !IsNil(o.Parents) {
+		toSerialize["parents"] = o.Parents
+	}
+	toSerialize["subject"] = o.Subject
+	toSerialize["author"] = o.Author
+	toSerialize["committer"] = o.Committer
+	return toSerialize, nil
 }
 
 type NullableCommitDataDraft struct {

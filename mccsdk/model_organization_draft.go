@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the OrganizationDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationDraft{}
+
 // OrganizationDraft struct for OrganizationDraft
 type OrganizationDraft struct {
 	// The organization key (must be unique)
@@ -91,14 +94,18 @@ func (o *OrganizationDraft) SetName(v string) {
 }
 
 func (o OrganizationDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
 }
 
 type NullableOrganizationDraft struct {

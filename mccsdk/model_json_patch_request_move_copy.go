@@ -15,6 +15,9 @@ import (
 	"encoding/json"
 )
 
+// checks if the JSONPatchRequestMoveCopy type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &JSONPatchRequestMoveCopy{}
+
 // JSONPatchRequestMoveCopy struct for JSONPatchRequestMoveCopy
 type JSONPatchRequestMoveCopy struct {
 	// A JSON Pointer path.
@@ -91,14 +94,18 @@ func (o *JSONPatchRequestMoveCopy) SetOp(v string) {
 }
 
 func (o JSONPatchRequestMoveCopy) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["path"] = o.Path
-	}
-	if true {
-		toSerialize["op"] = o.Op
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o JSONPatchRequestMoveCopy) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["path"] = o.Path
+	toSerialize["op"] = o.Op
+	return toSerialize, nil
 }
 
 type NullableJSONPatchRequestMoveCopy struct {

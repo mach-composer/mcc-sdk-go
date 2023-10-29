@@ -16,6 +16,9 @@ import (
 	"time"
 )
 
+// checks if the CommitData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitData{}
+
 // CommitData struct for CommitData
 type CommitData struct {
 	Commit    string           `json:"commit"`
@@ -73,7 +76,7 @@ func (o *CommitData) SetCommit(v string) {
 
 // GetParents returns the Parents field value if set, zero value otherwise.
 func (o *CommitData) GetParents() []string {
-	if o == nil || o.Parents == nil {
+	if o == nil || IsNil(o.Parents) {
 		var ret []string
 		return ret
 	}
@@ -83,7 +86,7 @@ func (o *CommitData) GetParents() []string {
 // GetParentsOk returns a tuple with the Parents field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CommitData) GetParentsOk() ([]string, bool) {
-	if o == nil || o.Parents == nil {
+	if o == nil || IsNil(o.Parents) {
 		return nil, false
 	}
 	return o.Parents, true
@@ -91,7 +94,7 @@ func (o *CommitData) GetParentsOk() ([]string, bool) {
 
 // HasParents returns a boolean if a field has been set.
 func (o *CommitData) HasParents() bool {
-	if o != nil && o.Parents != nil {
+	if o != nil && !IsNil(o.Parents) {
 		return true
 	}
 
@@ -177,7 +180,7 @@ func (o *CommitData) SetCommitter(v CommitDataAuthor) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *CommitData) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -187,7 +190,7 @@ func (o *CommitData) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CommitData) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -195,7 +198,7 @@ func (o *CommitData) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *CommitData) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -208,26 +211,26 @@ func (o *CommitData) SetCreatedAt(v time.Time) {
 }
 
 func (o CommitData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["commit"] = o.Commit
-	}
-	if o.Parents != nil {
-		toSerialize["parents"] = o.Parents
-	}
-	if true {
-		toSerialize["subject"] = o.Subject
-	}
-	if true {
-		toSerialize["author"] = o.Author
-	}
-	if true {
-		toSerialize["committer"] = o.Committer
-	}
-	if o.CreatedAt != nil {
-		toSerialize["created_at"] = o.CreatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["commit"] = o.Commit
+	if !IsNil(o.Parents) {
+		toSerialize["parents"] = o.Parents
+	}
+	toSerialize["subject"] = o.Subject
+	toSerialize["author"] = o.Author
+	toSerialize["committer"] = o.Committer
+	if !IsNil(o.CreatedAt) {
+		toSerialize["created_at"] = o.CreatedAt
+	}
+	return toSerialize, nil
 }
 
 type NullableCommitData struct {
