@@ -12,9 +12,14 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
+
+// checks if the CommitDataAuthor type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitDataAuthor{}
 
 // CommitDataAuthor struct for CommitDataAuthor
 type CommitDataAuthor struct {
@@ -22,6 +27,8 @@ type CommitDataAuthor struct {
 	Email string    `json:"email"`
 	Date  time.Time `json:"date"`
 }
+
+type _CommitDataAuthor CommitDataAuthor
 
 // NewCommitDataAuthor instantiates a new CommitDataAuthor object
 // This constructor will assign default values to properties that have it defined,
@@ -116,17 +123,58 @@ func (o *CommitDataAuthor) SetDate(v time.Time) {
 }
 
 func (o CommitDataAuthor) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if true {
-		toSerialize["date"] = o.Date
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitDataAuthor) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["name"] = o.Name
+	toSerialize["email"] = o.Email
+	toSerialize["date"] = o.Date
+	return toSerialize, nil
+}
+
+func (o *CommitDataAuthor) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"name",
+		"email",
+		"date",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCommitDataAuthor := _CommitDataAuthor{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCommitDataAuthor)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CommitDataAuthor(varCommitDataAuthor)
+
+	return err
 }
 
 type NullableCommitDataAuthor struct {

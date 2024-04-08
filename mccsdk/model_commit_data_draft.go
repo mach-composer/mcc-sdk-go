@@ -12,25 +12,33 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the CommitDataDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitDataDraft{}
 
 // CommitDataDraft struct for CommitDataDraft
 type CommitDataDraft struct {
 	Commit    string           `json:"commit"`
-	Parents   []string         `json:"parents,omitempty"`
+	Parents   []string         `json:"parents"`
 	Subject   string           `json:"subject"`
 	Author    CommitDataAuthor `json:"author"`
 	Committer CommitDataAuthor `json:"committer"`
 }
 
+type _CommitDataDraft CommitDataDraft
+
 // NewCommitDataDraft instantiates a new CommitDataDraft object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCommitDataDraft(commit string, subject string, author CommitDataAuthor, committer CommitDataAuthor) *CommitDataDraft {
+func NewCommitDataDraft(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor) *CommitDataDraft {
 	this := CommitDataDraft{}
 	this.Commit = commit
+	this.Parents = parents
 	this.Subject = subject
 	this.Author = author
 	this.Committer = committer
@@ -69,34 +77,26 @@ func (o *CommitDataDraft) SetCommit(v string) {
 	o.Commit = v
 }
 
-// GetParents returns the Parents field value if set, zero value otherwise.
+// GetParents returns the Parents field value
 func (o *CommitDataDraft) GetParents() []string {
-	if o == nil || o.Parents == nil {
+	if o == nil {
 		var ret []string
 		return ret
 	}
+
 	return o.Parents
 }
 
-// GetParentsOk returns a tuple with the Parents field value if set, nil otherwise
+// GetParentsOk returns a tuple with the Parents field value
 // and a boolean to check if the value has been set.
 func (o *CommitDataDraft) GetParentsOk() ([]string, bool) {
-	if o == nil || o.Parents == nil {
+	if o == nil {
 		return nil, false
 	}
 	return o.Parents, true
 }
 
-// HasParents returns a boolean if a field has been set.
-func (o *CommitDataDraft) HasParents() bool {
-	if o != nil && o.Parents != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetParents gets a reference to the given []string and assigns it to the Parents field.
+// SetParents sets field value
 func (o *CommitDataDraft) SetParents(v []string) {
 	o.Parents = v
 }
@@ -174,23 +174,62 @@ func (o *CommitDataDraft) SetCommitter(v CommitDataAuthor) {
 }
 
 func (o CommitDataDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["commit"] = o.Commit
-	}
-	if o.Parents != nil {
-		toSerialize["parents"] = o.Parents
-	}
-	if true {
-		toSerialize["subject"] = o.Subject
-	}
-	if true {
-		toSerialize["author"] = o.Author
-	}
-	if true {
-		toSerialize["committer"] = o.Committer
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitDataDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["commit"] = o.Commit
+	toSerialize["parents"] = o.Parents
+	toSerialize["subject"] = o.Subject
+	toSerialize["author"] = o.Author
+	toSerialize["committer"] = o.Committer
+	return toSerialize, nil
+}
+
+func (o *CommitDataDraft) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"commit",
+		"parents",
+		"subject",
+		"author",
+		"committer",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCommitDataDraft := _CommitDataDraft{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCommitDataDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CommitDataDraft(varCommitDataDraft)
+
+	return err
 }
 
 type NullableCommitDataDraft struct {

@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Commit** | **string** |  | 
-**Parents** | Pointer to **[]string** |  | [optional] 
+**Parents** | **[]string** |  | 
 **Subject** | **string** |  | 
 **Author** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
 **Committer** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 
 ### NewCommitData
 
-`func NewCommitData(commit string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitData`
+`func NewCommitData(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitData`
 
 NewCommitData instantiates a new CommitData object
 This constructor will assign default values to properties that have it defined,
@@ -69,11 +69,6 @@ and a boolean to check if the value has been set.
 
 SetParents sets Parents field to given value.
 
-### HasParents
-
-`func (o *CommitData) HasParents() bool`
-
-HasParents returns a boolean if a field has been set.
 
 ### GetSubject
 

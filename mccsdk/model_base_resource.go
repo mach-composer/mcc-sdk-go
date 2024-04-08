@@ -12,21 +12,30 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
 
+// checks if the BaseResource type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &BaseResource{}
+
 // BaseResource struct for BaseResource
 type BaseResource struct {
+	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type _BaseResource BaseResource
 
 // NewBaseResource instantiates a new BaseResource object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewBaseResource(createdAt time.Time) *BaseResource {
+func NewBaseResource(id string, createdAt time.Time) *BaseResource {
 	this := BaseResource{}
+	this.Id = id
 	this.CreatedAt = createdAt
 	return &this
 }
@@ -37,6 +46,30 @@ func NewBaseResource(createdAt time.Time) *BaseResource {
 func NewBaseResourceWithDefaults() *BaseResource {
 	this := BaseResource{}
 	return &this
+}
+
+// GetId returns the Id field value
+func (o *BaseResource) GetId() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value
+// and a boolean to check if the value has been set.
+func (o *BaseResource) GetIdOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Id, true
+}
+
+// SetId sets field value
+func (o *BaseResource) SetId(v string) {
+	o.Id = v
 }
 
 // GetCreatedAt returns the CreatedAt field value
@@ -64,11 +97,56 @@ func (o *BaseResource) SetCreatedAt(v time.Time) {
 }
 
 func (o BaseResource) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["created_at"] = o.CreatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o BaseResource) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	return toSerialize, nil
+}
+
+func (o *BaseResource) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"created_at",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varBaseResource := _BaseResource{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varBaseResource)
+
+	if err != nil {
+		return err
+	}
+
+	*o = BaseResource(varBaseResource)
+
+	return err
 }
 
 type NullableBaseResource struct {

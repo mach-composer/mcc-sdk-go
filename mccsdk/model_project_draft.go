@@ -12,8 +12,13 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the ProjectDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &ProjectDraft{}
 
 // ProjectDraft struct for ProjectDraft
 type ProjectDraft struct {
@@ -22,6 +27,8 @@ type ProjectDraft struct {
 	// The name of the organization
 	Name string `json:"name"`
 }
+
+type _ProjectDraft ProjectDraft
 
 // NewProjectDraft instantiates a new ProjectDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -91,14 +98,56 @@ func (o *ProjectDraft) SetName(v string) {
 }
 
 func (o ProjectDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["key"] = o.Key
-	}
-	if true {
-		toSerialize["name"] = o.Name
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o ProjectDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
+	return toSerialize, nil
+}
+
+func (o *ProjectDraft) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"key",
+		"name",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varProjectDraft := _ProjectDraft{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varProjectDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ProjectDraft(varProjectDraft)
+
+	return err
 }
 
 type NullableProjectDraft struct {

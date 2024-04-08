@@ -12,8 +12,13 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the OrganizationUserInviteDraft type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUserInviteDraft{}
 
 // OrganizationUserInviteDraft struct for OrganizationUserInviteDraft
 type OrganizationUserInviteDraft struct {
@@ -24,6 +29,8 @@ type OrganizationUserInviteDraft struct {
 	// Role for the user
 	Role *string `json:"role,omitempty"`
 }
+
+type _OrganizationUserInviteDraft OrganizationUserInviteDraft
 
 // NewOrganizationUserInviteDraft instantiates a new OrganizationUserInviteDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -69,7 +76,7 @@ func (o *OrganizationUserInviteDraft) SetEmail(v string) {
 
 // GetProjectKey returns the ProjectKey field value if set, zero value otherwise.
 func (o *OrganizationUserInviteDraft) GetProjectKey() string {
-	if o == nil || o.ProjectKey == nil {
+	if o == nil || IsNil(o.ProjectKey) {
 		var ret string
 		return ret
 	}
@@ -79,7 +86,7 @@ func (o *OrganizationUserInviteDraft) GetProjectKey() string {
 // GetProjectKeyOk returns a tuple with the ProjectKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserInviteDraft) GetProjectKeyOk() (*string, bool) {
-	if o == nil || o.ProjectKey == nil {
+	if o == nil || IsNil(o.ProjectKey) {
 		return nil, false
 	}
 	return o.ProjectKey, true
@@ -87,7 +94,7 @@ func (o *OrganizationUserInviteDraft) GetProjectKeyOk() (*string, bool) {
 
 // HasProjectKey returns a boolean if a field has been set.
 func (o *OrganizationUserInviteDraft) HasProjectKey() bool {
-	if o != nil && o.ProjectKey != nil {
+	if o != nil && !IsNil(o.ProjectKey) {
 		return true
 	}
 
@@ -101,7 +108,7 @@ func (o *OrganizationUserInviteDraft) SetProjectKey(v string) {
 
 // GetRole returns the Role field value if set, zero value otherwise.
 func (o *OrganizationUserInviteDraft) GetRole() string {
-	if o == nil || o.Role == nil {
+	if o == nil || IsNil(o.Role) {
 		var ret string
 		return ret
 	}
@@ -111,7 +118,7 @@ func (o *OrganizationUserInviteDraft) GetRole() string {
 // GetRoleOk returns a tuple with the Role field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserInviteDraft) GetRoleOk() (*string, bool) {
-	if o == nil || o.Role == nil {
+	if o == nil || IsNil(o.Role) {
 		return nil, false
 	}
 	return o.Role, true
@@ -119,7 +126,7 @@ func (o *OrganizationUserInviteDraft) GetRoleOk() (*string, bool) {
 
 // HasRole returns a boolean if a field has been set.
 func (o *OrganizationUserInviteDraft) HasRole() bool {
-	if o != nil && o.Role != nil {
+	if o != nil && !IsNil(o.Role) {
 		return true
 	}
 
@@ -132,17 +139,60 @@ func (o *OrganizationUserInviteDraft) SetRole(v string) {
 }
 
 func (o OrganizationUserInviteDraft) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if o.ProjectKey != nil {
-		toSerialize["project_key"] = o.ProjectKey
-	}
-	if o.Role != nil {
-		toSerialize["role"] = o.Role
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUserInviteDraft) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["email"] = o.Email
+	if !IsNil(o.ProjectKey) {
+		toSerialize["project_key"] = o.ProjectKey
+	}
+	if !IsNil(o.Role) {
+		toSerialize["role"] = o.Role
+	}
+	return toSerialize, nil
+}
+
+func (o *OrganizationUserInviteDraft) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varOrganizationUserInviteDraft := _OrganizationUserInviteDraft{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varOrganizationUserInviteDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationUserInviteDraft(varOrganizationUserInviteDraft)
+
+	return err
 }
 
 type NullableOrganizationUserInviteDraft struct {

@@ -12,9 +12,14 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
+
+// checks if the OrganizationUser type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUser{}
 
 // OrganizationUser struct for OrganizationUser
 type OrganizationUser struct {
@@ -33,6 +38,8 @@ type OrganizationUser struct {
 	OrganizationScopes []string                        `json:"organization_scopes,omitempty"`
 	Projects           []OrganizationUserProjectsInner `json:"projects,omitempty"`
 }
+
+type _OrganizationUser OrganizationUser
 
 // NewOrganizationUser instantiates a new OrganizationUser object
 // This constructor will assign default values to properties that have it defined,
@@ -54,7 +61,7 @@ func NewOrganizationUserWithDefaults() *OrganizationUser {
 
 // GetClientId returns the ClientId field value if set, zero value otherwise.
 func (o *OrganizationUser) GetClientId() string {
-	if o == nil || o.ClientId == nil {
+	if o == nil || IsNil(o.ClientId) {
 		var ret string
 		return ret
 	}
@@ -64,7 +71,7 @@ func (o *OrganizationUser) GetClientId() string {
 // GetClientIdOk returns a tuple with the ClientId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetClientIdOk() (*string, bool) {
-	if o == nil || o.ClientId == nil {
+	if o == nil || IsNil(o.ClientId) {
 		return nil, false
 	}
 	return o.ClientId, true
@@ -72,7 +79,7 @@ func (o *OrganizationUser) GetClientIdOk() (*string, bool) {
 
 // HasClientId returns a boolean if a field has been set.
 func (o *OrganizationUser) HasClientId() bool {
-	if o != nil && o.ClientId != nil {
+	if o != nil && !IsNil(o.ClientId) {
 		return true
 	}
 
@@ -86,7 +93,7 @@ func (o *OrganizationUser) SetClientId(v string) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *OrganizationUser) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -96,7 +103,7 @@ func (o *OrganizationUser) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -104,7 +111,7 @@ func (o *OrganizationUser) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *OrganizationUser) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -118,7 +125,7 @@ func (o *OrganizationUser) SetCreatedAt(v time.Time) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *OrganizationUser) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -128,7 +135,7 @@ func (o *OrganizationUser) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
+	if o == nil || IsNil(o.Name) {
 		return nil, false
 	}
 	return o.Name, true
@@ -136,7 +143,7 @@ func (o *OrganizationUser) GetNameOk() (*string, bool) {
 
 // HasName returns a boolean if a field has been set.
 func (o *OrganizationUser) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !IsNil(o.Name) {
 		return true
 	}
 
@@ -174,7 +181,7 @@ func (o *OrganizationUser) SetEmail(v string) {
 
 // GetAvatarUrl returns the AvatarUrl field value if set, zero value otherwise.
 func (o *OrganizationUser) GetAvatarUrl() string {
-	if o == nil || o.AvatarUrl == nil {
+	if o == nil || IsNil(o.AvatarUrl) {
 		var ret string
 		return ret
 	}
@@ -184,7 +191,7 @@ func (o *OrganizationUser) GetAvatarUrl() string {
 // GetAvatarUrlOk returns a tuple with the AvatarUrl field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetAvatarUrlOk() (*string, bool) {
-	if o == nil || o.AvatarUrl == nil {
+	if o == nil || IsNil(o.AvatarUrl) {
 		return nil, false
 	}
 	return o.AvatarUrl, true
@@ -192,7 +199,7 @@ func (o *OrganizationUser) GetAvatarUrlOk() (*string, bool) {
 
 // HasAvatarUrl returns a boolean if a field has been set.
 func (o *OrganizationUser) HasAvatarUrl() bool {
-	if o != nil && o.AvatarUrl != nil {
+	if o != nil && !IsNil(o.AvatarUrl) {
 		return true
 	}
 
@@ -206,7 +213,7 @@ func (o *OrganizationUser) SetAvatarUrl(v string) {
 
 // GetOrganizationKey returns the OrganizationKey field value if set, zero value otherwise.
 func (o *OrganizationUser) GetOrganizationKey() string {
-	if o == nil || o.OrganizationKey == nil {
+	if o == nil || IsNil(o.OrganizationKey) {
 		var ret string
 		return ret
 	}
@@ -216,7 +223,7 @@ func (o *OrganizationUser) GetOrganizationKey() string {
 // GetOrganizationKeyOk returns a tuple with the OrganizationKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetOrganizationKeyOk() (*string, bool) {
-	if o == nil || o.OrganizationKey == nil {
+	if o == nil || IsNil(o.OrganizationKey) {
 		return nil, false
 	}
 	return o.OrganizationKey, true
@@ -224,7 +231,7 @@ func (o *OrganizationUser) GetOrganizationKeyOk() (*string, bool) {
 
 // HasOrganizationKey returns a boolean if a field has been set.
 func (o *OrganizationUser) HasOrganizationKey() bool {
-	if o != nil && o.OrganizationKey != nil {
+	if o != nil && !IsNil(o.OrganizationKey) {
 		return true
 	}
 
@@ -238,7 +245,7 @@ func (o *OrganizationUser) SetOrganizationKey(v string) {
 
 // GetOrganizationName returns the OrganizationName field value if set, zero value otherwise.
 func (o *OrganizationUser) GetOrganizationName() string {
-	if o == nil || o.OrganizationName == nil {
+	if o == nil || IsNil(o.OrganizationName) {
 		var ret string
 		return ret
 	}
@@ -248,7 +255,7 @@ func (o *OrganizationUser) GetOrganizationName() string {
 // GetOrganizationNameOk returns a tuple with the OrganizationName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetOrganizationNameOk() (*string, bool) {
-	if o == nil || o.OrganizationName == nil {
+	if o == nil || IsNil(o.OrganizationName) {
 		return nil, false
 	}
 	return o.OrganizationName, true
@@ -256,7 +263,7 @@ func (o *OrganizationUser) GetOrganizationNameOk() (*string, bool) {
 
 // HasOrganizationName returns a boolean if a field has been set.
 func (o *OrganizationUser) HasOrganizationName() bool {
-	if o != nil && o.OrganizationName != nil {
+	if o != nil && !IsNil(o.OrganizationName) {
 		return true
 	}
 
@@ -270,7 +277,7 @@ func (o *OrganizationUser) SetOrganizationName(v string) {
 
 // GetOrganizationScopes returns the OrganizationScopes field value if set, zero value otherwise.
 func (o *OrganizationUser) GetOrganizationScopes() []string {
-	if o == nil || o.OrganizationScopes == nil {
+	if o == nil || IsNil(o.OrganizationScopes) {
 		var ret []string
 		return ret
 	}
@@ -280,7 +287,7 @@ func (o *OrganizationUser) GetOrganizationScopes() []string {
 // GetOrganizationScopesOk returns a tuple with the OrganizationScopes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetOrganizationScopesOk() ([]string, bool) {
-	if o == nil || o.OrganizationScopes == nil {
+	if o == nil || IsNil(o.OrganizationScopes) {
 		return nil, false
 	}
 	return o.OrganizationScopes, true
@@ -288,7 +295,7 @@ func (o *OrganizationUser) GetOrganizationScopesOk() ([]string, bool) {
 
 // HasOrganizationScopes returns a boolean if a field has been set.
 func (o *OrganizationUser) HasOrganizationScopes() bool {
-	if o != nil && o.OrganizationScopes != nil {
+	if o != nil && !IsNil(o.OrganizationScopes) {
 		return true
 	}
 
@@ -302,7 +309,7 @@ func (o *OrganizationUser) SetOrganizationScopes(v []string) {
 
 // GetProjects returns the Projects field value if set, zero value otherwise.
 func (o *OrganizationUser) GetProjects() []OrganizationUserProjectsInner {
-	if o == nil || o.Projects == nil {
+	if o == nil || IsNil(o.Projects) {
 		var ret []OrganizationUserProjectsInner
 		return ret
 	}
@@ -312,7 +319,7 @@ func (o *OrganizationUser) GetProjects() []OrganizationUserProjectsInner {
 // GetProjectsOk returns a tuple with the Projects field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetProjectsOk() ([]OrganizationUserProjectsInner, bool) {
-	if o == nil || o.Projects == nil {
+	if o == nil || IsNil(o.Projects) {
 		return nil, false
 	}
 	return o.Projects, true
@@ -320,7 +327,7 @@ func (o *OrganizationUser) GetProjectsOk() ([]OrganizationUserProjectsInner, boo
 
 // HasProjects returns a boolean if a field has been set.
 func (o *OrganizationUser) HasProjects() bool {
-	if o != nil && o.Projects != nil {
+	if o != nil && !IsNil(o.Projects) {
 		return true
 	}
 
@@ -333,35 +340,78 @@ func (o *OrganizationUser) SetProjects(v []OrganizationUserProjectsInner) {
 }
 
 func (o OrganizationUser) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.ClientId != nil {
-		toSerialize["client_id"] = o.ClientId
-	}
-	if o.CreatedAt != nil {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if o.Name != nil {
-		toSerialize["name"] = o.Name
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if o.AvatarUrl != nil {
-		toSerialize["avatar_url"] = o.AvatarUrl
-	}
-	if o.OrganizationKey != nil {
-		toSerialize["organization_key"] = o.OrganizationKey
-	}
-	if o.OrganizationName != nil {
-		toSerialize["organization_name"] = o.OrganizationName
-	}
-	if o.OrganizationScopes != nil {
-		toSerialize["organization_scopes"] = o.OrganizationScopes
-	}
-	if o.Projects != nil {
-		toSerialize["projects"] = o.Projects
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUser) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.ClientId) {
+		toSerialize["client_id"] = o.ClientId
+	}
+	if !IsNil(o.CreatedAt) {
+		toSerialize["created_at"] = o.CreatedAt
+	}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	toSerialize["email"] = o.Email
+	if !IsNil(o.AvatarUrl) {
+		toSerialize["avatar_url"] = o.AvatarUrl
+	}
+	if !IsNil(o.OrganizationKey) {
+		toSerialize["organization_key"] = o.OrganizationKey
+	}
+	if !IsNil(o.OrganizationName) {
+		toSerialize["organization_name"] = o.OrganizationName
+	}
+	if !IsNil(o.OrganizationScopes) {
+		toSerialize["organization_scopes"] = o.OrganizationScopes
+	}
+	if !IsNil(o.Projects) {
+		toSerialize["projects"] = o.Projects
+	}
+	return toSerialize, nil
+}
+
+func (o *OrganizationUser) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varOrganizationUser := _OrganizationUser{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varOrganizationUser)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationUser(varOrganizationUser)
+
+	return err
 }
 
 type NullableOrganizationUser struct {

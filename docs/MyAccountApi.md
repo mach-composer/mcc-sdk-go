@@ -22,23 +22,23 @@ Get user information
 package main
 
 import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
 
-    configuration := openapiclient.NewConfiguration()
-    apiClient := openapiclient.NewAPIClient(configuration)
-    resp, r, err := apiClient.MyAccountApi.MyAccountInformation(context.Background()).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MyAccountApi.MyAccountInformation``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `MyAccountInformation`: MyAccountInformation200Response
-    fmt.Fprintf(os.Stdout, "Response from `MyAccountApi.MyAccountInformation`: %v\n", resp)
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.MyAccountApi.MyAccountInformation(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `MyAccountApi.MyAccountInformation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `MyAccountInformation`: MyAccountInformation200Response
+	fmt.Fprintf(os.Stdout, "Response from `MyAccountApi.MyAccountInformation`: %v\n", resp)
 }
 ```
 
