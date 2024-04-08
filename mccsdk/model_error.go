@@ -12,22 +12,29 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the Error type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &Error{}
 
 // Error struct for Error
 type Error struct {
-	Status      float32       `json:"status"`
+	Status      int32         `json:"status"`
 	Summary     string        `json:"summary"`
 	Description *string       `json:"description,omitempty"`
 	Errors      []ErrorObject `json:"errors,omitempty"`
 }
 
+type _Error Error
+
 // NewError instantiates a new Error object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewError(status float32, summary string) *Error {
+func NewError(status int32, summary string) *Error {
 	this := Error{}
 	this.Status = status
 	this.Summary = summary
@@ -43,9 +50,9 @@ func NewErrorWithDefaults() *Error {
 }
 
 // GetStatus returns the Status field value
-func (o *Error) GetStatus() float32 {
+func (o *Error) GetStatus() int32 {
 	if o == nil {
-		var ret float32
+		var ret int32
 		return ret
 	}
 
@@ -54,7 +61,7 @@ func (o *Error) GetStatus() float32 {
 
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
-func (o *Error) GetStatusOk() (*float32, bool) {
+func (o *Error) GetStatusOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -62,7 +69,7 @@ func (o *Error) GetStatusOk() (*float32, bool) {
 }
 
 // SetStatus sets field value
-func (o *Error) SetStatus(v float32) {
+func (o *Error) SetStatus(v int32) {
 	o.Status = v
 }
 
@@ -92,7 +99,7 @@ func (o *Error) SetSummary(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Error) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -102,7 +109,7 @@ func (o *Error) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
+	if o == nil || IsNil(o.Description) {
 		return nil, false
 	}
 	return o.Description, true
@@ -110,7 +117,7 @@ func (o *Error) GetDescriptionOk() (*string, bool) {
 
 // HasDescription returns a boolean if a field has been set.
 func (o *Error) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !IsNil(o.Description) {
 		return true
 	}
 
@@ -124,7 +131,7 @@ func (o *Error) SetDescription(v string) {
 
 // GetErrors returns the Errors field value if set, zero value otherwise.
 func (o *Error) GetErrors() []ErrorObject {
-	if o == nil || o.Errors == nil {
+	if o == nil || IsNil(o.Errors) {
 		var ret []ErrorObject
 		return ret
 	}
@@ -134,7 +141,7 @@ func (o *Error) GetErrors() []ErrorObject {
 // GetErrorsOk returns a tuple with the Errors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Error) GetErrorsOk() ([]ErrorObject, bool) {
-	if o == nil || o.Errors == nil {
+	if o == nil || IsNil(o.Errors) {
 		return nil, false
 	}
 	return o.Errors, true
@@ -142,7 +149,7 @@ func (o *Error) GetErrorsOk() ([]ErrorObject, bool) {
 
 // HasErrors returns a boolean if a field has been set.
 func (o *Error) HasErrors() bool {
-	if o != nil && o.Errors != nil {
+	if o != nil && !IsNil(o.Errors) {
 		return true
 	}
 
@@ -155,20 +162,62 @@ func (o *Error) SetErrors(v []ErrorObject) {
 }
 
 func (o Error) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["status"] = o.Status
-	}
-	if true {
-		toSerialize["summary"] = o.Summary
-	}
-	if o.Description != nil {
-		toSerialize["description"] = o.Description
-	}
-	if o.Errors != nil {
-		toSerialize["errors"] = o.Errors
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o Error) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["status"] = o.Status
+	toSerialize["summary"] = o.Summary
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+	if !IsNil(o.Errors) {
+		toSerialize["errors"] = o.Errors
+	}
+	return toSerialize, nil
+}
+
+func (o *Error) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"status",
+		"summary",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varError := _Error{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varError)
+
+	if err != nil {
+		return err
+	}
+
+	*o = Error(varError)
+
+	return err
 }
 
 type NullableError struct {

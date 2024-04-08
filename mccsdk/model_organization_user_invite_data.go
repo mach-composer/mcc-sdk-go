@@ -12,15 +12,24 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the OrganizationUserInviteData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUserInviteData{}
 
 // OrganizationUserInviteData struct for OrganizationUserInviteData
 type OrganizationUserInviteData struct {
-	Id           string                                 `json:"id"`
+	Id string `json:"id"`
+	// If the invite is still valid. False if the invite expired or was already used.
+	Valid        *bool                                  `json:"valid,omitempty"`
 	CreatedBy    string                                 `json:"created_by"`
 	Organization OrganizationUserInviteDataOrganization `json:"organization"`
 }
+
+type _OrganizationUserInviteData OrganizationUserInviteData
 
 // NewOrganizationUserInviteData instantiates a new OrganizationUserInviteData object
 // This constructor will assign default values to properties that have it defined,
@@ -64,6 +73,38 @@ func (o *OrganizationUserInviteData) GetIdOk() (*string, bool) {
 // SetId sets field value
 func (o *OrganizationUserInviteData) SetId(v string) {
 	o.Id = v
+}
+
+// GetValid returns the Valid field value if set, zero value otherwise.
+func (o *OrganizationUserInviteData) GetValid() bool {
+	if o == nil || IsNil(o.Valid) {
+		var ret bool
+		return ret
+	}
+	return *o.Valid
+}
+
+// GetValidOk returns a tuple with the Valid field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrganizationUserInviteData) GetValidOk() (*bool, bool) {
+	if o == nil || IsNil(o.Valid) {
+		return nil, false
+	}
+	return o.Valid, true
+}
+
+// HasValid returns a boolean if a field has been set.
+func (o *OrganizationUserInviteData) HasValid() bool {
+	if o != nil && !IsNil(o.Valid) {
+		return true
+	}
+
+	return false
+}
+
+// SetValid gets a reference to the given bool and assigns it to the Valid field.
+func (o *OrganizationUserInviteData) SetValid(v bool) {
+	o.Valid = &v
 }
 
 // GetCreatedBy returns the CreatedBy field value
@@ -115,17 +156,61 @@ func (o *OrganizationUserInviteData) SetOrganization(v OrganizationUserInviteDat
 }
 
 func (o OrganizationUserInviteData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["id"] = o.Id
-	}
-	if true {
-		toSerialize["created_by"] = o.CreatedBy
-	}
-	if true {
-		toSerialize["organization"] = o.Organization
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUserInviteData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["id"] = o.Id
+	if !IsNil(o.Valid) {
+		toSerialize["valid"] = o.Valid
+	}
+	toSerialize["created_by"] = o.CreatedBy
+	toSerialize["organization"] = o.Organization
+	return toSerialize, nil
+}
+
+func (o *OrganizationUserInviteData) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"id",
+		"created_by",
+		"organization",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varOrganizationUserInviteData := _OrganizationUserInviteData{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varOrganizationUserInviteData)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationUserInviteData(varOrganizationUserInviteData)
+
+	return err
 }
 
 type NullableOrganizationUserInviteData struct {

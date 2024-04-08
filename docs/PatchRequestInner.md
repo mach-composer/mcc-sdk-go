@@ -5,14 +5,14 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Path** | **string** | A JSON Pointer path. | 
-**Value** | **interface{}** | The value to add, replace or test. | 
+**Value** | **map[string]interface{}** | The value to add, replace or test. | 
 **Op** | **string** | The operation to perform. | 
 
 ## Methods
 
 ### NewPatchRequestInner
 
-`func NewPatchRequestInner(path string, value interface{}, op string, ) *PatchRequestInner`
+`func NewPatchRequestInner(path string, value map[string]interface{}, op string, ) *PatchRequestInner`
 
 NewPatchRequestInner instantiates a new PatchRequestInner object
 This constructor will assign default values to properties that have it defined,
@@ -49,34 +49,24 @@ SetPath sets Path field to given value.
 
 ### GetValue
 
-`func (o *PatchRequestInner) GetValue() interface{}`
+`func (o *PatchRequestInner) GetValue() map[string]interface{}`
 
 GetValue returns the Value field if non-nil, zero value otherwise.
 
 ### GetValueOk
 
-`func (o *PatchRequestInner) GetValueOk() (*interface{}, bool)`
+`func (o *PatchRequestInner) GetValueOk() (*map[string]interface{}, bool)`
 
 GetValueOk returns a tuple with the Value field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetValue
 
-`func (o *PatchRequestInner) SetValue(v interface{})`
+`func (o *PatchRequestInner) SetValue(v map[string]interface{})`
 
 SetValue sets Value field to given value.
 
 
-### SetValueNil
-
-`func (o *PatchRequestInner) SetValueNil(b bool)`
-
- SetValueNil sets the value for Value to be an explicit nil
-
-### UnsetValue
-`func (o *PatchRequestInner) UnsetValue()`
-
-UnsetValue ensures that no value is present for Value, not even an explicit nil
 ### GetOp
 
 `func (o *PatchRequestInner) GetOp() string`

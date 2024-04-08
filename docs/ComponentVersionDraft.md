@@ -4,7 +4,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Component** | **string** |  | 
 **Version** | **string** |  | 
 **Branch** | **string** |  | 
 
@@ -12,7 +11,7 @@ Name | Type | Description | Notes
 
 ### NewComponentVersionDraft
 
-`func NewComponentVersionDraft(component string, version string, branch string, ) *ComponentVersionDraft`
+`func NewComponentVersionDraft(version string, branch string, ) *ComponentVersionDraft`
 
 NewComponentVersionDraft instantiates a new ComponentVersionDraft object
 This constructor will assign default values to properties that have it defined,
@@ -26,26 +25,6 @@ will change when the set of required properties is changed
 NewComponentVersionDraftWithDefaults instantiates a new ComponentVersionDraft object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
-
-### GetComponent
-
-`func (o *ComponentVersionDraft) GetComponent() string`
-
-GetComponent returns the Component field if non-nil, zero value otherwise.
-
-### GetComponentOk
-
-`func (o *ComponentVersionDraft) GetComponentOk() (*string, bool)`
-
-GetComponentOk returns a tuple with the Component field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetComponent
-
-`func (o *ComponentVersionDraft) SetComponent(v string)`
-
-SetComponent sets Component field to given value.
-
 
 ### GetVersion
 

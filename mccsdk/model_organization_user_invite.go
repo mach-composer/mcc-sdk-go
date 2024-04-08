@@ -12,8 +12,13 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 )
+
+// checks if the OrganizationUserInvite type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &OrganizationUserInvite{}
 
 // OrganizationUserInvite struct for OrganizationUserInvite
 type OrganizationUserInvite struct {
@@ -25,6 +30,8 @@ type OrganizationUserInvite struct {
 	// Role for the user
 	Role *string `json:"role,omitempty"`
 }
+
+type _OrganizationUserInvite OrganizationUserInvite
 
 // NewOrganizationUserInvite instantiates a new OrganizationUserInvite object
 // This constructor will assign default values to properties that have it defined,
@@ -46,7 +53,7 @@ func NewOrganizationUserInviteWithDefaults() *OrganizationUserInvite {
 
 // GetCreatedBy returns the CreatedBy field value if set, zero value otherwise.
 func (o *OrganizationUserInvite) GetCreatedBy() string {
-	if o == nil || o.CreatedBy == nil {
+	if o == nil || IsNil(o.CreatedBy) {
 		var ret string
 		return ret
 	}
@@ -56,7 +63,7 @@ func (o *OrganizationUserInvite) GetCreatedBy() string {
 // GetCreatedByOk returns a tuple with the CreatedBy field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserInvite) GetCreatedByOk() (*string, bool) {
-	if o == nil || o.CreatedBy == nil {
+	if o == nil || IsNil(o.CreatedBy) {
 		return nil, false
 	}
 	return o.CreatedBy, true
@@ -64,7 +71,7 @@ func (o *OrganizationUserInvite) GetCreatedByOk() (*string, bool) {
 
 // HasCreatedBy returns a boolean if a field has been set.
 func (o *OrganizationUserInvite) HasCreatedBy() bool {
-	if o != nil && o.CreatedBy != nil {
+	if o != nil && !IsNil(o.CreatedBy) {
 		return true
 	}
 
@@ -102,7 +109,7 @@ func (o *OrganizationUserInvite) SetEmail(v string) {
 
 // GetProjectKey returns the ProjectKey field value if set, zero value otherwise.
 func (o *OrganizationUserInvite) GetProjectKey() string {
-	if o == nil || o.ProjectKey == nil {
+	if o == nil || IsNil(o.ProjectKey) {
 		var ret string
 		return ret
 	}
@@ -112,7 +119,7 @@ func (o *OrganizationUserInvite) GetProjectKey() string {
 // GetProjectKeyOk returns a tuple with the ProjectKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserInvite) GetProjectKeyOk() (*string, bool) {
-	if o == nil || o.ProjectKey == nil {
+	if o == nil || IsNil(o.ProjectKey) {
 		return nil, false
 	}
 	return o.ProjectKey, true
@@ -120,7 +127,7 @@ func (o *OrganizationUserInvite) GetProjectKeyOk() (*string, bool) {
 
 // HasProjectKey returns a boolean if a field has been set.
 func (o *OrganizationUserInvite) HasProjectKey() bool {
-	if o != nil && o.ProjectKey != nil {
+	if o != nil && !IsNil(o.ProjectKey) {
 		return true
 	}
 
@@ -134,7 +141,7 @@ func (o *OrganizationUserInvite) SetProjectKey(v string) {
 
 // GetRole returns the Role field value if set, zero value otherwise.
 func (o *OrganizationUserInvite) GetRole() string {
-	if o == nil || o.Role == nil {
+	if o == nil || IsNil(o.Role) {
 		var ret string
 		return ret
 	}
@@ -144,7 +151,7 @@ func (o *OrganizationUserInvite) GetRole() string {
 // GetRoleOk returns a tuple with the Role field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OrganizationUserInvite) GetRoleOk() (*string, bool) {
-	if o == nil || o.Role == nil {
+	if o == nil || IsNil(o.Role) {
 		return nil, false
 	}
 	return o.Role, true
@@ -152,7 +159,7 @@ func (o *OrganizationUserInvite) GetRoleOk() (*string, bool) {
 
 // HasRole returns a boolean if a field has been set.
 func (o *OrganizationUserInvite) HasRole() bool {
-	if o != nil && o.Role != nil {
+	if o != nil && !IsNil(o.Role) {
 		return true
 	}
 
@@ -165,20 +172,63 @@ func (o *OrganizationUserInvite) SetRole(v string) {
 }
 
 func (o OrganizationUserInvite) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if o.CreatedBy != nil {
-		toSerialize["created_by"] = o.CreatedBy
-	}
-	if true {
-		toSerialize["email"] = o.Email
-	}
-	if o.ProjectKey != nil {
-		toSerialize["project_key"] = o.ProjectKey
-	}
-	if o.Role != nil {
-		toSerialize["role"] = o.Role
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o OrganizationUserInvite) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	if !IsNil(o.CreatedBy) {
+		toSerialize["created_by"] = o.CreatedBy
+	}
+	toSerialize["email"] = o.Email
+	if !IsNil(o.ProjectKey) {
+		toSerialize["project_key"] = o.ProjectKey
+	}
+	if !IsNil(o.Role) {
+		toSerialize["role"] = o.Role
+	}
+	return toSerialize, nil
+}
+
+func (o *OrganizationUserInvite) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"email",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varOrganizationUserInvite := _OrganizationUserInvite{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varOrganizationUserInvite)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationUserInvite(varOrganizationUserInvite)
+
+	return err
 }
 
 type NullableOrganizationUserInvite struct {

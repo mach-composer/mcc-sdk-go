@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | 
+**Valid** | Pointer to **bool** | If the invite is still valid. False if the invite expired or was already used.  | [optional] 
 **CreatedBy** | **string** |  | 
 **Organization** | [**OrganizationUserInviteDataOrganization**](OrganizationUserInviteDataOrganization.md) |  | 
 
@@ -46,6 +47,31 @@ and a boolean to check if the value has been set.
 
 SetId sets Id field to given value.
 
+
+### GetValid
+
+`func (o *OrganizationUserInviteData) GetValid() bool`
+
+GetValid returns the Valid field if non-nil, zero value otherwise.
+
+### GetValidOk
+
+`func (o *OrganizationUserInviteData) GetValidOk() (*bool, bool)`
+
+GetValidOk returns a tuple with the Valid field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetValid
+
+`func (o *OrganizationUserInviteData) SetValid(v bool)`
+
+SetValid sets Valid field to given value.
+
+### HasValid
+
+`func (o *OrganizationUserInviteData) HasValid() bool`
+
+HasValid returns a boolean if a field has been set.
 
 ### GetCreatedBy
 

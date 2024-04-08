@@ -5,7 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Commit** | **string** |  | 
-**Parents** | Pointer to **[]string** |  | [optional] 
+**Parents** | **[]string** |  | 
 **Subject** | **string** |  | 
 **Author** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
 **Committer** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 
 ### NewCommitDataDraft
 
-`func NewCommitDataDraft(commit string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitDataDraft`
+`func NewCommitDataDraft(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitDataDraft`
 
 NewCommitDataDraft instantiates a new CommitDataDraft object
 This constructor will assign default values to properties that have it defined,
@@ -68,11 +68,6 @@ and a boolean to check if the value has been set.
 
 SetParents sets Parents field to given value.
 
-### HasParents
-
-`func (o *CommitDataDraft) HasParents() bool`
-
-HasParents returns a boolean if a field has been set.
 
 ### GetSubject
 

@@ -3,3 +3,4 @@
 go.mod
 go.sum
 git_push.sh
+/test

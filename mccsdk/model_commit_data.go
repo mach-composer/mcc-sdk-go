@@ -12,27 +12,35 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"time"
 )
+
+// checks if the CommitData type satisfies the MappedNullable interface at compile time
+var _ MappedNullable = &CommitData{}
 
 // CommitData struct for CommitData
 type CommitData struct {
 	Commit    string           `json:"commit"`
-	Parents   []string         `json:"parents,omitempty"`
+	Parents   []string         `json:"parents"`
 	Subject   string           `json:"subject"`
 	Author    CommitDataAuthor `json:"author"`
 	Committer CommitDataAuthor `json:"committer"`
 	CreatedAt *time.Time       `json:"created_at,omitempty"`
 }
 
+type _CommitData CommitData
+
 // NewCommitData instantiates a new CommitData object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCommitData(commit string, subject string, author CommitDataAuthor, committer CommitDataAuthor) *CommitData {
+func NewCommitData(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor) *CommitData {
 	this := CommitData{}
 	this.Commit = commit
+	this.Parents = parents
 	this.Subject = subject
 	this.Author = author
 	this.Committer = committer
@@ -71,34 +79,26 @@ func (o *CommitData) SetCommit(v string) {
 	o.Commit = v
 }
 
-// GetParents returns the Parents field value if set, zero value otherwise.
+// GetParents returns the Parents field value
 func (o *CommitData) GetParents() []string {
-	if o == nil || o.Parents == nil {
+	if o == nil {
 		var ret []string
 		return ret
 	}
+
 	return o.Parents
 }
 
-// GetParentsOk returns a tuple with the Parents field value if set, nil otherwise
+// GetParentsOk returns a tuple with the Parents field value
 // and a boolean to check if the value has been set.
 func (o *CommitData) GetParentsOk() ([]string, bool) {
-	if o == nil || o.Parents == nil {
+	if o == nil {
 		return nil, false
 	}
 	return o.Parents, true
 }
 
-// HasParents returns a boolean if a field has been set.
-func (o *CommitData) HasParents() bool {
-	if o != nil && o.Parents != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetParents gets a reference to the given []string and assigns it to the Parents field.
+// SetParents sets field value
 func (o *CommitData) SetParents(v []string) {
 	o.Parents = v
 }
@@ -177,7 +177,7 @@ func (o *CommitData) SetCommitter(v CommitDataAuthor) {
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
 func (o *CommitData) GetCreatedAt() time.Time {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		var ret time.Time
 		return ret
 	}
@@ -187,7 +187,7 @@ func (o *CommitData) GetCreatedAt() time.Time {
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CommitData) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || o.CreatedAt == nil {
+	if o == nil || IsNil(o.CreatedAt) {
 		return nil, false
 	}
 	return o.CreatedAt, true
@@ -195,7 +195,7 @@ func (o *CommitData) GetCreatedAtOk() (*time.Time, bool) {
 
 // HasCreatedAt returns a boolean if a field has been set.
 func (o *CommitData) HasCreatedAt() bool {
-	if o != nil && o.CreatedAt != nil {
+	if o != nil && !IsNil(o.CreatedAt) {
 		return true
 	}
 
@@ -208,26 +208,65 @@ func (o *CommitData) SetCreatedAt(v time.Time) {
 }
 
 func (o CommitData) MarshalJSON() ([]byte, error) {
-	toSerialize := map[string]interface{}{}
-	if true {
-		toSerialize["commit"] = o.Commit
-	}
-	if o.Parents != nil {
-		toSerialize["parents"] = o.Parents
-	}
-	if true {
-		toSerialize["subject"] = o.Subject
-	}
-	if true {
-		toSerialize["author"] = o.Author
-	}
-	if true {
-		toSerialize["committer"] = o.Committer
-	}
-	if o.CreatedAt != nil {
-		toSerialize["created_at"] = o.CreatedAt
+	toSerialize, err := o.ToMap()
+	if err != nil {
+		return []byte{}, err
 	}
 	return json.Marshal(toSerialize)
+}
+
+func (o CommitData) ToMap() (map[string]interface{}, error) {
+	toSerialize := map[string]interface{}{}
+	toSerialize["commit"] = o.Commit
+	toSerialize["parents"] = o.Parents
+	toSerialize["subject"] = o.Subject
+	toSerialize["author"] = o.Author
+	toSerialize["committer"] = o.Committer
+	if !IsNil(o.CreatedAt) {
+		toSerialize["created_at"] = o.CreatedAt
+	}
+	return toSerialize, nil
+}
+
+func (o *CommitData) UnmarshalJSON(data []byte) (err error) {
+	// This validates that all required properties are included in the JSON object
+	// by unmarshalling the object into a generic map with string keys and checking
+	// that every required field exists as a key in the generic map.
+	requiredProperties := []string{
+		"commit",
+		"parents",
+		"subject",
+		"author",
+		"committer",
+	}
+
+	allProperties := make(map[string]interface{})
+
+	err = json.Unmarshal(data, &allProperties)
+
+	if err != nil {
+		return err
+	}
+
+	for _, requiredProperty := range requiredProperties {
+		if _, exists := allProperties[requiredProperty]; !exists {
+			return fmt.Errorf("no value given for required property %v", requiredProperty)
+		}
+	}
+
+	varCommitData := _CommitData{}
+
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	err = decoder.Decode(&varCommitData)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CommitData(varCommitData)
+
+	return err
 }
 
 type NullableCommitData struct {

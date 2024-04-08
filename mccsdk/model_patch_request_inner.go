@@ -93,11 +93,11 @@ func (dst *PatchRequestInner) UnmarshalJSON(data []byte) error {
 		dst.JSONPatchRequestMoveCopy = nil
 		dst.JSONPatchRequestRemove = nil
 
-		return fmt.Errorf("Data matches more than one schema in oneOf(PatchRequestInner)")
+		return fmt.Errorf("data matches more than one schema in oneOf(PatchRequestInner)")
 	} else if match == 1 {
 		return nil // exactly one match
 	} else { // no match
-		return fmt.Errorf("Data failed to match schemas in oneOf(PatchRequestInner)")
+		return fmt.Errorf("data failed to match schemas in oneOf(PatchRequestInner)")
 	}
 }
 

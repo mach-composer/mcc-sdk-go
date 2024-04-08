@@ -1,0 +1,24 @@
+version: '3'
+
+tasks:
+  test:
+      cmds:
+      - go test ./...
+
+  clean:
+    cmds:
+      - rm -f *.go
+      - rm -rf docs
+      - rm -rf api
+      - rm -rf tmp
+
+  generate:
+    env:
+      GO_POST_PROCESS_FILE: gofmt -w
+    cmds:
+      - rm -rf mccsdk docs
+      - openapi-generator generate -i ../mcc-api-documentation/openapi-public.yaml -g go --enable-post-process-file --model-package mccsdk/mccmodels --http-user-agent mcc-sdk-go --additional-properties=apiNameSuffix=Api,packageName=mccsdk,generateInterfaces=true
+      - mkdir mccsdk
+      - mv *.go mccsdk
+      - rm -rf test
+      - go mod tidy
