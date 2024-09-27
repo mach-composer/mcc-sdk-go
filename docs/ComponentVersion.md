@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**CreatedAt** | **time.Time** |  | 
-**Component** | **string** | key of the component | 
+**Id** | **string** |  | [readonly] 
+**CreatedAt** | **time.Time** |  | [readonly] 
+**Component** | **string** | key of the component | [readonly] 
 **Version** | **string** | version of the component | 
 **Branch** | Pointer to **string** | branch of the version | [optional] 
 

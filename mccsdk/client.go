@@ -32,8 +32,6 @@ import (
 	"strings"
 	"time"
 	"unicode/utf8"
-
-	"golang.org/x/oauth2"
 )
 
 var (
@@ -58,10 +56,6 @@ type APIClient struct {
 	MyAccountApi MyAccountApi
 
 	OrganizationManagementApi OrganizationManagementApi
-
-	SiteComponentsApi SiteComponentsApi
-
-	SitesApi SitesApi
 }
 
 type service struct {
@@ -84,8 +78,6 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.ComponentsApi = (*ComponentsApiService)(&c.common)
 	c.MyAccountApi = (*MyAccountApiService)(&c.common)
 	c.OrganizationManagementApi = (*OrganizationManagementApiService)(&c.common)
-	c.SiteComponentsApi = (*SiteComponentsApiService)(&c.common)
-	c.SitesApi = (*SitesApiService)(&c.common)
 
 	return c
 }
@@ -426,17 +418,6 @@ func (c *APIClient) prepareRequest(
 		localVarRequest = localVarRequest.WithContext(ctx)
 
 		// Walk through any authentication.
-
-		// OAuth2 authentication
-		if tok, ok := ctx.Value(ContextOAuth2).(oauth2.TokenSource); ok {
-			// We were able to grab an oauth2 token from the context
-			var latestToken *oauth2.Token
-			if latestToken, err = tok.Token(); err != nil {
-				return nil, err
-			}
-
-			latestToken.SetAuthHeader(localVarRequest)
-		}
 
 	}
 

@@ -18,7 +18,7 @@ import (
 // checks if the ErrorUnauthorized type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ErrorUnauthorized{}
 
-// ErrorUnauthorized struct for ErrorUnauthorized
+// ErrorUnauthorized Unauthorized
 type ErrorUnauthorized struct {
 	Message *string `json:"message,omitempty"`
 }

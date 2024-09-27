@@ -22,9 +22,12 @@ var _ MappedNullable = &ComponentDraft{}
 
 // ComponentDraft struct for ComponentDraft
 type ComponentDraft struct {
-	Key         string  `json:"key"`
-	Name        string  `json:"name"`
+	// key of the component
+	Key string `json:"key"`
+	// short description of the component
 	Description *string `json:"description,omitempty"`
+	// name of the component
+	Name string `json:"name"`
 }
 
 type _ComponentDraft ComponentDraft
@@ -72,30 +75,6 @@ func (o *ComponentDraft) SetKey(v string) {
 	o.Key = v
 }
 
-// GetName returns the Name field value
-func (o *ComponentDraft) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *ComponentDraft) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *ComponentDraft) SetName(v string) {
-	o.Name = v
-}
-
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ComponentDraft) GetDescription() string {
 	if o == nil || IsNil(o.Description) {
@@ -128,6 +107,30 @@ func (o *ComponentDraft) SetDescription(v string) {
 	o.Description = &v
 }
 
+// GetName returns the Name field value
+func (o *ComponentDraft) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *ComponentDraft) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *ComponentDraft) SetName(v string) {
+	o.Name = v
+}
+
 func (o ComponentDraft) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -139,10 +142,10 @@ func (o ComponentDraft) MarshalJSON() ([]byte, error) {
 func (o ComponentDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["key"] = o.Key
-	toSerialize["name"] = o.Name
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+	toSerialize["name"] = o.Name
 	return toSerialize, nil
 }
 

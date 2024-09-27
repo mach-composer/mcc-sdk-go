@@ -4,14 +4,14 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Version** | **string** |  | 
-**Branch** | **string** |  | 
+**Version** | **string** | version of the component | 
+**Branch** | Pointer to **string** | branch of the version | [optional] 
 
 ## Methods
 
 ### NewComponentVersionDraft
 
-`func NewComponentVersionDraft(version string, branch string, ) *ComponentVersionDraft`
+`func NewComponentVersionDraft(version string, ) *ComponentVersionDraft`
 
 NewComponentVersionDraft instantiates a new ComponentVersionDraft object
 This constructor will assign default values to properties that have it defined,
@@ -65,6 +65,11 @@ and a boolean to check if the value has been set.
 
 SetBranch sets Branch field to given value.
 
+### HasBranch
+
+`func (o *ComponentVersionDraft) HasBranch() bool`
+
+HasBranch returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

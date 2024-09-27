@@ -22,8 +22,10 @@ var _ MappedNullable = &ComponentVersionDraft{}
 
 // ComponentVersionDraft struct for ComponentVersionDraft
 type ComponentVersionDraft struct {
+	// version of the component
 	Version string `json:"version"`
-	Branch  string `json:"branch"`
+	// branch of the version
+	Branch *string `json:"branch,omitempty"`
 }
 
 type _ComponentVersionDraft ComponentVersionDraft
@@ -32,10 +34,9 @@ type _ComponentVersionDraft ComponentVersionDraft
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponentVersionDraft(version string, branch string) *ComponentVersionDraft {
+func NewComponentVersionDraft(version string) *ComponentVersionDraft {
 	this := ComponentVersionDraft{}
 	this.Version = version
-	this.Branch = branch
 	return &this
 }
 
@@ -71,28 +72,36 @@ func (o *ComponentVersionDraft) SetVersion(v string) {
 	o.Version = v
 }
 
-// GetBranch returns the Branch field value
+// GetBranch returns the Branch field value if set, zero value otherwise.
 func (o *ComponentVersionDraft) GetBranch() string {
-	if o == nil {
+	if o == nil || IsNil(o.Branch) {
 		var ret string
 		return ret
 	}
-
-	return o.Branch
+	return *o.Branch
 }
 
-// GetBranchOk returns a tuple with the Branch field value
+// GetBranchOk returns a tuple with the Branch field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ComponentVersionDraft) GetBranchOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Branch) {
 		return nil, false
 	}
-	return &o.Branch, true
+	return o.Branch, true
 }
 
-// SetBranch sets field value
+// HasBranch returns a boolean if a field has been set.
+func (o *ComponentVersionDraft) HasBranch() bool {
+	if o != nil && !IsNil(o.Branch) {
+		return true
+	}
+
+	return false
+}
+
+// SetBranch gets a reference to the given string and assigns it to the Branch field.
 func (o *ComponentVersionDraft) SetBranch(v string) {
-	o.Branch = v
+	o.Branch = &v
 }
 
 func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
@@ -106,7 +115,9 @@ func (o ComponentVersionDraft) MarshalJSON() ([]byte, error) {
 func (o ComponentVersionDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["version"] = o.Version
-	toSerialize["branch"] = o.Branch
+	if !IsNil(o.Branch) {
+		toSerialize["branch"] = o.Branch
+	}
 	return toSerialize, nil
 }
 
@@ -116,7 +127,6 @@ func (o *ComponentVersionDraft) UnmarshalJSON(data []byte) (err error) {
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
 		"version",
-		"branch",
 	}
 
 	allProperties := make(map[string]interface{})

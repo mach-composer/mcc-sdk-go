@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**CreatedAt** | **time.Time** |  | 
+**Id** | **string** |  | [readonly] 
+**CreatedAt** | **time.Time** |  | [readonly] 
 **Key** | **string** | The organization key (must be unique) | 
 **Name** | **string** | The name of the organization | 
 

@@ -4,21 +4,22 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ClientId** | Pointer to **string** |  | [optional] 
-**CreatedAt** | Pointer to **time.Time** |  | [optional] 
-**Name** | Pointer to **string** | Name of the user | [optional] 
-**Email** | **string** | E-mail address of the user | 
-**AvatarUrl** | Pointer to **string** | The avatar profile image url of the user | [optional] 
-**OrganizationKey** | Pointer to **string** | Key of the organization | [optional] 
-**OrganizationName** | Pointer to **string** | Name of the organization | [optional] 
-**OrganizationScopes** | Pointer to **[]string** |  | [optional] 
-**Projects** | Pointer to [**[]OrganizationUserProjectsInner**](OrganizationUserProjectsInner.md) |  | [optional] 
+**Id** | **string** |  | [readonly] 
+**CreatedAt** | **time.Time** |  | [readonly] 
+**LastModifiedAt** | **time.Time** |  | [readonly] 
+**AccountStatus** | **string** |  | 
+**Name** | **string** |  | 
+**Email** | **string** |  | 
+**AvatarUrl** | Pointer to **string** |  | [optional] 
+**IsActive** | Pointer to **bool** |  | [optional] 
+**IsStaff** | Pointer to **bool** |  | [optional] 
+**IsSuperuser** | Pointer to **bool** |  | [optional] 
 
 ## Methods
 
 ### NewOrganizationUser
 
-`func NewOrganizationUser(email string, ) *OrganizationUser`
+`func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string, ) *OrganizationUser`
 
 NewOrganizationUser instantiates a new OrganizationUser object
 This constructor will assign default values to properties that have it defined,
@@ -33,30 +34,25 @@ NewOrganizationUserWithDefaults instantiates a new OrganizationUser object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
 
-### GetClientId
+### GetId
 
-`func (o *OrganizationUser) GetClientId() string`
+`func (o *OrganizationUser) GetId() string`
 
-GetClientId returns the ClientId field if non-nil, zero value otherwise.
+GetId returns the Id field if non-nil, zero value otherwise.
 
-### GetClientIdOk
+### GetIdOk
 
-`func (o *OrganizationUser) GetClientIdOk() (*string, bool)`
+`func (o *OrganizationUser) GetIdOk() (*string, bool)`
 
-GetClientIdOk returns a tuple with the ClientId field if it's non-nil, zero value otherwise
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetClientId
+### SetId
 
-`func (o *OrganizationUser) SetClientId(v string)`
+`func (o *OrganizationUser) SetId(v string)`
 
-SetClientId sets ClientId field to given value.
+SetId sets Id field to given value.
 
-### HasClientId
-
-`func (o *OrganizationUser) HasClientId() bool`
-
-HasClientId returns a boolean if a field has been set.
 
 ### GetCreatedAt
 
@@ -77,11 +73,46 @@ and a boolean to check if the value has been set.
 
 SetCreatedAt sets CreatedAt field to given value.
 
-### HasCreatedAt
 
-`func (o *OrganizationUser) HasCreatedAt() bool`
+### GetLastModifiedAt
 
-HasCreatedAt returns a boolean if a field has been set.
+`func (o *OrganizationUser) GetLastModifiedAt() time.Time`
+
+GetLastModifiedAt returns the LastModifiedAt field if non-nil, zero value otherwise.
+
+### GetLastModifiedAtOk
+
+`func (o *OrganizationUser) GetLastModifiedAtOk() (*time.Time, bool)`
+
+GetLastModifiedAtOk returns a tuple with the LastModifiedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetLastModifiedAt
+
+`func (o *OrganizationUser) SetLastModifiedAt(v time.Time)`
+
+SetLastModifiedAt sets LastModifiedAt field to given value.
+
+
+### GetAccountStatus
+
+`func (o *OrganizationUser) GetAccountStatus() string`
+
+GetAccountStatus returns the AccountStatus field if non-nil, zero value otherwise.
+
+### GetAccountStatusOk
+
+`func (o *OrganizationUser) GetAccountStatusOk() (*string, bool)`
+
+GetAccountStatusOk returns a tuple with the AccountStatus field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetAccountStatus
+
+`func (o *OrganizationUser) SetAccountStatus(v string)`
+
+SetAccountStatus sets AccountStatus field to given value.
+
 
 ### GetName
 
@@ -102,11 +133,6 @@ and a boolean to check if the value has been set.
 
 SetName sets Name field to given value.
 
-### HasName
-
-`func (o *OrganizationUser) HasName() bool`
-
-HasName returns a boolean if a field has been set.
 
 ### GetEmail
 
@@ -153,105 +179,80 @@ SetAvatarUrl sets AvatarUrl field to given value.
 
 HasAvatarUrl returns a boolean if a field has been set.
 
-### GetOrganizationKey
+### GetIsActive
 
-`func (o *OrganizationUser) GetOrganizationKey() string`
+`func (o *OrganizationUser) GetIsActive() bool`
 
-GetOrganizationKey returns the OrganizationKey field if non-nil, zero value otherwise.
+GetIsActive returns the IsActive field if non-nil, zero value otherwise.
 
-### GetOrganizationKeyOk
+### GetIsActiveOk
 
-`func (o *OrganizationUser) GetOrganizationKeyOk() (*string, bool)`
+`func (o *OrganizationUser) GetIsActiveOk() (*bool, bool)`
 
-GetOrganizationKeyOk returns a tuple with the OrganizationKey field if it's non-nil, zero value otherwise
+GetIsActiveOk returns a tuple with the IsActive field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetOrganizationKey
+### SetIsActive
 
-`func (o *OrganizationUser) SetOrganizationKey(v string)`
+`func (o *OrganizationUser) SetIsActive(v bool)`
 
-SetOrganizationKey sets OrganizationKey field to given value.
+SetIsActive sets IsActive field to given value.
 
-### HasOrganizationKey
+### HasIsActive
 
-`func (o *OrganizationUser) HasOrganizationKey() bool`
+`func (o *OrganizationUser) HasIsActive() bool`
 
-HasOrganizationKey returns a boolean if a field has been set.
+HasIsActive returns a boolean if a field has been set.
 
-### GetOrganizationName
+### GetIsStaff
 
-`func (o *OrganizationUser) GetOrganizationName() string`
+`func (o *OrganizationUser) GetIsStaff() bool`
 
-GetOrganizationName returns the OrganizationName field if non-nil, zero value otherwise.
+GetIsStaff returns the IsStaff field if non-nil, zero value otherwise.
 
-### GetOrganizationNameOk
+### GetIsStaffOk
 
-`func (o *OrganizationUser) GetOrganizationNameOk() (*string, bool)`
+`func (o *OrganizationUser) GetIsStaffOk() (*bool, bool)`
 
-GetOrganizationNameOk returns a tuple with the OrganizationName field if it's non-nil, zero value otherwise
+GetIsStaffOk returns a tuple with the IsStaff field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetOrganizationName
+### SetIsStaff
 
-`func (o *OrganizationUser) SetOrganizationName(v string)`
+`func (o *OrganizationUser) SetIsStaff(v bool)`
 
-SetOrganizationName sets OrganizationName field to given value.
+SetIsStaff sets IsStaff field to given value.
 
-### HasOrganizationName
+### HasIsStaff
 
-`func (o *OrganizationUser) HasOrganizationName() bool`
+`func (o *OrganizationUser) HasIsStaff() bool`
 
-HasOrganizationName returns a boolean if a field has been set.
+HasIsStaff returns a boolean if a field has been set.
 
-### GetOrganizationScopes
+### GetIsSuperuser
 
-`func (o *OrganizationUser) GetOrganizationScopes() []string`
+`func (o *OrganizationUser) GetIsSuperuser() bool`
 
-GetOrganizationScopes returns the OrganizationScopes field if non-nil, zero value otherwise.
+GetIsSuperuser returns the IsSuperuser field if non-nil, zero value otherwise.
 
-### GetOrganizationScopesOk
+### GetIsSuperuserOk
 
-`func (o *OrganizationUser) GetOrganizationScopesOk() (*[]string, bool)`
+`func (o *OrganizationUser) GetIsSuperuserOk() (*bool, bool)`
 
-GetOrganizationScopesOk returns a tuple with the OrganizationScopes field if it's non-nil, zero value otherwise
+GetIsSuperuserOk returns a tuple with the IsSuperuser field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
-### SetOrganizationScopes
+### SetIsSuperuser
 
-`func (o *OrganizationUser) SetOrganizationScopes(v []string)`
+`func (o *OrganizationUser) SetIsSuperuser(v bool)`
 
-SetOrganizationScopes sets OrganizationScopes field to given value.
+SetIsSuperuser sets IsSuperuser field to given value.
 
-### HasOrganizationScopes
+### HasIsSuperuser
 
-`func (o *OrganizationUser) HasOrganizationScopes() bool`
+`func (o *OrganizationUser) HasIsSuperuser() bool`
 
-HasOrganizationScopes returns a boolean if a field has been set.
-
-### GetProjects
-
-`func (o *OrganizationUser) GetProjects() []OrganizationUserProjectsInner`
-
-GetProjects returns the Projects field if non-nil, zero value otherwise.
-
-### GetProjectsOk
-
-`func (o *OrganizationUser) GetProjectsOk() (*[]OrganizationUserProjectsInner, bool)`
-
-GetProjectsOk returns a tuple with the Projects field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetProjects
-
-`func (o *OrganizationUser) SetProjects(v []OrganizationUserProjectsInner)`
-
-SetProjects sets Projects field to given value.
-
-### HasProjects
-
-`func (o *OrganizationUser) HasProjects() bool`
-
-HasProjects returns a boolean if a field has been set.
+HasIsSuperuser returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

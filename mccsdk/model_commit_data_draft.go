@@ -22,11 +22,11 @@ var _ MappedNullable = &CommitDataDraft{}
 
 // CommitDataDraft struct for CommitDataDraft
 type CommitDataDraft struct {
-	Commit    string           `json:"commit"`
-	Parents   []string         `json:"parents"`
-	Subject   string           `json:"subject"`
-	Author    CommitDataAuthor `json:"author"`
-	Committer CommitDataAuthor `json:"committer"`
+	Subject   string                `json:"subject"`
+	Commit    string                `json:"commit"`
+	Parents   []string              `json:"parents,omitempty"`
+	Author    CommitDataAuthorDraft `json:"author"`
+	Committer CommitDataAuthorDraft `json:"committer"`
 }
 
 type _CommitDataDraft CommitDataDraft
@@ -35,11 +35,10 @@ type _CommitDataDraft CommitDataDraft
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCommitDataDraft(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor) *CommitDataDraft {
+func NewCommitDataDraft(subject string, commit string, author CommitDataAuthorDraft, committer CommitDataAuthorDraft) *CommitDataDraft {
 	this := CommitDataDraft{}
-	this.Commit = commit
-	this.Parents = parents
 	this.Subject = subject
+	this.Commit = commit
 	this.Author = author
 	this.Committer = committer
 	return &this
@@ -51,54 +50,6 @@ func NewCommitDataDraft(commit string, parents []string, subject string, author 
 func NewCommitDataDraftWithDefaults() *CommitDataDraft {
 	this := CommitDataDraft{}
 	return &this
-}
-
-// GetCommit returns the Commit field value
-func (o *CommitDataDraft) GetCommit() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Commit
-}
-
-// GetCommitOk returns a tuple with the Commit field value
-// and a boolean to check if the value has been set.
-func (o *CommitDataDraft) GetCommitOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Commit, true
-}
-
-// SetCommit sets field value
-func (o *CommitDataDraft) SetCommit(v string) {
-	o.Commit = v
-}
-
-// GetParents returns the Parents field value
-func (o *CommitDataDraft) GetParents() []string {
-	if o == nil {
-		var ret []string
-		return ret
-	}
-
-	return o.Parents
-}
-
-// GetParentsOk returns a tuple with the Parents field value
-// and a boolean to check if the value has been set.
-func (o *CommitDataDraft) GetParentsOk() ([]string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return o.Parents, true
-}
-
-// SetParents sets field value
-func (o *CommitDataDraft) SetParents(v []string) {
-	o.Parents = v
 }
 
 // GetSubject returns the Subject field value
@@ -125,10 +76,66 @@ func (o *CommitDataDraft) SetSubject(v string) {
 	o.Subject = v
 }
 
-// GetAuthor returns the Author field value
-func (o *CommitDataDraft) GetAuthor() CommitDataAuthor {
+// GetCommit returns the Commit field value
+func (o *CommitDataDraft) GetCommit() string {
 	if o == nil {
-		var ret CommitDataAuthor
+		var ret string
+		return ret
+	}
+
+	return o.Commit
+}
+
+// GetCommitOk returns a tuple with the Commit field value
+// and a boolean to check if the value has been set.
+func (o *CommitDataDraft) GetCommitOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Commit, true
+}
+
+// SetCommit sets field value
+func (o *CommitDataDraft) SetCommit(v string) {
+	o.Commit = v
+}
+
+// GetParents returns the Parents field value if set, zero value otherwise.
+func (o *CommitDataDraft) GetParents() []string {
+	if o == nil || IsNil(o.Parents) {
+		var ret []string
+		return ret
+	}
+	return o.Parents
+}
+
+// GetParentsOk returns a tuple with the Parents field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CommitDataDraft) GetParentsOk() ([]string, bool) {
+	if o == nil || IsNil(o.Parents) {
+		return nil, false
+	}
+	return o.Parents, true
+}
+
+// HasParents returns a boolean if a field has been set.
+func (o *CommitDataDraft) HasParents() bool {
+	if o != nil && !IsNil(o.Parents) {
+		return true
+	}
+
+	return false
+}
+
+// SetParents gets a reference to the given []string and assigns it to the Parents field.
+func (o *CommitDataDraft) SetParents(v []string) {
+	o.Parents = v
+}
+
+// GetAuthor returns the Author field value
+func (o *CommitDataDraft) GetAuthor() CommitDataAuthorDraft {
+	if o == nil {
+		var ret CommitDataAuthorDraft
 		return ret
 	}
 
@@ -137,7 +144,7 @@ func (o *CommitDataDraft) GetAuthor() CommitDataAuthor {
 
 // GetAuthorOk returns a tuple with the Author field value
 // and a boolean to check if the value has been set.
-func (o *CommitDataDraft) GetAuthorOk() (*CommitDataAuthor, bool) {
+func (o *CommitDataDraft) GetAuthorOk() (*CommitDataAuthorDraft, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -145,14 +152,14 @@ func (o *CommitDataDraft) GetAuthorOk() (*CommitDataAuthor, bool) {
 }
 
 // SetAuthor sets field value
-func (o *CommitDataDraft) SetAuthor(v CommitDataAuthor) {
+func (o *CommitDataDraft) SetAuthor(v CommitDataAuthorDraft) {
 	o.Author = v
 }
 
 // GetCommitter returns the Committer field value
-func (o *CommitDataDraft) GetCommitter() CommitDataAuthor {
+func (o *CommitDataDraft) GetCommitter() CommitDataAuthorDraft {
 	if o == nil {
-		var ret CommitDataAuthor
+		var ret CommitDataAuthorDraft
 		return ret
 	}
 
@@ -161,7 +168,7 @@ func (o *CommitDataDraft) GetCommitter() CommitDataAuthor {
 
 // GetCommitterOk returns a tuple with the Committer field value
 // and a boolean to check if the value has been set.
-func (o *CommitDataDraft) GetCommitterOk() (*CommitDataAuthor, bool) {
+func (o *CommitDataDraft) GetCommitterOk() (*CommitDataAuthorDraft, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -169,7 +176,7 @@ func (o *CommitDataDraft) GetCommitterOk() (*CommitDataAuthor, bool) {
 }
 
 // SetCommitter sets field value
-func (o *CommitDataDraft) SetCommitter(v CommitDataAuthor) {
+func (o *CommitDataDraft) SetCommitter(v CommitDataAuthorDraft) {
 	o.Committer = v
 }
 
@@ -183,9 +190,11 @@ func (o CommitDataDraft) MarshalJSON() ([]byte, error) {
 
 func (o CommitDataDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["commit"] = o.Commit
-	toSerialize["parents"] = o.Parents
 	toSerialize["subject"] = o.Subject
+	toSerialize["commit"] = o.Commit
+	if !IsNil(o.Parents) {
+		toSerialize["parents"] = o.Parents
+	}
 	toSerialize["author"] = o.Author
 	toSerialize["committer"] = o.Committer
 	return toSerialize, nil
@@ -196,9 +205,8 @@ func (o *CommitDataDraft) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
-		"commit",
-		"parents",
 		"subject",
+		"commit",
 		"author",
 		"committer",
 	}

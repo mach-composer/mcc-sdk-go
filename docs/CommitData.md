@@ -4,18 +4,19 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Commit** | **string** |  | 
-**Parents** | **[]string** |  | 
+**Id** | **string** |  | [readonly] 
+**CreatedAt** | **time.Time** |  | [readonly] 
 **Subject** | **string** |  | 
+**Commit** | **string** |  | 
+**Parents** | Pointer to **[]string** |  | [optional] 
 **Author** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
 **Committer** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
-**CreatedAt** | Pointer to **time.Time** |  | [optional] 
 
 ## Methods
 
 ### NewCommitData
 
-`func NewCommitData(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitData`
+`func NewCommitData(id string, createdAt time.Time, subject string, commit string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitData`
 
 NewCommitData instantiates a new CommitData object
 This constructor will assign default values to properties that have it defined,
@@ -29,6 +30,66 @@ will change when the set of required properties is changed
 NewCommitDataWithDefaults instantiates a new CommitData object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetId
+
+`func (o *CommitData) GetId() string`
+
+GetId returns the Id field if non-nil, zero value otherwise.
+
+### GetIdOk
+
+`func (o *CommitData) GetIdOk() (*string, bool)`
+
+GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetId
+
+`func (o *CommitData) SetId(v string)`
+
+SetId sets Id field to given value.
+
+
+### GetCreatedAt
+
+`func (o *CommitData) GetCreatedAt() time.Time`
+
+GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
+
+### GetCreatedAtOk
+
+`func (o *CommitData) GetCreatedAtOk() (*time.Time, bool)`
+
+GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCreatedAt
+
+`func (o *CommitData) SetCreatedAt(v time.Time)`
+
+SetCreatedAt sets CreatedAt field to given value.
+
+
+### GetSubject
+
+`func (o *CommitData) GetSubject() string`
+
+GetSubject returns the Subject field if non-nil, zero value otherwise.
+
+### GetSubjectOk
+
+`func (o *CommitData) GetSubjectOk() (*string, bool)`
+
+GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSubject
+
+`func (o *CommitData) SetSubject(v string)`
+
+SetSubject sets Subject field to given value.
+
 
 ### GetCommit
 
@@ -69,26 +130,11 @@ and a boolean to check if the value has been set.
 
 SetParents sets Parents field to given value.
 
+### HasParents
 
-### GetSubject
+`func (o *CommitData) HasParents() bool`
 
-`func (o *CommitData) GetSubject() string`
-
-GetSubject returns the Subject field if non-nil, zero value otherwise.
-
-### GetSubjectOk
-
-`func (o *CommitData) GetSubjectOk() (*string, bool)`
-
-GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSubject
-
-`func (o *CommitData) SetSubject(v string)`
-
-SetSubject sets Subject field to given value.
-
+HasParents returns a boolean if a field has been set.
 
 ### GetAuthor
 
@@ -129,31 +175,6 @@ and a boolean to check if the value has been set.
 
 SetCommitter sets Committer field to given value.
 
-
-### GetCreatedAt
-
-`func (o *CommitData) GetCreatedAt() time.Time`
-
-GetCreatedAt returns the CreatedAt field if non-nil, zero value otherwise.
-
-### GetCreatedAtOk
-
-`func (o *CommitData) GetCreatedAtOk() (*time.Time, bool)`
-
-GetCreatedAtOk returns a tuple with the CreatedAt field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetCreatedAt
-
-`func (o *CommitData) SetCreatedAt(v time.Time)`
-
-SetCreatedAt sets CreatedAt field to given value.
-
-### HasCreatedAt
-
-`func (o *CommitData) HasCreatedAt() bool`
-
-HasCreatedAt returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

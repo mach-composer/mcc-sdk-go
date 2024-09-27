@@ -23,20 +23,16 @@ var _ MappedNullable = &OrganizationUser{}
 
 // OrganizationUser struct for OrganizationUser
 type OrganizationUser struct {
-	ClientId  *string    `json:"client_id,omitempty"`
-	CreatedAt *time.Time `json:"created_at,omitempty"`
-	// Name of the user
-	Name *string `json:"name,omitempty"`
-	// E-mail address of the user
-	Email string `json:"email"`
-	// The avatar profile image url of the user
-	AvatarUrl *string `json:"avatar_url,omitempty"`
-	// Key of the organization
-	OrganizationKey *string `json:"organization_key,omitempty"`
-	// Name of the organization
-	OrganizationName   *string                         `json:"organization_name,omitempty"`
-	OrganizationScopes []string                        `json:"organization_scopes,omitempty"`
-	Projects           []OrganizationUserProjectsInner `json:"projects,omitempty"`
+	Id             string    `json:"id"`
+	CreatedAt      time.Time `json:"created_at"`
+	LastModifiedAt time.Time `json:"last_modified_at"`
+	AccountStatus  string    `json:"account_status"`
+	Name           string    `json:"name"`
+	Email          string    `json:"email"`
+	AvatarUrl      *string   `json:"avatar_url,omitempty"`
+	IsActive       *bool     `json:"is_active,omitempty"`
+	IsStaff        *bool     `json:"is_staff,omitempty"`
+	IsSuperuser    *bool     `json:"is_superuser,omitempty"`
 }
 
 type _OrganizationUser OrganizationUser
@@ -45,8 +41,13 @@ type _OrganizationUser OrganizationUser
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrganizationUser(email string) *OrganizationUser {
+func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string) *OrganizationUser {
 	this := OrganizationUser{}
+	this.Id = id
+	this.CreatedAt = createdAt
+	this.LastModifiedAt = lastModifiedAt
+	this.AccountStatus = accountStatus
+	this.Name = name
 	this.Email = email
 	return &this
 }
@@ -59,100 +60,124 @@ func NewOrganizationUserWithDefaults() *OrganizationUser {
 	return &this
 }
 
-// GetClientId returns the ClientId field value if set, zero value otherwise.
-func (o *OrganizationUser) GetClientId() string {
-	if o == nil || IsNil(o.ClientId) {
+// GetId returns the Id field value
+func (o *OrganizationUser) GetId() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.ClientId
+
+	return o.Id
 }
 
-// GetClientIdOk returns a tuple with the ClientId field value if set, nil otherwise
+// GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetClientIdOk() (*string, bool) {
-	if o == nil || IsNil(o.ClientId) {
+func (o *OrganizationUser) GetIdOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.ClientId, true
+	return &o.Id, true
 }
 
-// HasClientId returns a boolean if a field has been set.
-func (o *OrganizationUser) HasClientId() bool {
-	if o != nil && !IsNil(o.ClientId) {
-		return true
-	}
-
-	return false
+// SetId sets field value
+func (o *OrganizationUser) SetId(v string) {
+	o.Id = v
 }
 
-// SetClientId gets a reference to the given string and assigns it to the ClientId field.
-func (o *OrganizationUser) SetClientId(v string) {
-	o.ClientId = &v
-}
-
-// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+// GetCreatedAt returns the CreatedAt field value
 func (o *OrganizationUser) GetCreatedAt() time.Time {
-	if o == nil || IsNil(o.CreatedAt) {
+	if o == nil {
 		var ret time.Time
 		return ret
 	}
-	return *o.CreatedAt
+
+	return o.CreatedAt
 }
 
-// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// GetCreatedAtOk returns a tuple with the CreatedAt field value
 // and a boolean to check if the value has been set.
 func (o *OrganizationUser) GetCreatedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.CreatedAt) {
+	if o == nil {
 		return nil, false
 	}
-	return o.CreatedAt, true
+	return &o.CreatedAt, true
 }
 
-// HasCreatedAt returns a boolean if a field has been set.
-func (o *OrganizationUser) HasCreatedAt() bool {
-	if o != nil && !IsNil(o.CreatedAt) {
-		return true
+// SetCreatedAt sets field value
+func (o *OrganizationUser) SetCreatedAt(v time.Time) {
+	o.CreatedAt = v
+}
+
+// GetLastModifiedAt returns the LastModifiedAt field value
+func (o *OrganizationUser) GetLastModifiedAt() time.Time {
+	if o == nil {
+		var ret time.Time
+		return ret
 	}
 
-	return false
+	return o.LastModifiedAt
 }
 
-// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
-func (o *OrganizationUser) SetCreatedAt(v time.Time) {
-	o.CreatedAt = &v
+// GetLastModifiedAtOk returns a tuple with the LastModifiedAt field value
+// and a boolean to check if the value has been set.
+func (o *OrganizationUser) GetLastModifiedAtOk() (*time.Time, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.LastModifiedAt, true
 }
 
-// GetName returns the Name field value if set, zero value otherwise.
-func (o *OrganizationUser) GetName() string {
-	if o == nil || IsNil(o.Name) {
+// SetLastModifiedAt sets field value
+func (o *OrganizationUser) SetLastModifiedAt(v time.Time) {
+	o.LastModifiedAt = v
+}
+
+// GetAccountStatus returns the AccountStatus field value
+func (o *OrganizationUser) GetAccountStatus() string {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Name
+
+	return o.AccountStatus
 }
 
-// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// GetAccountStatusOk returns a tuple with the AccountStatus field value
 // and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
+func (o *OrganizationUser) GetAccountStatusOk() (*string, bool) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Name, true
+	return &o.AccountStatus, true
 }
 
-// HasName returns a boolean if a field has been set.
-func (o *OrganizationUser) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
-		return true
+// SetAccountStatus sets field value
+func (o *OrganizationUser) SetAccountStatus(v string) {
+	o.AccountStatus = v
+}
+
+// GetName returns the Name field value
+func (o *OrganizationUser) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
 	}
 
-	return false
+	return o.Name
 }
 
-// SetName gets a reference to the given string and assigns it to the Name field.
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *OrganizationUser) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
 func (o *OrganizationUser) SetName(v string) {
-	o.Name = &v
+	o.Name = v
 }
 
 // GetEmail returns the Email field value
@@ -211,132 +236,100 @@ func (o *OrganizationUser) SetAvatarUrl(v string) {
 	o.AvatarUrl = &v
 }
 
-// GetOrganizationKey returns the OrganizationKey field value if set, zero value otherwise.
-func (o *OrganizationUser) GetOrganizationKey() string {
-	if o == nil || IsNil(o.OrganizationKey) {
-		var ret string
+// GetIsActive returns the IsActive field value if set, zero value otherwise.
+func (o *OrganizationUser) GetIsActive() bool {
+	if o == nil || IsNil(o.IsActive) {
+		var ret bool
 		return ret
 	}
-	return *o.OrganizationKey
+	return *o.IsActive
 }
 
-// GetOrganizationKeyOk returns a tuple with the OrganizationKey field value if set, nil otherwise
+// GetIsActiveOk returns a tuple with the IsActive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetOrganizationKeyOk() (*string, bool) {
-	if o == nil || IsNil(o.OrganizationKey) {
+func (o *OrganizationUser) GetIsActiveOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsActive) {
 		return nil, false
 	}
-	return o.OrganizationKey, true
+	return o.IsActive, true
 }
 
-// HasOrganizationKey returns a boolean if a field has been set.
-func (o *OrganizationUser) HasOrganizationKey() bool {
-	if o != nil && !IsNil(o.OrganizationKey) {
+// HasIsActive returns a boolean if a field has been set.
+func (o *OrganizationUser) HasIsActive() bool {
+	if o != nil && !IsNil(o.IsActive) {
 		return true
 	}
 
 	return false
 }
 
-// SetOrganizationKey gets a reference to the given string and assigns it to the OrganizationKey field.
-func (o *OrganizationUser) SetOrganizationKey(v string) {
-	o.OrganizationKey = &v
+// SetIsActive gets a reference to the given bool and assigns it to the IsActive field.
+func (o *OrganizationUser) SetIsActive(v bool) {
+	o.IsActive = &v
 }
 
-// GetOrganizationName returns the OrganizationName field value if set, zero value otherwise.
-func (o *OrganizationUser) GetOrganizationName() string {
-	if o == nil || IsNil(o.OrganizationName) {
-		var ret string
+// GetIsStaff returns the IsStaff field value if set, zero value otherwise.
+func (o *OrganizationUser) GetIsStaff() bool {
+	if o == nil || IsNil(o.IsStaff) {
+		var ret bool
 		return ret
 	}
-	return *o.OrganizationName
+	return *o.IsStaff
 }
 
-// GetOrganizationNameOk returns a tuple with the OrganizationName field value if set, nil otherwise
+// GetIsStaffOk returns a tuple with the IsStaff field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetOrganizationNameOk() (*string, bool) {
-	if o == nil || IsNil(o.OrganizationName) {
+func (o *OrganizationUser) GetIsStaffOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsStaff) {
 		return nil, false
 	}
-	return o.OrganizationName, true
+	return o.IsStaff, true
 }
 
-// HasOrganizationName returns a boolean if a field has been set.
-func (o *OrganizationUser) HasOrganizationName() bool {
-	if o != nil && !IsNil(o.OrganizationName) {
+// HasIsStaff returns a boolean if a field has been set.
+func (o *OrganizationUser) HasIsStaff() bool {
+	if o != nil && !IsNil(o.IsStaff) {
 		return true
 	}
 
 	return false
 }
 
-// SetOrganizationName gets a reference to the given string and assigns it to the OrganizationName field.
-func (o *OrganizationUser) SetOrganizationName(v string) {
-	o.OrganizationName = &v
+// SetIsStaff gets a reference to the given bool and assigns it to the IsStaff field.
+func (o *OrganizationUser) SetIsStaff(v bool) {
+	o.IsStaff = &v
 }
 
-// GetOrganizationScopes returns the OrganizationScopes field value if set, zero value otherwise.
-func (o *OrganizationUser) GetOrganizationScopes() []string {
-	if o == nil || IsNil(o.OrganizationScopes) {
-		var ret []string
+// GetIsSuperuser returns the IsSuperuser field value if set, zero value otherwise.
+func (o *OrganizationUser) GetIsSuperuser() bool {
+	if o == nil || IsNil(o.IsSuperuser) {
+		var ret bool
 		return ret
 	}
-	return o.OrganizationScopes
+	return *o.IsSuperuser
 }
 
-// GetOrganizationScopesOk returns a tuple with the OrganizationScopes field value if set, nil otherwise
+// GetIsSuperuserOk returns a tuple with the IsSuperuser field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetOrganizationScopesOk() ([]string, bool) {
-	if o == nil || IsNil(o.OrganizationScopes) {
+func (o *OrganizationUser) GetIsSuperuserOk() (*bool, bool) {
+	if o == nil || IsNil(o.IsSuperuser) {
 		return nil, false
 	}
-	return o.OrganizationScopes, true
+	return o.IsSuperuser, true
 }
 
-// HasOrganizationScopes returns a boolean if a field has been set.
-func (o *OrganizationUser) HasOrganizationScopes() bool {
-	if o != nil && !IsNil(o.OrganizationScopes) {
+// HasIsSuperuser returns a boolean if a field has been set.
+func (o *OrganizationUser) HasIsSuperuser() bool {
+	if o != nil && !IsNil(o.IsSuperuser) {
 		return true
 	}
 
 	return false
 }
 
-// SetOrganizationScopes gets a reference to the given []string and assigns it to the OrganizationScopes field.
-func (o *OrganizationUser) SetOrganizationScopes(v []string) {
-	o.OrganizationScopes = v
-}
-
-// GetProjects returns the Projects field value if set, zero value otherwise.
-func (o *OrganizationUser) GetProjects() []OrganizationUserProjectsInner {
-	if o == nil || IsNil(o.Projects) {
-		var ret []OrganizationUserProjectsInner
-		return ret
-	}
-	return o.Projects
-}
-
-// GetProjectsOk returns a tuple with the Projects field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *OrganizationUser) GetProjectsOk() ([]OrganizationUserProjectsInner, bool) {
-	if o == nil || IsNil(o.Projects) {
-		return nil, false
-	}
-	return o.Projects, true
-}
-
-// HasProjects returns a boolean if a field has been set.
-func (o *OrganizationUser) HasProjects() bool {
-	if o != nil && !IsNil(o.Projects) {
-		return true
-	}
-
-	return false
-}
-
-// SetProjects gets a reference to the given []OrganizationUserProjectsInner and assigns it to the Projects field.
-func (o *OrganizationUser) SetProjects(v []OrganizationUserProjectsInner) {
-	o.Projects = v
+// SetIsSuperuser gets a reference to the given bool and assigns it to the IsSuperuser field.
+func (o *OrganizationUser) SetIsSuperuser(v bool) {
+	o.IsSuperuser = &v
 }
 
 func (o OrganizationUser) MarshalJSON() ([]byte, error) {
@@ -349,30 +342,23 @@ func (o OrganizationUser) MarshalJSON() ([]byte, error) {
 
 func (o OrganizationUser) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	if !IsNil(o.ClientId) {
-		toSerialize["client_id"] = o.ClientId
-	}
-	if !IsNil(o.CreatedAt) {
-		toSerialize["created_at"] = o.CreatedAt
-	}
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
-	}
+	toSerialize["id"] = o.Id
+	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["last_modified_at"] = o.LastModifiedAt
+	toSerialize["account_status"] = o.AccountStatus
+	toSerialize["name"] = o.Name
 	toSerialize["email"] = o.Email
 	if !IsNil(o.AvatarUrl) {
 		toSerialize["avatar_url"] = o.AvatarUrl
 	}
-	if !IsNil(o.OrganizationKey) {
-		toSerialize["organization_key"] = o.OrganizationKey
+	if !IsNil(o.IsActive) {
+		toSerialize["is_active"] = o.IsActive
 	}
-	if !IsNil(o.OrganizationName) {
-		toSerialize["organization_name"] = o.OrganizationName
+	if !IsNil(o.IsStaff) {
+		toSerialize["is_staff"] = o.IsStaff
 	}
-	if !IsNil(o.OrganizationScopes) {
-		toSerialize["organization_scopes"] = o.OrganizationScopes
-	}
-	if !IsNil(o.Projects) {
-		toSerialize["projects"] = o.Projects
+	if !IsNil(o.IsSuperuser) {
+		toSerialize["is_superuser"] = o.IsSuperuser
 	}
 	return toSerialize, nil
 }
@@ -382,6 +368,11 @@ func (o *OrganizationUser) UnmarshalJSON(data []byte) (err error) {
 	// by unmarshalling the object into a generic map with string keys and checking
 	// that every required field exists as a key in the generic map.
 	requiredProperties := []string{
+		"id",
+		"created_at",
+		"last_modified_at",
+		"account_status",
+		"name",
 		"email",
 	}
 

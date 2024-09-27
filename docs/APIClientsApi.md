@@ -4,9 +4,12 @@ All URIs are relative to *https://api.mach.cloud*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**ApiClientCreate**](APIClientsApi.md#ApiClientCreate) | **Post** /organizations/{organization}/projects/{project}/api-clients | Create new api client
-[**ApiClientDelete**](APIClientsApi.md#ApiClientDelete) | **Delete** /organizations/{organization}/projects/{project}/api-clients/{id} | Delete an API Client
-[**ApiClientQuery**](APIClientsApi.md#ApiClientQuery) | **Get** /organizations/{organization}/projects/{project}/api-clients | List all api clients
+[**ApiClientCreate**](APIClientsApi.md#ApiClientCreate) | **Post** /organizations/{organization}/projects/{project}/api-clients | Create new API Client
+[**ApiClientDelete**](APIClientsApi.md#ApiClientDelete) | **Delete** /organizations/{organization}/projects/{project}/api-clients/{id} | Delete API Client
+[**ApiClientGet**](APIClientsApi.md#ApiClientGet) | **Get** /organizations/{organization}/projects/{project}/api-clients/{id} | Get API Client details
+[**ApiClientPatch**](APIClientsApi.md#ApiClientPatch) | **Patch** /organizations/{organization}/projects/{project}/api-clients/{id} | Update API Client
+[**ApiClientQuery**](APIClientsApi.md#ApiClientQuery) | **Get** /organizations/{organization}/projects/{project}/api-clients | List all API Clients
+[**ApiClientUpdate**](APIClientsApi.md#ApiClientUpdate) | **Put** /organizations/{organization}/projects/{project}/api-clients/{id} | Update API Client
 
 
 
@@ -14,7 +17,7 @@ Method | HTTP request | Description
 
 > ApiClient ApiClientCreate(ctx, organization, project).ApiClientDraft(apiClientDraft).Execute()
 
-Create new api client
+Create new API Client
 
 ### Example
 
@@ -29,9 +32,9 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	apiClientDraft := *openapiclient.NewApiClientDraft() // ApiClientDraft | 
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	apiClientDraft := *openapiclient.NewApiClientDraft("ClientId_example", "ClientSecret_example") // ApiClientDraft | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -51,8 +54,8 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
 
 ### Other Parameters
 
@@ -71,7 +74,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -85,9 +88,9 @@ Name | Type | Description  | Notes
 
 ## ApiClientDelete
 
-> ApiClient ApiClientDelete(ctx, organization, project, id).Execute()
+> ApiClientDelete(ctx, organization, project, id).Execute()
 
-Delete an API Client
+Delete API Client
 
 ### Example
 
@@ -102,19 +105,17 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	id := "id_example" // string | API Client ID
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	id := "id_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.APIClientsApi.ApiClientDelete(context.Background(), organization, project, id).Execute()
+	r, err := apiClient.APIClientsApi.ApiClientDelete(context.Background(), organization, project, id).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ApiClientDelete`: ApiClient
-	fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientDelete`: %v\n", resp)
 }
 ```
 
@@ -124,9 +125,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**id** | **string** | API Client ID | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**id** | **string** |  | 
 
 ### Other Parameters
 
@@ -141,11 +142,11 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ApiClient**](ApiClient.md)
+ (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -157,11 +158,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ApiClientQuery
+## ApiClientGet
 
-> ApiClientPaginator ApiClientQuery(ctx, organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
+> ApiClient ApiClientGet(ctx, organization, project, id).Execute()
 
-List all api clients
+Get API Client details
 
 ### Example
 
@@ -176,15 +177,164 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	offset := int32(56) // int32 |  (optional) (default to 0)
-	limit := int32(56) // int32 |  (optional)
-	sort := []string{"Inner_example"} // []string |  (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	id := "id_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.APIClientsApi.ApiClientQuery(context.Background(), organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
+	resp, r, err := apiClient.APIClientsApi.ApiClientGet(context.Background(), organization, project, id).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiClientGet`: ApiClient
+	fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiClientGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
+[**ApiClient**](ApiClient.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiClientPatch
+
+> ApiClient ApiClientPatch(ctx, organization, project, id).PatchedApiClientDraft(patchedApiClientDraft).Execute()
+
+Update API Client
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	id := "id_example" // string | 
+	patchedApiClientDraft := *openapiclient.NewPatchedApiClientDraft() // PatchedApiClientDraft |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.APIClientsApi.ApiClientPatch(context.Background(), organization, project, id).PatchedApiClientDraft(patchedApiClientDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiClientPatch`: ApiClient
+	fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientPatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiClientPatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **patchedApiClientDraft** | [**PatchedApiClientDraft**](PatchedApiClientDraft.md) |  | 
+
+### Return type
+
+[**ApiClient**](ApiClient.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiClientQuery
+
+> ApiClientPaginator ApiClientQuery(ctx, organization, project).Limit(limit).Offset(offset).Execute()
+
+List all API Clients
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	limit := int32(56) // int32 | Number of results to return per page. (optional)
+	offset := int32(56) // int32 | The initial index from which to return the results. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.APIClientsApi.ApiClientQuery(context.Background(), organization, project).Limit(limit).Offset(offset).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientQuery``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -200,8 +350,8 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
 
 ### Other Parameters
 
@@ -212,9 +362,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **offset** | **int32** |  | [default to 0]
- **limit** | **int32** |  | 
- **sort** | **[]string** |  | 
+ **limit** | **int32** | Number of results to return per page. | 
+ **offset** | **int32** | The initial index from which to return the results. | 
 
 ### Return type
 
@@ -222,11 +371,87 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiClientUpdate
+
+> ApiClient ApiClientUpdate(ctx, organization, project, id).ApiClientDraft(apiClientDraft).Execute()
+
+Update API Client
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	id := "id_example" // string | 
+	apiClientDraft := *openapiclient.NewApiClientDraft("ClientId_example", "ClientSecret_example") // ApiClientDraft | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.APIClientsApi.ApiClientUpdate(context.Background(), organization, project, id).ApiClientDraft(apiClientDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `APIClientsApi.ApiClientUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiClientUpdate`: ApiClient
+	fmt.Fprintf(os.Stdout, "Response from `APIClientsApi.ApiClientUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**id** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiClientUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **apiClientDraft** | [**ApiClientDraft**](ApiClientDraft.md) |  | 
+
+### Return type
+
+[**ApiClient**](ApiClient.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
