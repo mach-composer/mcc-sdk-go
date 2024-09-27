@@ -13,12 +13,11 @@ tasks:
       - rm -rf tmp
 
   generate:
-    env:
-      GO_POST_PROCESS_FILE: gofmt -w
     cmds:
       - rm -rf mccsdk docs
       - openapi-generator generate -i ../mach-composer-cloud/openapi.yaml -g go --enable-post-process-file --model-package mccsdk/mccmodels --http-user-agent mcc-sdk-go --additional-properties=apiNameSuffix=Api,packageName=mccsdk,generateInterfaces=true
       - mkdir mccsdk
       - mv *.go mccsdk
       - rm -rf test
+      - go fmt ./...
       - go mod tidy
