@@ -12,9 +12,7 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 )
 
 // checks if the ApiClientPaginator type satisfies the MappedNullable interface at compile time
@@ -23,27 +21,24 @@ var _ MappedNullable = &ApiClientPaginator{}
 // ApiClientPaginator struct for ApiClientPaginator
 type ApiClientPaginator struct {
 	// Number of items in the current page
-	Count int32 `json:"count"`
+	Count *int32 `json:"count,omitempty"`
 	// Total number of items found
-	Total   int64       `json:"total"`
-	Offset  int32       `json:"offset"`
-	Limit   int32       `json:"limit"`
-	Results []ApiClient `json:"results"`
+	Total   *int64      `json:"total,omitempty"`
+	Offset  *int32      `json:"offset,omitempty"`
+	Limit   *int32      `json:"limit,omitempty"`
+	Results []ApiClient `json:"results,omitempty"`
 }
-
-type _ApiClientPaginator ApiClientPaginator
 
 // NewApiClientPaginator instantiates a new ApiClientPaginator object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApiClientPaginator(count int32, total int64, offset int32, limit int32, results []ApiClient) *ApiClientPaginator {
+func NewApiClientPaginator() *ApiClientPaginator {
 	this := ApiClientPaginator{}
-	this.Count = count
-	this.Total = total
-	this.Offset = offset
-	this.Limit = limit
-	this.Results = results
+	var offset int32 = 0
+	this.Offset = &offset
+	var limit int32 = 10
+	this.Limit = &limit
 	return &this
 }
 
@@ -53,128 +48,168 @@ func NewApiClientPaginator(count int32, total int64, offset int32, limit int32, 
 func NewApiClientPaginatorWithDefaults() *ApiClientPaginator {
 	this := ApiClientPaginator{}
 	var offset int32 = 0
-	this.Offset = offset
-	var limit int32 = 20
-	this.Limit = limit
+	this.Offset = &offset
+	var limit int32 = 10
+	this.Limit = &limit
 	return &this
 }
 
-// GetCount returns the Count field value
+// GetCount returns the Count field value if set, zero value otherwise.
 func (o *ApiClientPaginator) GetCount() int32 {
-	if o == nil {
+	if o == nil || IsNil(o.Count) {
 		var ret int32
 		return ret
 	}
-
-	return o.Count
+	return *o.Count
 }
 
-// GetCountOk returns a tuple with the Count field value
+// GetCountOk returns a tuple with the Count field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientPaginator) GetCountOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Count) {
 		return nil, false
 	}
-	return &o.Count, true
+	return o.Count, true
 }
 
-// SetCount sets field value
+// HasCount returns a boolean if a field has been set.
+func (o *ApiClientPaginator) HasCount() bool {
+	if o != nil && !IsNil(o.Count) {
+		return true
+	}
+
+	return false
+}
+
+// SetCount gets a reference to the given int32 and assigns it to the Count field.
 func (o *ApiClientPaginator) SetCount(v int32) {
-	o.Count = v
+	o.Count = &v
 }
 
-// GetTotal returns the Total field value
+// GetTotal returns the Total field value if set, zero value otherwise.
 func (o *ApiClientPaginator) GetTotal() int64 {
-	if o == nil {
+	if o == nil || IsNil(o.Total) {
 		var ret int64
 		return ret
 	}
-
-	return o.Total
+	return *o.Total
 }
 
-// GetTotalOk returns a tuple with the Total field value
+// GetTotalOk returns a tuple with the Total field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientPaginator) GetTotalOk() (*int64, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Total) {
 		return nil, false
 	}
-	return &o.Total, true
+	return o.Total, true
 }
 
-// SetTotal sets field value
+// HasTotal returns a boolean if a field has been set.
+func (o *ApiClientPaginator) HasTotal() bool {
+	if o != nil && !IsNil(o.Total) {
+		return true
+	}
+
+	return false
+}
+
+// SetTotal gets a reference to the given int64 and assigns it to the Total field.
 func (o *ApiClientPaginator) SetTotal(v int64) {
-	o.Total = v
+	o.Total = &v
 }
 
-// GetOffset returns the Offset field value
+// GetOffset returns the Offset field value if set, zero value otherwise.
 func (o *ApiClientPaginator) GetOffset() int32 {
-	if o == nil {
+	if o == nil || IsNil(o.Offset) {
 		var ret int32
 		return ret
 	}
-
-	return o.Offset
+	return *o.Offset
 }
 
-// GetOffsetOk returns a tuple with the Offset field value
+// GetOffsetOk returns a tuple with the Offset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientPaginator) GetOffsetOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Offset) {
 		return nil, false
 	}
-	return &o.Offset, true
+	return o.Offset, true
 }
 
-// SetOffset sets field value
+// HasOffset returns a boolean if a field has been set.
+func (o *ApiClientPaginator) HasOffset() bool {
+	if o != nil && !IsNil(o.Offset) {
+		return true
+	}
+
+	return false
+}
+
+// SetOffset gets a reference to the given int32 and assigns it to the Offset field.
 func (o *ApiClientPaginator) SetOffset(v int32) {
-	o.Offset = v
+	o.Offset = &v
 }
 
-// GetLimit returns the Limit field value
+// GetLimit returns the Limit field value if set, zero value otherwise.
 func (o *ApiClientPaginator) GetLimit() int32 {
-	if o == nil {
+	if o == nil || IsNil(o.Limit) {
 		var ret int32
 		return ret
 	}
-
-	return o.Limit
+	return *o.Limit
 }
 
-// GetLimitOk returns a tuple with the Limit field value
+// GetLimitOk returns a tuple with the Limit field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientPaginator) GetLimitOk() (*int32, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Limit) {
 		return nil, false
 	}
-	return &o.Limit, true
+	return o.Limit, true
 }
 
-// SetLimit sets field value
+// HasLimit returns a boolean if a field has been set.
+func (o *ApiClientPaginator) HasLimit() bool {
+	if o != nil && !IsNil(o.Limit) {
+		return true
+	}
+
+	return false
+}
+
+// SetLimit gets a reference to the given int32 and assigns it to the Limit field.
 func (o *ApiClientPaginator) SetLimit(v int32) {
-	o.Limit = v
+	o.Limit = &v
 }
 
-// GetResults returns the Results field value
+// GetResults returns the Results field value if set, zero value otherwise.
 func (o *ApiClientPaginator) GetResults() []ApiClient {
-	if o == nil {
+	if o == nil || IsNil(o.Results) {
 		var ret []ApiClient
 		return ret
 	}
-
 	return o.Results
 }
 
-// GetResultsOk returns a tuple with the Results field value
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientPaginator) GetResultsOk() ([]ApiClient, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.Results) {
 		return nil, false
 	}
 	return o.Results, true
 }
 
-// SetResults sets field value
+// HasResults returns a boolean if a field has been set.
+func (o *ApiClientPaginator) HasResults() bool {
+	if o != nil && !IsNil(o.Results) {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []ApiClient and assigns it to the Results field.
 func (o *ApiClientPaginator) SetResults(v []ApiClient) {
 	o.Results = v
 }
@@ -189,53 +224,22 @@ func (o ApiClientPaginator) MarshalJSON() ([]byte, error) {
 
 func (o ApiClientPaginator) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["count"] = o.Count
-	toSerialize["total"] = o.Total
-	toSerialize["offset"] = o.Offset
-	toSerialize["limit"] = o.Limit
-	toSerialize["results"] = o.Results
+	if !IsNil(o.Count) {
+		toSerialize["count"] = o.Count
+	}
+	if !IsNil(o.Total) {
+		toSerialize["total"] = o.Total
+	}
+	if !IsNil(o.Offset) {
+		toSerialize["offset"] = o.Offset
+	}
+	if !IsNil(o.Limit) {
+		toSerialize["limit"] = o.Limit
+	}
+	if !IsNil(o.Results) {
+		toSerialize["results"] = o.Results
+	}
 	return toSerialize, nil
-}
-
-func (o *ApiClientPaginator) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"count",
-		"total",
-		"offset",
-		"limit",
-		"results",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
-	varApiClientPaginator := _ApiClientPaginator{}
-
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApiClientPaginator)
-
-	if err != nil {
-		return err
-	}
-
-	*o = ApiClientPaginator(varApiClientPaginator)
-
-	return err
 }
 
 type NullableApiClientPaginator struct {

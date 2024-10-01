@@ -7,21 +7,29 @@ Method | HTTP request | Description
 [**ComponentCommitQuery**](ComponentsApi.md#ComponentCommitQuery) | **Get** /organizations/{organization}/projects/{project}/components/{component}/commits | List all commits of a component between two versions ordered by creation date. If &#x60;to&#x60; is not provided, it will list all commits from &#x60;from&#x60; to the latest version.
 [**ComponentCreate**](ComponentsApi.md#ComponentCreate) | **Post** /organizations/{organization}/projects/{project}/components | Create component
 [**ComponentDelete**](ComponentsApi.md#ComponentDelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component} | Delete a component
+[**ComponentGet**](ComponentsApi.md#ComponentGet) | **Get** /organizations/{organization}/projects/{project}/components/{component} | Get component details
 [**ComponentLatestVersion**](ComponentsApi.md#ComponentLatestVersion) | **Get** /organizations/{organization}/projects/{project}/components/{component}/latest | Get last component version
 [**ComponentPatch**](ComponentsApi.md#ComponentPatch) | **Patch** /organizations/{organization}/projects/{project}/components/{component} | Patch an existing component
 [**ComponentQuery**](ComponentsApi.md#ComponentQuery) | **Get** /organizations/{organization}/projects/{project}/components | List all components
+[**ComponentUpdate**](ComponentsApi.md#ComponentUpdate) | **Put** /organizations/{organization}/projects/{project}/components/{component} | Update a component
 [**ComponentVersionCreate**](ComponentsApi.md#ComponentVersionCreate) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions | Create component version
 [**ComponentVersionDelete**](ComponentsApi.md#ComponentVersionDelete) | **Delete** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Delete component version
+[**ComponentVersionDeleteCommit**](ComponentsApi.md#ComponentVersionDeleteCommit) | **Delete** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits/{commit} | Delete commit
 [**ComponentVersionGet**](ComponentsApi.md#ComponentVersionGet) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Get component version
+[**ComponentVersionGetCommit**](ComponentsApi.md#ComponentVersionGetCommit) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits/{commit} | Get commit details
+[**ComponentVersionPatch**](ComponentsApi.md#ComponentVersionPatch) | **Patch** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Patch component version
+[**ComponentVersionPatchCommit**](ComponentsApi.md#ComponentVersionPatchCommit) | **Patch** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits/{commit} | Patch commit
 [**ComponentVersionPushCommits**](ComponentsApi.md#ComponentVersionPushCommits) | **Post** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Push commits for this component version
 [**ComponentVersionQuery**](ComponentsApi.md#ComponentVersionQuery) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions | List all versions of a component
 [**ComponentVersionQueryCommits**](ComponentsApi.md#ComponentVersionQueryCommits) | **Get** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits | Get commits for this component version
+[**ComponentVersionUpdate**](ComponentsApi.md#ComponentVersionUpdate) | **Put** /organizations/{organization}/projects/{project}/components/{component}/versions/{version} | Update component version
+[**ComponentVersionUpdateCommit**](ComponentsApi.md#ComponentVersionUpdateCommit) | **Put** /organizations/{organization}/projects/{project}/components/{component}/versions/{version}/commits/{commit} | Update commit
 
 
 
 ## ComponentCommitQuery
 
-> CommitDataWithVersionPaginator ComponentCommitQuery(ctx, organization, project, component).Offset(offset).Limit(limit).Sort(sort).Branch(branch).From(from).To(to).Execute()
+> CommitDataPaginator ComponentCommitQuery(ctx, organization, project, component).From(from).To(to).Offset(offset).Limit(limit).Execute()
 
 List all commits of a component between two versions ordered by creation date. If `to` is not provided, it will list all commits from `from` to the latest version.
 
@@ -38,24 +46,22 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	offset := int32(56) // int32 |  (optional) (default to 0)
-	limit := int32(56) // int32 |  (optional)
-	sort := []string{"Inner_example"} // []string |  (optional)
-	branch := "branch_example" // string | The branch to list commits for. If not provided, it will list commits for the default branch. (optional)
-	from := "from_example" // string | From version. This is the starting point to select commits. If none is selected this will default to the first version (optional)
-	to := "to_example" // string | To version. This is the ending point to select commits. If not provided, it will list all commits from `from` to the latest version as returned in /organizations/{organization}/projects/{project}/components/{component}/latest. (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	from := "from_example" // string |  (optional)
+	to := "to_example" // string |  (optional)
+	offset := float32(8.14) // float32 |  (optional)
+	limit := float32(8.14) // float32 |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentCommitQuery(context.Background(), organization, project, component).Offset(offset).Limit(limit).Sort(sort).Branch(branch).From(from).To(to).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentCommitQuery(context.Background(), organization, project, component).From(from).To(to).Offset(offset).Limit(limit).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentCommitQuery``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ComponentCommitQuery`: CommitDataWithVersionPaginator
+	// response from `ComponentCommitQuery`: CommitDataPaginator
 	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentCommitQuery`: %v\n", resp)
 }
 ```
@@ -66,9 +72,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -80,20 +86,18 @@ Name | Type | Description  | Notes
 
 
 
- **offset** | **int32** |  | [default to 0]
- **limit** | **int32** |  | 
- **sort** | **[]string** |  | 
- **branch** | **string** | The branch to list commits for. If not provided, it will list commits for the default branch. | 
- **from** | **string** | From version. This is the starting point to select commits. If none is selected this will default to the first version | 
- **to** | **string** | To version. This is the ending point to select commits. If not provided, it will list all commits from &#x60;from&#x60; to the latest version as returned in /organizations/{organization}/projects/{project}/components/{component}/latest. | 
+ **from** | **string** |  | 
+ **to** | **string** |  | 
+ **offset** | **float32** |  | 
+ **limit** | **float32** |  | 
 
 ### Return type
 
-[**CommitDataWithVersionPaginator**](CommitDataWithVersionPaginator.md)
+[**CommitDataPaginator**](CommitDataPaginator.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -124,8 +128,8 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
 	componentDraft := *openapiclient.NewComponentDraft("Key_example", "Name_example") // ComponentDraft | 
 
 	configuration := openapiclient.NewConfiguration()
@@ -146,8 +150,8 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
 
 ### Other Parameters
 
@@ -166,7 +170,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -180,7 +184,7 @@ Name | Type | Description  | Notes
 
 ## ComponentDelete
 
-> Component ComponentDelete(ctx, organization, project, component).Execute()
+> ComponentDelete(ctx, organization, project, component).Execute()
 
 Delete a component
 
@@ -199,19 +203,17 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentDelete(context.Background(), organization, project, component).Execute()
+	r, err := apiClient.ComponentsApi.ComponentDelete(context.Background(), organization, project, component).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ComponentDelete`: Component
-	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentDelete`: %v\n", resp)
 }
 ```
 
@@ -221,9 +223,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -238,11 +240,85 @@ Name | Type | Description  | Notes
 
 ### Return type
 
+ (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentGet
+
+> Component ComponentGet(ctx, organization, project, component).Execute()
+
+Get component details
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentGet(context.Background(), organization, project, component).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentGet`: Component
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+### Return type
+
 [**Component**](Component.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -273,10 +349,10 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	branch := "branch_example" // string | 
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	branch := "branch_example" // string |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -296,9 +372,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -318,7 +394,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -332,7 +408,7 @@ Name | Type | Description  | Notes
 
 ## ComponentPatch
 
-> Component ComponentPatch(ctx, organization, project, component).PatchRequestInner(patchRequestInner).Execute()
+> Component ComponentPatch(ctx, organization, project, component).PatchedComponentDraft(patchedComponentDraft).Execute()
 
 Patch an existing component
 
@@ -349,14 +425,14 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	patchRequestInner := []openapiclient.PatchRequestInner{openapiclient.PatchRequest_inner{JSONPatchRequestAddReplaceTest: openapiclient.NewJSONPatchRequestAddReplaceTest("Path_example", interface{}(123), "Op_example")}} // []PatchRequestInner |  (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	patchedComponentDraft := *openapiclient.NewPatchedComponentDraft() // PatchedComponentDraft |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentPatch(context.Background(), organization, project, component).PatchRequestInner(patchRequestInner).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentPatch(context.Background(), organization, project, component).PatchedComponentDraft(patchedComponentDraft).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentPatch``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -372,9 +448,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -386,7 +462,7 @@ Name | Type | Description  | Notes
 
 
 
- **patchRequestInner** | [**[]PatchRequestInner**](PatchRequestInner.md) |  | 
+ **patchedComponentDraft** | [**PatchedComponentDraft**](PatchedComponentDraft.md) |  | 
 
 ### Return type
 
@@ -394,11 +470,11 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: application/json-patch+json
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -408,7 +484,7 @@ Name | Type | Description  | Notes
 
 ## ComponentQuery
 
-> ComponentPaginator ComponentQuery(ctx, organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
+> ComponentPaginator ComponentQuery(ctx, organization, project).Key(key).Limit(limit).Offset(offset).Execute()
 
 List all components
 
@@ -425,15 +501,15 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	offset := int32(56) // int32 |  (optional) (default to 0)
-	limit := int32(56) // int32 |  (optional)
-	sort := []string{"Inner_example"} // []string |  (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	key := "key_example" // string |  (optional)
+	limit := int32(56) // int32 | Number of results to return per page. (optional)
+	offset := int32(56) // int32 | The initial index from which to return the results. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentQuery(context.Background(), organization, project).Offset(offset).Limit(limit).Sort(sort).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentQuery(context.Background(), organization, project).Key(key).Limit(limit).Offset(offset).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentQuery``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -449,8 +525,8 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
 
 ### Other Parameters
 
@@ -461,9 +537,9 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **offset** | **int32** |  | [default to 0]
- **limit** | **int32** |  | 
- **sort** | **[]string** |  | 
+ **key** | **string** |  | 
+ **limit** | **int32** | Number of results to return per page. | 
+ **offset** | **int32** | The initial index from which to return the results. | 
 
 ### Return type
 
@@ -471,11 +547,87 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentUpdate
+
+> Component ComponentUpdate(ctx, organization, project, component).ComponentDraft(componentDraft).Execute()
+
+Update a component
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	componentDraft := *openapiclient.NewComponentDraft("Key_example", "Name_example") // ComponentDraft | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentUpdate(context.Background(), organization, project, component).ComponentDraft(componentDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentUpdate`: Component
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **componentDraft** | [**ComponentDraft**](ComponentDraft.md) |  | 
+
+### Return type
+
+[**Component**](Component.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -502,10 +654,10 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	componentVersionDraft := *openapiclient.NewComponentVersionDraft("Version_example", "Branch_example") // ComponentVersionDraft | 
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	componentVersionDraft := *openapiclient.NewComponentVersionDraft("Version_example") // ComponentVersionDraft | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -525,9 +677,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -547,7 +699,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -561,7 +713,7 @@ Name | Type | Description  | Notes
 
 ## ComponentVersionDelete
 
-> ComponentVersion ComponentVersionDelete(ctx, organization, project, component, version).Execute()
+> ComponentVersionDelete(ctx, organization, project, component, version).Execute()
 
 Delete component version
 
@@ -578,20 +730,18 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	version := "version_example" // string | Version
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentVersionDelete(context.Background(), organization, project, component, version).Execute()
+	r, err := apiClient.ComponentsApi.ComponentVersionDelete(context.Background(), organization, project, component, version).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionDelete``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ComponentVersionDelete`: ComponentVersion
-	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionDelete`: %v\n", resp)
 }
 ```
 
@@ -601,10 +751,10 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
-**version** | **string** | Version | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
 
 ### Other Parameters
 
@@ -620,11 +770,89 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**ComponentVersion**](ComponentVersion.md)
+ (empty response body)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionDeleteCommit
+
+> ComponentVersionDeleteCommit(ctx, organization, project, component, version, commit).Execute()
+
+Delete commit
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	commit := "commit_example" // string | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.ComponentsApi.ComponentVersionDeleteCommit(context.Background(), organization, project, component, version, commit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionDeleteCommit``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+**commit** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionDeleteCommitRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+
+### Return type
+
+ (empty response body)
+
+### Authorization
+
+No authorization required
 
 ### HTTP request headers
 
@@ -655,10 +883,10 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	version := "version_example" // string | Version
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -678,10 +906,10 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
-**version** | **string** | Version | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
 
 ### Other Parameters
 
@@ -701,7 +929,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -713,11 +941,11 @@ Name | Type | Description  | Notes
 [[Back to README]](../README.md)
 
 
-## ComponentVersionPushCommits
+## ComponentVersionGetCommit
 
-> ComponentVersionPushCommits(ctx, organization, project, component, version).ComponentVersionCommits(componentVersionCommits).Execute()
+> CommitData ComponentVersionGetCommit(ctx, organization, project, component, version, commit).Execute()
 
-Push commits for this component version
+Get commit details
 
 ### Example
 
@@ -728,24 +956,25 @@ import (
 	"context"
 	"fmt"
 	"os"
-    "time"
 	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	version := "version_example" // string | Component version
-	componentVersionCommits := *openapiclient.NewComponentVersionCommits([]openapiclient.CommitData{*openapiclient.NewCommitData("Commit_example", []string{"Parents_example"}, "Subject_example", *openapiclient.NewCommitDataAuthor("Name_example", "Email_example", time.Now()), *openapiclient.NewCommitDataAuthor("Name_example", "Email_example", time.Now()))}) // ComponentVersionCommits | 
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	commit := "commit_example" // string | 
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	r, err := apiClient.ComponentsApi.ComponentVersionPushCommits(context.Background(), organization, project, component, version).ComponentVersionCommits(componentVersionCommits).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionGetCommit(context.Background(), organization, project, component, version, commit).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionPushCommits``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionGetCommit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
+	// response from `ComponentVersionGetCommit`: CommitData
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionGetCommit`: %v\n", resp)
 }
 ```
 
@@ -755,10 +984,253 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
-**version** | **string** | Component version | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+**commit** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionGetCommitRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+
+### Return type
+
+[**CommitData**](CommitData.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionPatch
+
+> ComponentVersion ComponentVersionPatch(ctx, organization, project, component, version).PatchedComponentVersionDraft(patchedComponentVersionDraft).Execute()
+
+Patch component version
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	patchedComponentVersionDraft := *openapiclient.NewPatchedComponentVersionDraft() // PatchedComponentVersionDraft |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionPatch(context.Background(), organization, project, component, version).PatchedComponentVersionDraft(patchedComponentVersionDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionPatch``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentVersionPatch`: ComponentVersion
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionPatch`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionPatchRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+ **patchedComponentVersionDraft** | [**PatchedComponentVersionDraft**](PatchedComponentVersionDraft.md) |  | 
+
+### Return type
+
+[**ComponentVersion**](ComponentVersion.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionPatchCommit
+
+> CommitData ComponentVersionPatchCommit(ctx, organization, project, component, version, commit).PatchedCommitDataDraft(patchedCommitDataDraft).Execute()
+
+Patch commit
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	commit := "commit_example" // string | 
+	patchedCommitDataDraft := *openapiclient.NewPatchedCommitDataDraft() // PatchedCommitDataDraft |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionPatchCommit(context.Background(), organization, project, component, version, commit).PatchedCommitDataDraft(patchedCommitDataDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionPatchCommit``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentVersionPatchCommit`: CommitData
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionPatchCommit`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+**commit** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionPatchCommitRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+ **patchedCommitDataDraft** | [**PatchedCommitDataDraft**](PatchedCommitDataDraft.md) |  | 
+
+### Return type
+
+[**CommitData**](CommitData.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionPushCommits
+
+> CommitDataPaginator ComponentVersionPushCommits(ctx, organization, project, component, version).ComponentCommitCreateDraft(componentCommitCreateDraft).Execute()
+
+Push commits for this component version
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	componentCommitCreateDraft := *openapiclient.NewComponentCommitCreateDraft() // ComponentCommitCreateDraft |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionPushCommits(context.Background(), organization, project, component, version).ComponentCommitCreateDraft(componentCommitCreateDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionPushCommits``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentVersionPushCommits`: CommitDataPaginator
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionPushCommits`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
 
 ### Other Parameters
 
@@ -771,15 +1243,15 @@ Name | Type | Description  | Notes
 
 
 
- **componentVersionCommits** | [**ComponentVersionCommits**](ComponentVersionCommits.md) |  | 
+ **componentCommitCreateDraft** | [**ComponentCommitCreateDraft**](ComponentCommitCreateDraft.md) |  | 
 
 ### Return type
 
- (empty response body)
+[**CommitDataPaginator**](CommitDataPaginator.md)
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -793,7 +1265,7 @@ Name | Type | Description  | Notes
 
 ## ComponentVersionQuery
 
-> ComponentVersionPaginator ComponentVersionQuery(ctx, organization, project, component).Offset(offset).Limit(limit).Sort(sort).Execute()
+> ComponentVersionPaginator ComponentVersionQuery(ctx, organization, project, component).Limit(limit).Offset(offset).Execute()
 
 List all versions of a component
 
@@ -810,16 +1282,15 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	offset := int32(56) // int32 |  (optional) (default to 0)
-	limit := int32(56) // int32 |  (optional)
-	sort := []string{"Inner_example"} // []string |  (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	limit := int32(56) // int32 | Number of results to return per page. (optional)
+	offset := int32(56) // int32 | The initial index from which to return the results. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentVersionQuery(context.Background(), organization, project, component).Offset(offset).Limit(limit).Sort(sort).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionQuery(context.Background(), organization, project, component).Limit(limit).Offset(offset).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionQuery``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -835,9 +1306,9 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
 
 ### Other Parameters
 
@@ -849,9 +1320,8 @@ Name | Type | Description  | Notes
 
 
 
- **offset** | **int32** |  | [default to 0]
- **limit** | **int32** |  | 
- **sort** | **[]string** |  | 
+ **limit** | **int32** | Number of results to return per page. | 
+ **offset** | **int32** | The initial index from which to return the results. | 
 
 ### Return type
 
@@ -859,7 +1329,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
@@ -873,7 +1343,7 @@ Name | Type | Description  | Notes
 
 ## ComponentVersionQueryCommits
 
-> CommitDataPaginator ComponentVersionQueryCommits(ctx, organization, project, component, version).Offset(offset).Limit(limit).Sort(sort).Execute()
+> CommitDataPaginator ComponentVersionQueryCommits(ctx, organization, project, component, version).Limit(limit).Offset(offset).Execute()
 
 Get commits for this component version
 
@@ -890,17 +1360,16 @@ import (
 )
 
 func main() {
-	organization := "my-organization" // string | Organization Key
-	project := "my-project" // string | Project Key
-	component := "component_example" // string | Component key
-	version := "version_example" // string | Component version
-	offset := int32(56) // int32 |  (optional) (default to 0)
-	limit := int32(56) // int32 |  (optional)
-	sort := []string{"Inner_example"} // []string |  (optional)
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	limit := int32(56) // int32 | Number of results to return per page. (optional)
+	offset := int32(56) // int32 | The initial index from which to return the results. (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.ComponentsApi.ComponentVersionQueryCommits(context.Background(), organization, project, component, version).Offset(offset).Limit(limit).Sort(sort).Execute()
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionQueryCommits(context.Background(), organization, project, component, version).Limit(limit).Offset(offset).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionQueryCommits``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -916,10 +1385,10 @@ func main() {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**organization** | **string** | Organization Key | 
-**project** | **string** | Project Key | 
-**component** | **string** | Component key | 
-**version** | **string** | Component version | 
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
 
 ### Other Parameters
 
@@ -932,9 +1401,8 @@ Name | Type | Description  | Notes
 
 
 
- **offset** | **int32** |  | [default to 0]
- **limit** | **int32** |  | 
- **sort** | **[]string** |  | 
+ **limit** | **int32** | Number of results to return per page. | 
+ **offset** | **int32** | The initial index from which to return the results. | 
 
 ### Return type
 
@@ -942,11 +1410,173 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2](../README.md#OAuth2), [OAuth2](../README.md#OAuth2)
+No authorization required
 
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionUpdate
+
+> ComponentVersion ComponentVersionUpdate(ctx, organization, project, component, version).ComponentVersionDraft(componentVersionDraft).Execute()
+
+Update component version
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	componentVersionDraft := *openapiclient.NewComponentVersionDraft("Version_example") // ComponentVersionDraft | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionUpdate(context.Background(), organization, project, component, version).ComponentVersionDraft(componentVersionDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionUpdate``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentVersionUpdate`: ComponentVersion
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionUpdate`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionUpdateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+ **componentVersionDraft** | [**ComponentVersionDraft**](ComponentVersionDraft.md) |  | 
+
+### Return type
+
+[**ComponentVersion**](ComponentVersion.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ComponentVersionUpdateCommit
+
+> CommitData ComponentVersionUpdateCommit(ctx, organization, project, component, version, commit).CommitDataDraft(commitDataDraft).Execute()
+
+Update commit
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+    "time"
+	openapiclient "github.com/GIT_USER_ID/GIT_REPO_ID"
+)
+
+func main() {
+	organization := "organization_example" // string | 
+	project := "project_example" // string | 
+	component := "component_example" // string | 
+	version := "version_example" // string | 
+	commit := "commit_example" // string | 
+	commitDataDraft := *openapiclient.NewCommitDataDraft("Subject_example", "Commit_example", *openapiclient.NewCommitDataAuthorDraft("Name_example", "Email_example", time.Now()), *openapiclient.NewCommitDataAuthorDraft("Name_example", "Email_example", time.Now())) // CommitDataDraft | 
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ComponentsApi.ComponentVersionUpdateCommit(context.Background(), organization, project, component, version, commit).CommitDataDraft(commitDataDraft).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ComponentsApi.ComponentVersionUpdateCommit``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ComponentVersionUpdateCommit`: CommitData
+	fmt.Fprintf(os.Stdout, "Response from `ComponentsApi.ComponentVersionUpdateCommit`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**organization** | **string** |  | 
+**project** | **string** |  | 
+**component** | **string** |  | 
+**version** | **string** |  | 
+**commit** | **string** |  | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiComponentVersionUpdateCommitRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
+
+ **commitDataDraft** | [**CommitDataDraft**](CommitDataDraft.md) |  | 
+
+### Return type
+
+[**CommitData**](CommitData.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)

@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Count** | **int32** | Number of items in the current page | 
-**Total** | **int64** | Total number of items found | 
-**Offset** | **int32** |  | [default to 0]
-**Limit** | **int32** |  | [default to 20]
-**Results** | [**[]CommitData**](CommitData.md) |  | 
+**Count** | Pointer to **int32** | Number of items in the current page | [optional] 
+**Total** | Pointer to **int64** | Total number of items found | [optional] 
+**Offset** | Pointer to **int32** |  | [optional] [default to 0]
+**Limit** | Pointer to **int32** |  | [optional] [default to 10]
+**Results** | Pointer to [**[]CommitData**](CommitData.md) |  | [optional] 
 
 ## Methods
 
 ### NewCommitDataPaginator
 
-`func NewCommitDataPaginator(count int32, total int64, offset int32, limit int32, results []CommitData, ) *CommitDataPaginator`
+`func NewCommitDataPaginator() *CommitDataPaginator`
 
 NewCommitDataPaginator instantiates a new CommitDataPaginator object
 This constructor will assign default values to properties that have it defined,
@@ -48,6 +48,11 @@ and a boolean to check if the value has been set.
 
 SetCount sets Count field to given value.
 
+### HasCount
+
+`func (o *CommitDataPaginator) HasCount() bool`
+
+HasCount returns a boolean if a field has been set.
 
 ### GetTotal
 
@@ -68,6 +73,11 @@ and a boolean to check if the value has been set.
 
 SetTotal sets Total field to given value.
 
+### HasTotal
+
+`func (o *CommitDataPaginator) HasTotal() bool`
+
+HasTotal returns a boolean if a field has been set.
 
 ### GetOffset
 
@@ -88,6 +98,11 @@ and a boolean to check if the value has been set.
 
 SetOffset sets Offset field to given value.
 
+### HasOffset
+
+`func (o *CommitDataPaginator) HasOffset() bool`
+
+HasOffset returns a boolean if a field has been set.
 
 ### GetLimit
 
@@ -108,6 +123,11 @@ and a boolean to check if the value has been set.
 
 SetLimit sets Limit field to given value.
 
+### HasLimit
+
+`func (o *CommitDataPaginator) HasLimit() bool`
+
+HasLimit returns a boolean if a field has been set.
 
 ### GetResults
 
@@ -128,6 +148,11 @@ and a boolean to check if the value has been set.
 
 SetResults sets Results field to given value.
 
+### HasResults
+
+`func (o *CommitDataPaginator) HasResults() bool`
+
+HasResults returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

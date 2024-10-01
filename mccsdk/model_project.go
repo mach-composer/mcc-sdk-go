@@ -25,11 +25,11 @@ var _ MappedNullable = &Project{}
 type Project struct {
 	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
-	// The organization key (must be unique)
+	// The project key (must be unique)
 	Key string `json:"key"`
-	// The name of the organization
+	// The name of the project
 	Name string `json:"name"`
-	// description about the api client
+	// The description of the project
 	Description *string `json:"description,omitempty"`
 }
 

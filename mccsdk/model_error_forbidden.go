@@ -18,7 +18,7 @@ import (
 // checks if the ErrorForbidden type satisfies the MappedNullable interface at compile time
 var _ MappedNullable = &ErrorForbidden{}
 
-// ErrorForbidden struct for ErrorForbidden
+// ErrorForbidden Forbidden
 type ErrorForbidden struct {
 	Status      *int32  `json:"status,omitempty"`
 	Summary     *string `json:"summary,omitempty"`

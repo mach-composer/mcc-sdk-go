@@ -4,11 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | 
-**CreatedAt** | **time.Time** |  | 
-**Key** | **string** | The organization key (must be unique) | 
-**Name** | **string** | The name of the organization | 
-**Description** | Pointer to **string** | description about the api client | [optional] 
+**Id** | **string** |  | [readonly] 
+**CreatedAt** | **time.Time** |  | [readonly] 
+**Key** | **string** | The project key (must be unique) | 
+**Name** | **string** | The name of the project | 
+**Description** | Pointer to **string** | The description of the project | [optional] 
 
 ## Methods
 

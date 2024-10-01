@@ -26,11 +26,11 @@ type Component struct {
 	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
 	// key of the component
-	Key *string `json:"key,omitempty"`
-	// name of the component
-	Name *string `json:"name,omitempty"`
+	Key string `json:"key"`
 	// short description of the component
 	Description *string `json:"description,omitempty"`
+	// name of the component
+	Name string `json:"name"`
 }
 
 type _Component Component
@@ -39,10 +39,12 @@ type _Component Component
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewComponent(id string, createdAt time.Time) *Component {
+func NewComponent(id string, createdAt time.Time, key string, name string) *Component {
 	this := Component{}
 	this.Id = id
 	this.CreatedAt = createdAt
+	this.Key = key
+	this.Name = name
 	return &this
 }
 
@@ -102,68 +104,28 @@ func (o *Component) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
-// GetKey returns the Key field value if set, zero value otherwise.
+// GetKey returns the Key field value
 func (o *Component) GetKey() string {
-	if o == nil || IsNil(o.Key) {
+	if o == nil {
 		var ret string
 		return ret
 	}
-	return *o.Key
+
+	return o.Key
 }
 
-// GetKeyOk returns a tuple with the Key field value if set, nil otherwise
+// GetKeyOk returns a tuple with the Key field value
 // and a boolean to check if the value has been set.
 func (o *Component) GetKeyOk() (*string, bool) {
-	if o == nil || IsNil(o.Key) {
+	if o == nil {
 		return nil, false
 	}
-	return o.Key, true
+	return &o.Key, true
 }
 
-// HasKey returns a boolean if a field has been set.
-func (o *Component) HasKey() bool {
-	if o != nil && !IsNil(o.Key) {
-		return true
-	}
-
-	return false
-}
-
-// SetKey gets a reference to the given string and assigns it to the Key field.
+// SetKey sets field value
 func (o *Component) SetKey(v string) {
-	o.Key = &v
-}
-
-// GetName returns the Name field value if set, zero value otherwise.
-func (o *Component) GetName() string {
-	if o == nil || IsNil(o.Name) {
-		var ret string
-		return ret
-	}
-	return *o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Component) GetNameOk() (*string, bool) {
-	if o == nil || IsNil(o.Name) {
-		return nil, false
-	}
-	return o.Name, true
-}
-
-// HasName returns a boolean if a field has been set.
-func (o *Component) HasName() bool {
-	if o != nil && !IsNil(o.Name) {
-		return true
-	}
-
-	return false
-}
-
-// SetName gets a reference to the given string and assigns it to the Name field.
-func (o *Component) SetName(v string) {
-	o.Name = &v
+	o.Key = v
 }
 
 // GetDescription returns the Description field value if set, zero value otherwise.
@@ -198,6 +160,30 @@ func (o *Component) SetDescription(v string) {
 	o.Description = &v
 }
 
+// GetName returns the Name field value
+func (o *Component) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *Component) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *Component) SetName(v string) {
+	o.Name = v
+}
+
 func (o Component) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -210,15 +196,11 @@ func (o Component) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created_at"] = o.CreatedAt
-	if !IsNil(o.Key) {
-		toSerialize["key"] = o.Key
-	}
-	if !IsNil(o.Name) {
-		toSerialize["name"] = o.Name
-	}
+	toSerialize["key"] = o.Key
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+	toSerialize["name"] = o.Name
 	return toSerialize, nil
 }
 
@@ -229,6 +211,8 @@ func (o *Component) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"created_at",
+		"key",
+		"name",
 	}
 
 	allProperties := make(map[string]interface{})

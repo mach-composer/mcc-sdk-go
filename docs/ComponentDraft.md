@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Key** | **string** |  | 
-**Name** | **string** |  | 
-**Description** | Pointer to **string** |  | [optional] 
+**Key** | **string** | key of the component | 
+**Description** | Pointer to **string** | short description of the component | [optional] 
+**Name** | **string** | name of the component | 
 
 ## Methods
 
@@ -47,26 +47,6 @@ and a boolean to check if the value has been set.
 SetKey sets Key field to given value.
 
 
-### GetName
-
-`func (o *ComponentDraft) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *ComponentDraft) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *ComponentDraft) SetName(v string)`
-
-SetName sets Name field to given value.
-
-
 ### GetDescription
 
 `func (o *ComponentDraft) GetDescription() string`
@@ -91,6 +71,26 @@ SetDescription sets Description field to given value.
 `func (o *ComponentDraft) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
+
+### GetName
+
+`func (o *ComponentDraft) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *ComponentDraft) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *ComponentDraft) SetName(v string)`
+
+SetName sets Name field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

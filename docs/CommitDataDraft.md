@@ -4,17 +4,17 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Commit** | **string** |  | 
-**Parents** | **[]string** |  | 
 **Subject** | **string** |  | 
-**Author** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
-**Committer** | [**CommitDataAuthor**](CommitDataAuthor.md) |  | 
+**Commit** | **string** |  | 
+**Parents** | Pointer to **[]string** |  | [optional] 
+**Author** | [**CommitDataAuthorDraft**](CommitDataAuthorDraft.md) |  | 
+**Committer** | [**CommitDataAuthorDraft**](CommitDataAuthorDraft.md) |  | 
 
 ## Methods
 
 ### NewCommitDataDraft
 
-`func NewCommitDataDraft(commit string, parents []string, subject string, author CommitDataAuthor, committer CommitDataAuthor, ) *CommitDataDraft`
+`func NewCommitDataDraft(subject string, commit string, author CommitDataAuthorDraft, committer CommitDataAuthorDraft, ) *CommitDataDraft`
 
 NewCommitDataDraft instantiates a new CommitDataDraft object
 This constructor will assign default values to properties that have it defined,
@@ -28,6 +28,26 @@ will change when the set of required properties is changed
 NewCommitDataDraftWithDefaults instantiates a new CommitDataDraft object
 This constructor will only assign default values to properties that have it defined,
 but it doesn't guarantee that properties required by API are set
+
+### GetSubject
+
+`func (o *CommitDataDraft) GetSubject() string`
+
+GetSubject returns the Subject field if non-nil, zero value otherwise.
+
+### GetSubjectOk
+
+`func (o *CommitDataDraft) GetSubjectOk() (*string, bool)`
+
+GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetSubject
+
+`func (o *CommitDataDraft) SetSubject(v string)`
+
+SetSubject sets Subject field to given value.
+
 
 ### GetCommit
 
@@ -68,63 +88,48 @@ and a boolean to check if the value has been set.
 
 SetParents sets Parents field to given value.
 
+### HasParents
 
-### GetSubject
+`func (o *CommitDataDraft) HasParents() bool`
 
-`func (o *CommitDataDraft) GetSubject() string`
-
-GetSubject returns the Subject field if non-nil, zero value otherwise.
-
-### GetSubjectOk
-
-`func (o *CommitDataDraft) GetSubjectOk() (*string, bool)`
-
-GetSubjectOk returns a tuple with the Subject field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetSubject
-
-`func (o *CommitDataDraft) SetSubject(v string)`
-
-SetSubject sets Subject field to given value.
-
+HasParents returns a boolean if a field has been set.
 
 ### GetAuthor
 
-`func (o *CommitDataDraft) GetAuthor() CommitDataAuthor`
+`func (o *CommitDataDraft) GetAuthor() CommitDataAuthorDraft`
 
 GetAuthor returns the Author field if non-nil, zero value otherwise.
 
 ### GetAuthorOk
 
-`func (o *CommitDataDraft) GetAuthorOk() (*CommitDataAuthor, bool)`
+`func (o *CommitDataDraft) GetAuthorOk() (*CommitDataAuthorDraft, bool)`
 
 GetAuthorOk returns a tuple with the Author field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetAuthor
 
-`func (o *CommitDataDraft) SetAuthor(v CommitDataAuthor)`
+`func (o *CommitDataDraft) SetAuthor(v CommitDataAuthorDraft)`
 
 SetAuthor sets Author field to given value.
 
 
 ### GetCommitter
 
-`func (o *CommitDataDraft) GetCommitter() CommitDataAuthor`
+`func (o *CommitDataDraft) GetCommitter() CommitDataAuthorDraft`
 
 GetCommitter returns the Committer field if non-nil, zero value otherwise.
 
 ### GetCommitterOk
 
-`func (o *CommitDataDraft) GetCommitterOk() (*CommitDataAuthor, bool)`
+`func (o *CommitDataDraft) GetCommitterOk() (*CommitDataAuthorDraft, bool)`
 
 GetCommitterOk returns a tuple with the Committer field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetCommitter
 
-`func (o *CommitDataDraft) SetCommitter(v CommitDataAuthor)`
+`func (o *CommitDataDraft) SetCommitter(v CommitDataAuthorDraft)`
 
 SetCommitter sets Committer field to given value.
 

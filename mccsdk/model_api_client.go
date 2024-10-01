@@ -23,17 +23,13 @@ var _ MappedNullable = &ApiClient{}
 
 // ApiClient struct for ApiClient
 type ApiClient struct {
-	Id        string    `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	// description about the api client
-	Description *string `json:"description,omitempty"`
-	// the client id
-	ClientId string `json:"client_id"`
-	// the client id
-	ClientSecret string     `json:"client_secret"`
-	LastUsedAt   *time.Time `json:"last_used_at,omitempty"`
-	// Scope
-	Scope []string `json:"scope"`
+	Id           string       `json:"id"`
+	CreatedAt    time.Time    `json:"created_at"`
+	ClientId     string       `json:"client_id"`
+	ClientSecret string       `json:"client_secret"`
+	Scope        []string     `json:"scope,omitempty"`
+	Description  *string      `json:"description,omitempty"`
+	LastUsedAt   NullableTime `json:"last_used_at,omitempty"`
 }
 
 type _ApiClient ApiClient
@@ -42,13 +38,12 @@ type _ApiClient ApiClient
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApiClient(id string, createdAt time.Time, clientId string, clientSecret string, scope []string) *ApiClient {
+func NewApiClient(id string, createdAt time.Time, clientId string, clientSecret string) *ApiClient {
 	this := ApiClient{}
 	this.Id = id
 	this.CreatedAt = createdAt
 	this.ClientId = clientId
 	this.ClientSecret = clientSecret
-	this.Scope = scope
 	return &this
 }
 
@@ -108,38 +103,6 @@ func (o *ApiClient) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
-func (o *ApiClient) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
-		var ret string
-		return ret
-	}
-	return *o.Description
-}
-
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *ApiClient) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
-		return nil, false
-	}
-	return o.Description, true
-}
-
-// HasDescription returns a boolean if a field has been set.
-func (o *ApiClient) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *ApiClient) SetDescription(v string) {
-	o.Description = &v
-}
-
 // GetClientId returns the ClientId field value
 func (o *ApiClient) GetClientId() string {
 	if o == nil {
@@ -188,60 +151,111 @@ func (o *ApiClient) SetClientSecret(v string) {
 	o.ClientSecret = v
 }
 
-// GetLastUsedAt returns the LastUsedAt field value if set, zero value otherwise.
-func (o *ApiClient) GetLastUsedAt() time.Time {
-	if o == nil || IsNil(o.LastUsedAt) {
-		var ret time.Time
+// GetScope returns the Scope field value if set, zero value otherwise.
+func (o *ApiClient) GetScope() []string {
+	if o == nil || IsNil(o.Scope) {
+		var ret []string
 		return ret
 	}
-	return *o.LastUsedAt
+	return o.Scope
 }
 
-// GetLastUsedAtOk returns a tuple with the LastUsedAt field value if set, nil otherwise
+// GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ApiClient) GetLastUsedAtOk() (*time.Time, bool) {
-	if o == nil || IsNil(o.LastUsedAt) {
+func (o *ApiClient) GetScopeOk() ([]string, bool) {
+	if o == nil || IsNil(o.Scope) {
 		return nil, false
 	}
-	return o.LastUsedAt, true
+	return o.Scope, true
 }
 
-// HasLastUsedAt returns a boolean if a field has been set.
-func (o *ApiClient) HasLastUsedAt() bool {
-	if o != nil && !IsNil(o.LastUsedAt) {
+// HasScope returns a boolean if a field has been set.
+func (o *ApiClient) HasScope() bool {
+	if o != nil && !IsNil(o.Scope) {
 		return true
 	}
 
 	return false
 }
 
-// SetLastUsedAt gets a reference to the given time.Time and assigns it to the LastUsedAt field.
-func (o *ApiClient) SetLastUsedAt(v time.Time) {
-	o.LastUsedAt = &v
+// SetScope gets a reference to the given []string and assigns it to the Scope field.
+func (o *ApiClient) SetScope(v []string) {
+	o.Scope = v
 }
 
-// GetScope returns the Scope field value
-func (o *ApiClient) GetScope() []string {
-	if o == nil {
-		var ret []string
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *ApiClient) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
 		return ret
 	}
-
-	return o.Scope
+	return *o.Description
 }
 
-// GetScopeOk returns a tuple with the Scope field value
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ApiClient) GetScopeOk() ([]string, bool) {
+func (o *ApiClient) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *ApiClient) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *ApiClient) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetLastUsedAt returns the LastUsedAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *ApiClient) GetLastUsedAt() time.Time {
+	if o == nil || IsNil(o.LastUsedAt.Get()) {
+		var ret time.Time
+		return ret
+	}
+	return *o.LastUsedAt.Get()
+}
+
+// GetLastUsedAtOk returns a tuple with the LastUsedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *ApiClient) GetLastUsedAtOk() (*time.Time, bool) {
 	if o == nil {
 		return nil, false
 	}
-	return o.Scope, true
+	return o.LastUsedAt.Get(), o.LastUsedAt.IsSet()
 }
 
-// SetScope sets field value
-func (o *ApiClient) SetScope(v []string) {
-	o.Scope = v
+// HasLastUsedAt returns a boolean if a field has been set.
+func (o *ApiClient) HasLastUsedAt() bool {
+	if o != nil && o.LastUsedAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetLastUsedAt gets a reference to the given NullableTime and assigns it to the LastUsedAt field.
+func (o *ApiClient) SetLastUsedAt(v time.Time) {
+	o.LastUsedAt.Set(&v)
+}
+
+// SetLastUsedAtNil sets the value for LastUsedAt to be an explicit nil
+func (o *ApiClient) SetLastUsedAtNil() {
+	o.LastUsedAt.Set(nil)
+}
+
+// UnsetLastUsedAt ensures that no value is present for LastUsedAt, not even an explicit nil
+func (o *ApiClient) UnsetLastUsedAt() {
+	o.LastUsedAt.Unset()
 }
 
 func (o ApiClient) MarshalJSON() ([]byte, error) {
@@ -256,15 +270,17 @@ func (o ApiClient) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created_at"] = o.CreatedAt
+	toSerialize["client_id"] = o.ClientId
+	toSerialize["client_secret"] = o.ClientSecret
+	if !IsNil(o.Scope) {
+		toSerialize["scope"] = o.Scope
+	}
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
-	toSerialize["client_id"] = o.ClientId
-	toSerialize["client_secret"] = o.ClientSecret
-	if !IsNil(o.LastUsedAt) {
-		toSerialize["last_used_at"] = o.LastUsedAt
+	if o.LastUsedAt.IsSet() {
+		toSerialize["last_used_at"] = o.LastUsedAt.Get()
 	}
-	toSerialize["scope"] = o.Scope
 	return toSerialize, nil
 }
 
@@ -277,7 +293,6 @@ func (o *ApiClient) UnmarshalJSON(data []byte) (err error) {
 		"created_at",
 		"client_id",
 		"client_secret",
-		"scope",
 	}
 
 	allProperties := make(map[string]interface{})
