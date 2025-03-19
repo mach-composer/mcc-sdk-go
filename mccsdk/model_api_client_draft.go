@@ -12,9 +12,7 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
 	"time"
 )
 
@@ -23,11 +21,14 @@ var _ MappedNullable = &ApiClientDraft{}
 
 // ApiClientDraft struct for ApiClientDraft
 type ApiClientDraft struct {
-	ClientId     string       `json:"client_id"`
-	ClientSecret string       `json:"client_secret"`
-	Scope        []string     `json:"scope,omitempty"`
-	Description  *string      `json:"description,omitempty"`
-	LastUsedAt   NullableTime `json:"last_used_at,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	ClientId *string `json:"client_id,omitempty"`
+	// Hashed on Save. Copy it now if this is a new secret.
+	ClientSecret         *string      `json:"client_secret,omitempty"`
+	Scope                []string     `json:"scope,omitempty"`
+	Description          *string      `json:"description,omitempty"`
+	LastUsedAt           NullableTime `json:"last_used_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApiClientDraft ApiClientDraft
@@ -36,10 +37,8 @@ type _ApiClientDraft ApiClientDraft
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApiClientDraft(clientId string, clientSecret string) *ApiClientDraft {
+func NewApiClientDraft() *ApiClientDraft {
 	this := ApiClientDraft{}
-	this.ClientId = clientId
-	this.ClientSecret = clientSecret
 	return &this
 }
 
@@ -51,52 +50,100 @@ func NewApiClientDraftWithDefaults() *ApiClientDraft {
 	return &this
 }
 
-// GetClientId returns the ClientId field value
-func (o *ApiClientDraft) GetClientId() string {
-	if o == nil {
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *ApiClientDraft) GetName() string {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.ClientId
+	return *o.Name
 }
 
-// GetClientIdOk returns a tuple with the ClientId field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApiClientDraft) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *ApiClientDraft) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *ApiClientDraft) SetName(v string) {
+	o.Name = &v
+}
+
+// GetClientId returns the ClientId field value if set, zero value otherwise.
+func (o *ApiClientDraft) GetClientId() string {
+	if o == nil || IsNil(o.ClientId) {
+		var ret string
+		return ret
+	}
+	return *o.ClientId
+}
+
+// GetClientIdOk returns a tuple with the ClientId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientDraft) GetClientIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ClientId) {
 		return nil, false
 	}
-	return &o.ClientId, true
+	return o.ClientId, true
 }
 
-// SetClientId sets field value
+// HasClientId returns a boolean if a field has been set.
+func (o *ApiClientDraft) HasClientId() bool {
+	if o != nil && !IsNil(o.ClientId) {
+		return true
+	}
+
+	return false
+}
+
+// SetClientId gets a reference to the given string and assigns it to the ClientId field.
 func (o *ApiClientDraft) SetClientId(v string) {
-	o.ClientId = v
+	o.ClientId = &v
 }
 
-// GetClientSecret returns the ClientSecret field value
+// GetClientSecret returns the ClientSecret field value if set, zero value otherwise.
 func (o *ApiClientDraft) GetClientSecret() string {
-	if o == nil {
+	if o == nil || IsNil(o.ClientSecret) {
 		var ret string
 		return ret
 	}
-
-	return o.ClientSecret
+	return *o.ClientSecret
 }
 
-// GetClientSecretOk returns a tuple with the ClientSecret field value
+// GetClientSecretOk returns a tuple with the ClientSecret field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClientDraft) GetClientSecretOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ClientSecret) {
 		return nil, false
 	}
-	return &o.ClientSecret, true
+	return o.ClientSecret, true
 }
 
-// SetClientSecret sets field value
+// HasClientSecret returns a boolean if a field has been set.
+func (o *ApiClientDraft) HasClientSecret() bool {
+	if o != nil && !IsNil(o.ClientSecret) {
+		return true
+	}
+
+	return false
+}
+
+// SetClientSecret gets a reference to the given string and assigns it to the ClientSecret field.
 func (o *ApiClientDraft) SetClientSecret(v string) {
-	o.ClientSecret = v
+	o.ClientSecret = &v
 }
 
 // GetScope returns the Scope field value if set, zero value otherwise.
@@ -216,8 +263,15 @@ func (o ApiClientDraft) MarshalJSON() ([]byte, error) {
 
 func (o ApiClientDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
-	toSerialize["client_id"] = o.ClientId
-	toSerialize["client_secret"] = o.ClientSecret
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.ClientId) {
+		toSerialize["client_id"] = o.ClientId
+	}
+	if !IsNil(o.ClientSecret) {
+		toSerialize["client_secret"] = o.ClientSecret
+	}
 	if !IsNil(o.Scope) {
 		toSerialize["scope"] = o.Scope
 	}
@@ -227,43 +281,36 @@ func (o ApiClientDraft) ToMap() (map[string]interface{}, error) {
 	if o.LastUsedAt.IsSet() {
 		toSerialize["last_used_at"] = o.LastUsedAt.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
 func (o *ApiClientDraft) UnmarshalJSON(data []byte) (err error) {
-	// This validates that all required properties are included in the JSON object
-	// by unmarshalling the object into a generic map with string keys and checking
-	// that every required field exists as a key in the generic map.
-	requiredProperties := []string{
-		"client_id",
-		"client_secret",
-	}
-
-	allProperties := make(map[string]interface{})
-
-	err = json.Unmarshal(data, &allProperties)
-
-	if err != nil {
-		return err
-	}
-
-	for _, requiredProperty := range requiredProperties {
-		if _, exists := allProperties[requiredProperty]; !exists {
-			return fmt.Errorf("no value given for required property %v", requiredProperty)
-		}
-	}
-
 	varApiClientDraft := _ApiClientDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApiClientDraft)
+	err = json.Unmarshal(data, &varApiClientDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApiClientDraft(varApiClientDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "client_id")
+		delete(additionalProperties, "client_secret")
+		delete(additionalProperties, "scope")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "last_used_at")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

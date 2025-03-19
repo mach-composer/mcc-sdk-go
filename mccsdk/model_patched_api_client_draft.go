@@ -21,12 +21,17 @@ var _ MappedNullable = &PatchedApiClientDraft{}
 
 // PatchedApiClientDraft struct for PatchedApiClientDraft
 type PatchedApiClientDraft struct {
-	ClientId     *string      `json:"client_id,omitempty"`
-	ClientSecret *string      `json:"client_secret,omitempty"`
-	Scope        []string     `json:"scope,omitempty"`
-	Description  *string      `json:"description,omitempty"`
-	LastUsedAt   NullableTime `json:"last_used_at,omitempty"`
+	Name     *string `json:"name,omitempty"`
+	ClientId *string `json:"client_id,omitempty"`
+	// Hashed on Save. Copy it now if this is a new secret.
+	ClientSecret         *string      `json:"client_secret,omitempty"`
+	Scope                []string     `json:"scope,omitempty"`
+	Description          *string      `json:"description,omitempty"`
+	LastUsedAt           NullableTime `json:"last_used_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedApiClientDraft PatchedApiClientDraft
 
 // NewPatchedApiClientDraft instantiates a new PatchedApiClientDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -43,6 +48,38 @@ func NewPatchedApiClientDraft() *PatchedApiClientDraft {
 func NewPatchedApiClientDraftWithDefaults() *PatchedApiClientDraft {
 	this := PatchedApiClientDraft{}
 	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *PatchedApiClientDraft) GetName() string {
+	if o == nil || IsNil(o.Name) {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PatchedApiClientDraft) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *PatchedApiClientDraft) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *PatchedApiClientDraft) SetName(v string) {
+	o.Name = &v
 }
 
 // GetClientId returns the ClientId field value if set, zero value otherwise.
@@ -226,6 +263,9 @@ func (o PatchedApiClientDraft) MarshalJSON() ([]byte, error) {
 
 func (o PatchedApiClientDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
 	if !IsNil(o.ClientId) {
 		toSerialize["client_id"] = o.ClientId
 	}
@@ -241,7 +281,38 @@ func (o PatchedApiClientDraft) ToMap() (map[string]interface{}, error) {
 	if o.LastUsedAt.IsSet() {
 		toSerialize["last_used_at"] = o.LastUsedAt.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedApiClientDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedApiClientDraft := _PatchedApiClientDraft{}
+
+	err = json.Unmarshal(data, &varPatchedApiClientDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedApiClientDraft(varPatchedApiClientDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "client_id")
+		delete(additionalProperties, "client_secret")
+		delete(additionalProperties, "scope")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "last_used_at")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedApiClientDraft struct {

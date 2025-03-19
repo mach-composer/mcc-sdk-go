@@ -23,11 +23,14 @@ type OrganizationPaginator struct {
 	// Number of items in the current page
 	Count *int32 `json:"count,omitempty"`
 	// Total number of items found
-	Total   *int64         `json:"total,omitempty"`
-	Offset  *int32         `json:"offset,omitempty"`
-	Limit   *int32         `json:"limit,omitempty"`
-	Results []Organization `json:"results,omitempty"`
+	Total                *int64         `json:"total,omitempty"`
+	Offset               *int32         `json:"offset,omitempty"`
+	Limit                *int32         `json:"limit,omitempty"`
+	Results              []Organization `json:"results,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _OrganizationPaginator OrganizationPaginator
 
 // NewOrganizationPaginator instantiates a new OrganizationPaginator object
 // This constructor will assign default values to properties that have it defined,
@@ -239,7 +242,37 @@ func (o OrganizationPaginator) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Results) {
 		toSerialize["results"] = o.Results
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *OrganizationPaginator) UnmarshalJSON(data []byte) (err error) {
+	varOrganizationPaginator := _OrganizationPaginator{}
+
+	err = json.Unmarshal(data, &varOrganizationPaginator)
+
+	if err != nil {
+		return err
+	}
+
+	*o = OrganizationPaginator(varOrganizationPaginator)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "results")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableOrganizationPaginator struct {

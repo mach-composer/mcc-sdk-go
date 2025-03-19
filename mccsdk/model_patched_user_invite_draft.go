@@ -21,13 +21,16 @@ var _ MappedNullable = &PatchedUserInviteDraft{}
 
 // PatchedUserInviteDraft struct for PatchedUserInviteDraft
 type PatchedUserInviteDraft struct {
-	AcceptedAt   NullableTime   `json:"accepted_at,omitempty"`
-	CreatedBy    *string        `json:"created_by,omitempty"`
-	Email        *string        `json:"email,omitempty"`
-	Organization *string        `json:"organization,omitempty"`
-	Project      NullableString `json:"project,omitempty"`
-	Role         *string        `json:"role,omitempty"`
+	AcceptedAt           NullableTime   `json:"accepted_at,omitempty"`
+	CreatedBy            *string        `json:"created_by,omitempty"`
+	Email                *string        `json:"email,omitempty"`
+	Organization         *string        `json:"organization,omitempty"`
+	Project              NullableString `json:"project,omitempty"`
+	Role                 *string        `json:"role,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedUserInviteDraft PatchedUserInviteDraft
 
 // NewPatchedUserInviteDraft instantiates a new PatchedUserInviteDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -288,7 +291,38 @@ func (o PatchedUserInviteDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Role) {
 		toSerialize["role"] = o.Role
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedUserInviteDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedUserInviteDraft := _PatchedUserInviteDraft{}
+
+	err = json.Unmarshal(data, &varPatchedUserInviteDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedUserInviteDraft(varPatchedUserInviteDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accepted_at")
+		delete(additionalProperties, "created_by")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "organization")
+		delete(additionalProperties, "project")
+		delete(additionalProperties, "role")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedUserInviteDraft struct {

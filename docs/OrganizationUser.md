@@ -14,12 +14,13 @@ Name | Type | Description | Notes
 **IsActive** | Pointer to **bool** |  | [optional] 
 **IsStaff** | Pointer to **bool** |  | [optional] 
 **IsSuperuser** | Pointer to **bool** |  | [optional] 
+**Projects** | [**[]Project**](Project.md) |  | [readonly] 
 
 ## Methods
 
 ### NewOrganizationUser
 
-`func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string, ) *OrganizationUser`
+`func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string, projects []Project, ) *OrganizationUser`
 
 NewOrganizationUser instantiates a new OrganizationUser object
 This constructor will assign default values to properties that have it defined,
@@ -253,6 +254,26 @@ SetIsSuperuser sets IsSuperuser field to given value.
 `func (o *OrganizationUser) HasIsSuperuser() bool`
 
 HasIsSuperuser returns a boolean if a field has been set.
+
+### GetProjects
+
+`func (o *OrganizationUser) GetProjects() []Project`
+
+GetProjects returns the Projects field if non-nil, zero value otherwise.
+
+### GetProjectsOk
+
+`func (o *OrganizationUser) GetProjectsOk() (*[]Project, bool)`
+
+GetProjectsOk returns a tuple with the Projects field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetProjects
+
+`func (o *OrganizationUser) SetProjects(v []Project)`
+
+SetProjects sets Projects field to given value.
+
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

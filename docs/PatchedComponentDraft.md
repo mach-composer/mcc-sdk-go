@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Key** | Pointer to **string** | key of the component | [optional] 
-**Description** | Pointer to **string** | short description of the component | [optional] 
-**Name** | Pointer to **string** | name of the component | [optional] 
+**Key** | Pointer to **string** | The component key (must be unique) | [optional] 
+**Name** | Pointer to **string** | The name of the component | [optional] 
+**Description** | Pointer to **string** | The description of the component | [optional] 
 
 ## Methods
 
@@ -52,31 +52,6 @@ SetKey sets Key field to given value.
 
 HasKey returns a boolean if a field has been set.
 
-### GetDescription
-
-`func (o *PatchedComponentDraft) GetDescription() string`
-
-GetDescription returns the Description field if non-nil, zero value otherwise.
-
-### GetDescriptionOk
-
-`func (o *PatchedComponentDraft) GetDescriptionOk() (*string, bool)`
-
-GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetDescription
-
-`func (o *PatchedComponentDraft) SetDescription(v string)`
-
-SetDescription sets Description field to given value.
-
-### HasDescription
-
-`func (o *PatchedComponentDraft) HasDescription() bool`
-
-HasDescription returns a boolean if a field has been set.
-
 ### GetName
 
 `func (o *PatchedComponentDraft) GetName() string`
@@ -101,6 +76,31 @@ SetName sets Name field to given value.
 `func (o *PatchedComponentDraft) HasName() bool`
 
 HasName returns a boolean if a field has been set.
+
+### GetDescription
+
+`func (o *PatchedComponentDraft) GetDescription() string`
+
+GetDescription returns the Description field if non-nil, zero value otherwise.
+
+### GetDescriptionOk
+
+`func (o *PatchedComponentDraft) GetDescriptionOk() (*string, bool)`
+
+GetDescriptionOk returns a tuple with the Description field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetDescription
+
+`func (o *PatchedComponentDraft) SetDescription(v string)`
+
+SetDescription sets Description field to given value.
+
+### HasDescription
+
+`func (o *PatchedComponentDraft) HasDescription() bool`
+
+HasDescription returns a boolean if a field has been set.
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

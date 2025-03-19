@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,8 +21,9 @@ var _ MappedNullable = &ErrorObject{}
 
 // ErrorObject struct for ErrorObject
 type ErrorObject struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
+	Code                 string `json:"code"`
+	Message              string `json:"message"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ErrorObject ErrorObject
@@ -107,6 +107,11 @@ func (o ErrorObject) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["code"] = o.Code
 	toSerialize["message"] = o.Message
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -135,15 +140,21 @@ func (o *ErrorObject) UnmarshalJSON(data []byte) (err error) {
 
 	varErrorObject := _ErrorObject{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varErrorObject)
+	err = json.Unmarshal(data, &varErrorObject)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ErrorObject(varErrorObject)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "code")
+		delete(additionalProperties, "message")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

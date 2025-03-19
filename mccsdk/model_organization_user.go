@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,16 +22,18 @@ var _ MappedNullable = &OrganizationUser{}
 
 // OrganizationUser struct for OrganizationUser
 type OrganizationUser struct {
-	Id             string    `json:"id"`
-	CreatedAt      time.Time `json:"created_at"`
-	LastModifiedAt time.Time `json:"last_modified_at"`
-	AccountStatus  string    `json:"account_status"`
-	Name           string    `json:"name"`
-	Email          string    `json:"email"`
-	AvatarUrl      *string   `json:"avatar_url,omitempty"`
-	IsActive       *bool     `json:"is_active,omitempty"`
-	IsStaff        *bool     `json:"is_staff,omitempty"`
-	IsSuperuser    *bool     `json:"is_superuser,omitempty"`
+	Id                   string    `json:"id"`
+	CreatedAt            time.Time `json:"created_at"`
+	LastModifiedAt       time.Time `json:"last_modified_at"`
+	AccountStatus        string    `json:"account_status"`
+	Name                 string    `json:"name"`
+	Email                string    `json:"email"`
+	AvatarUrl            *string   `json:"avatar_url,omitempty"`
+	IsActive             *bool     `json:"is_active,omitempty"`
+	IsStaff              *bool     `json:"is_staff,omitempty"`
+	IsSuperuser          *bool     `json:"is_superuser,omitempty"`
+	Projects             []Project `json:"projects"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OrganizationUser OrganizationUser
@@ -41,7 +42,7 @@ type _OrganizationUser OrganizationUser
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string) *OrganizationUser {
+func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Time, accountStatus string, name string, email string, projects []Project) *OrganizationUser {
 	this := OrganizationUser{}
 	this.Id = id
 	this.CreatedAt = createdAt
@@ -49,6 +50,7 @@ func NewOrganizationUser(id string, createdAt time.Time, lastModifiedAt time.Tim
 	this.AccountStatus = accountStatus
 	this.Name = name
 	this.Email = email
+	this.Projects = projects
 	return &this
 }
 
@@ -332,6 +334,30 @@ func (o *OrganizationUser) SetIsSuperuser(v bool) {
 	o.IsSuperuser = &v
 }
 
+// GetProjects returns the Projects field value
+func (o *OrganizationUser) GetProjects() []Project {
+	if o == nil {
+		var ret []Project
+		return ret
+	}
+
+	return o.Projects
+}
+
+// GetProjectsOk returns a tuple with the Projects field value
+// and a boolean to check if the value has been set.
+func (o *OrganizationUser) GetProjectsOk() ([]Project, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return o.Projects, true
+}
+
+// SetProjects sets field value
+func (o *OrganizationUser) SetProjects(v []Project) {
+	o.Projects = v
+}
+
 func (o OrganizationUser) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -360,6 +386,12 @@ func (o OrganizationUser) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsSuperuser) {
 		toSerialize["is_superuser"] = o.IsSuperuser
 	}
+	toSerialize["projects"] = o.Projects
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -374,6 +406,7 @@ func (o *OrganizationUser) UnmarshalJSON(data []byte) (err error) {
 		"account_status",
 		"name",
 		"email",
+		"projects",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -392,15 +425,30 @@ func (o *OrganizationUser) UnmarshalJSON(data []byte) (err error) {
 
 	varOrganizationUser := _OrganizationUser{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOrganizationUser)
+	err = json.Unmarshal(data, &varOrganizationUser)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OrganizationUser(varOrganizationUser)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "last_modified_at")
+		delete(additionalProperties, "account_status")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "avatar_url")
+		delete(additionalProperties, "is_active")
+		delete(additionalProperties, "is_staff")
+		delete(additionalProperties, "is_superuser")
+		delete(additionalProperties, "projects")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

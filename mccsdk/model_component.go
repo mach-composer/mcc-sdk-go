@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -25,12 +24,13 @@ var _ MappedNullable = &Component{}
 type Component struct {
 	Id        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
-	// key of the component
+	// The component key (must be unique)
 	Key string `json:"key"`
-	// short description of the component
-	Description *string `json:"description,omitempty"`
-	// name of the component
+	// The name of the component
 	Name string `json:"name"`
+	// The description of the component
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Component Component
@@ -128,6 +128,30 @@ func (o *Component) SetKey(v string) {
 	o.Key = v
 }
 
+// GetName returns the Name field value
+func (o *Component) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *Component) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *Component) SetName(v string) {
+	o.Name = v
+}
+
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Component) GetDescription() string {
 	if o == nil || IsNil(o.Description) {
@@ -160,30 +184,6 @@ func (o *Component) SetDescription(v string) {
 	o.Description = &v
 }
 
-// GetName returns the Name field value
-func (o *Component) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *Component) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *Component) SetName(v string) {
-	o.Name = v
-}
-
 func (o Component) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -197,10 +197,15 @@ func (o Component) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["created_at"] = o.CreatedAt
 	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
-	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -231,15 +236,24 @@ func (o *Component) UnmarshalJSON(data []byte) (err error) {
 
 	varComponent := _Component{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varComponent)
+	err = json.Unmarshal(data, &varComponent)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Component(varComponent)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

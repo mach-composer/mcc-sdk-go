@@ -23,8 +23,11 @@ type PatchedComponentVersionDraft struct {
 	// version of the component
 	Version *string `json:"version,omitempty"`
 	// branch of the version
-	Branch *string `json:"branch,omitempty"`
+	Branch               *string `json:"branch,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedComponentVersionDraft PatchedComponentVersionDraft
 
 // NewPatchedComponentVersionDraft instantiates a new PatchedComponentVersionDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -123,7 +126,34 @@ func (o PatchedComponentVersionDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Branch) {
 		toSerialize["branch"] = o.Branch
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedComponentVersionDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedComponentVersionDraft := _PatchedComponentVersionDraft{}
+
+	err = json.Unmarshal(data, &varPatchedComponentVersionDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedComponentVersionDraft(varPatchedComponentVersionDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "branch")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedComponentVersionDraft struct {

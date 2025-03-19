@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,13 +22,16 @@ var _ MappedNullable = &ApiClient{}
 
 // ApiClient struct for ApiClient
 type ApiClient struct {
-	Id           string       `json:"id"`
-	CreatedAt    time.Time    `json:"created_at"`
-	ClientId     string       `json:"client_id"`
-	ClientSecret string       `json:"client_secret"`
-	Scope        []string     `json:"scope,omitempty"`
-	Description  *string      `json:"description,omitempty"`
-	LastUsedAt   NullableTime `json:"last_used_at,omitempty"`
+	Id        int32     `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	Name      *string   `json:"name,omitempty"`
+	ClientId  *string   `json:"client_id,omitempty"`
+	// Hashed on Save. Copy it now if this is a new secret.
+	ClientSecret         *string      `json:"client_secret,omitempty"`
+	Scope                []string     `json:"scope,omitempty"`
+	Description          *string      `json:"description,omitempty"`
+	LastUsedAt           NullableTime `json:"last_used_at,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ApiClient ApiClient
@@ -38,12 +40,10 @@ type _ApiClient ApiClient
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewApiClient(id string, createdAt time.Time, clientId string, clientSecret string) *ApiClient {
+func NewApiClient(id int32, createdAt time.Time) *ApiClient {
 	this := ApiClient{}
 	this.Id = id
 	this.CreatedAt = createdAt
-	this.ClientId = clientId
-	this.ClientSecret = clientSecret
 	return &this
 }
 
@@ -56,9 +56,9 @@ func NewApiClientWithDefaults() *ApiClient {
 }
 
 // GetId returns the Id field value
-func (o *ApiClient) GetId() string {
+func (o *ApiClient) GetId() int32 {
 	if o == nil {
-		var ret string
+		var ret int32
 		return ret
 	}
 
@@ -67,7 +67,7 @@ func (o *ApiClient) GetId() string {
 
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
-func (o *ApiClient) GetIdOk() (*string, bool) {
+func (o *ApiClient) GetIdOk() (*int32, bool) {
 	if o == nil {
 		return nil, false
 	}
@@ -75,7 +75,7 @@ func (o *ApiClient) GetIdOk() (*string, bool) {
 }
 
 // SetId sets field value
-func (o *ApiClient) SetId(v string) {
+func (o *ApiClient) SetId(v int32) {
 	o.Id = v
 }
 
@@ -103,52 +103,100 @@ func (o *ApiClient) SetCreatedAt(v time.Time) {
 	o.CreatedAt = v
 }
 
-// GetClientId returns the ClientId field value
-func (o *ApiClient) GetClientId() string {
-	if o == nil {
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *ApiClient) GetName() string {
+	if o == nil || IsNil(o.Name) {
 		var ret string
 		return ret
 	}
-
-	return o.ClientId
+	return *o.Name
 }
 
-// GetClientIdOk returns a tuple with the ClientId field value
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApiClient) GetNameOk() (*string, bool) {
+	if o == nil || IsNil(o.Name) {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *ApiClient) HasName() bool {
+	if o != nil && !IsNil(o.Name) {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *ApiClient) SetName(v string) {
+	o.Name = &v
+}
+
+// GetClientId returns the ClientId field value if set, zero value otherwise.
+func (o *ApiClient) GetClientId() string {
+	if o == nil || IsNil(o.ClientId) {
+		var ret string
+		return ret
+	}
+	return *o.ClientId
+}
+
+// GetClientIdOk returns a tuple with the ClientId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClient) GetClientIdOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ClientId) {
 		return nil, false
 	}
-	return &o.ClientId, true
+	return o.ClientId, true
 }
 
-// SetClientId sets field value
+// HasClientId returns a boolean if a field has been set.
+func (o *ApiClient) HasClientId() bool {
+	if o != nil && !IsNil(o.ClientId) {
+		return true
+	}
+
+	return false
+}
+
+// SetClientId gets a reference to the given string and assigns it to the ClientId field.
 func (o *ApiClient) SetClientId(v string) {
-	o.ClientId = v
+	o.ClientId = &v
 }
 
-// GetClientSecret returns the ClientSecret field value
+// GetClientSecret returns the ClientSecret field value if set, zero value otherwise.
 func (o *ApiClient) GetClientSecret() string {
-	if o == nil {
+	if o == nil || IsNil(o.ClientSecret) {
 		var ret string
 		return ret
 	}
-
-	return o.ClientSecret
+	return *o.ClientSecret
 }
 
-// GetClientSecretOk returns a tuple with the ClientSecret field value
+// GetClientSecretOk returns a tuple with the ClientSecret field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiClient) GetClientSecretOk() (*string, bool) {
-	if o == nil {
+	if o == nil || IsNil(o.ClientSecret) {
 		return nil, false
 	}
-	return &o.ClientSecret, true
+	return o.ClientSecret, true
 }
 
-// SetClientSecret sets field value
+// HasClientSecret returns a boolean if a field has been set.
+func (o *ApiClient) HasClientSecret() bool {
+	if o != nil && !IsNil(o.ClientSecret) {
+		return true
+	}
+
+	return false
+}
+
+// SetClientSecret gets a reference to the given string and assigns it to the ClientSecret field.
 func (o *ApiClient) SetClientSecret(v string) {
-	o.ClientSecret = v
+	o.ClientSecret = &v
 }
 
 // GetScope returns the Scope field value if set, zero value otherwise.
@@ -270,8 +318,15 @@ func (o ApiClient) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["id"] = o.Id
 	toSerialize["created_at"] = o.CreatedAt
-	toSerialize["client_id"] = o.ClientId
-	toSerialize["client_secret"] = o.ClientSecret
+	if !IsNil(o.Name) {
+		toSerialize["name"] = o.Name
+	}
+	if !IsNil(o.ClientId) {
+		toSerialize["client_id"] = o.ClientId
+	}
+	if !IsNil(o.ClientSecret) {
+		toSerialize["client_secret"] = o.ClientSecret
+	}
 	if !IsNil(o.Scope) {
 		toSerialize["scope"] = o.Scope
 	}
@@ -281,6 +336,11 @@ func (o ApiClient) ToMap() (map[string]interface{}, error) {
 	if o.LastUsedAt.IsSet() {
 		toSerialize["last_used_at"] = o.LastUsedAt.Get()
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -291,8 +351,6 @@ func (o *ApiClient) UnmarshalJSON(data []byte) (err error) {
 	requiredProperties := []string{
 		"id",
 		"created_at",
-		"client_id",
-		"client_secret",
 	}
 
 	allProperties := make(map[string]interface{})
@@ -311,15 +369,27 @@ func (o *ApiClient) UnmarshalJSON(data []byte) (err error) {
 
 	varApiClient := _ApiClient{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varApiClient)
+	err = json.Unmarshal(data, &varApiClient)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ApiClient(varApiClient)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "client_id")
+		delete(additionalProperties, "client_secret")
+		delete(additionalProperties, "scope")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "last_used_at")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

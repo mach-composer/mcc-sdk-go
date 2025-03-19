@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type OrganizationDraft struct {
 	// The organization key (must be unique)
 	Key string `json:"key"`
 	// The name of the organization
-	Name string `json:"name"`
+	Name                 string `json:"name"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OrganizationDraft OrganizationDraft
@@ -109,6 +109,11 @@ func (o OrganizationDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["key"] = o.Key
 	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -137,15 +142,21 @@ func (o *OrganizationDraft) UnmarshalJSON(data []byte) (err error) {
 
 	varOrganizationDraft := _OrganizationDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOrganizationDraft)
+	err = json.Unmarshal(data, &varOrganizationDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OrganizationDraft(varOrganizationDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -25,7 +24,8 @@ type ComponentVersionDraft struct {
 	// version of the component
 	Version string `json:"version"`
 	// branch of the version
-	Branch *string `json:"branch,omitempty"`
+	Branch               *string `json:"branch,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ComponentVersionDraft ComponentVersionDraft
@@ -118,6 +118,11 @@ func (o ComponentVersionDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Branch) {
 		toSerialize["branch"] = o.Branch
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -145,15 +150,21 @@ func (o *ComponentVersionDraft) UnmarshalJSON(data []byte) (err error) {
 
 	varComponentVersionDraft := _ComponentVersionDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varComponentVersionDraft)
+	err = json.Unmarshal(data, &varComponentVersionDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ComponentVersionDraft(varComponentVersionDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "version")
+		delete(additionalProperties, "branch")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -4,10 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**Id** | **string** |  | [readonly] 
+**Id** | **int32** |  | [readonly] 
 **CreatedAt** | **time.Time** |  | [readonly] 
-**ClientId** | **string** |  | 
-**ClientSecret** | **string** |  | 
+**Name** | Pointer to **string** |  | [optional] 
+**ClientId** | Pointer to **string** |  | [optional] 
+**ClientSecret** | Pointer to **string** | Hashed on Save. Copy it now if this is a new secret. | [optional] 
 **Scope** | Pointer to **[]string** |  | [optional] 
 **Description** | Pointer to **string** |  | [optional] 
 **LastUsedAt** | Pointer to **NullableTime** |  | [optional] 
@@ -16,7 +17,7 @@ Name | Type | Description | Notes
 
 ### NewApiClient
 
-`func NewApiClient(id string, createdAt time.Time, clientId string, clientSecret string, ) *ApiClient`
+`func NewApiClient(id int32, createdAt time.Time, ) *ApiClient`
 
 NewApiClient instantiates a new ApiClient object
 This constructor will assign default values to properties that have it defined,
@@ -33,20 +34,20 @@ but it doesn't guarantee that properties required by API are set
 
 ### GetId
 
-`func (o *ApiClient) GetId() string`
+`func (o *ApiClient) GetId() int32`
 
 GetId returns the Id field if non-nil, zero value otherwise.
 
 ### GetIdOk
 
-`func (o *ApiClient) GetIdOk() (*string, bool)`
+`func (o *ApiClient) GetIdOk() (*int32, bool)`
 
 GetIdOk returns a tuple with the Id field if it's non-nil, zero value otherwise
 and a boolean to check if the value has been set.
 
 ### SetId
 
-`func (o *ApiClient) SetId(v string)`
+`func (o *ApiClient) SetId(v int32)`
 
 SetId sets Id field to given value.
 
@@ -71,6 +72,31 @@ and a boolean to check if the value has been set.
 SetCreatedAt sets CreatedAt field to given value.
 
 
+### GetName
+
+`func (o *ApiClient) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *ApiClient) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *ApiClient) SetName(v string)`
+
+SetName sets Name field to given value.
+
+### HasName
+
+`func (o *ApiClient) HasName() bool`
+
+HasName returns a boolean if a field has been set.
+
 ### GetClientId
 
 `func (o *ApiClient) GetClientId() string`
@@ -90,6 +116,11 @@ and a boolean to check if the value has been set.
 
 SetClientId sets ClientId field to given value.
 
+### HasClientId
+
+`func (o *ApiClient) HasClientId() bool`
+
+HasClientId returns a boolean if a field has been set.
 
 ### GetClientSecret
 
@@ -110,6 +141,11 @@ and a boolean to check if the value has been set.
 
 SetClientSecret sets ClientSecret field to given value.
 
+### HasClientSecret
+
+`func (o *ApiClient) HasClientSecret() bool`
+
+HasClientSecret returns a boolean if a field has been set.
 
 ### GetScope
 
