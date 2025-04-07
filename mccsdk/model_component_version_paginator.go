@@ -23,11 +23,14 @@ type ComponentVersionPaginator struct {
 	// Number of items in the current page
 	Count *int32 `json:"count,omitempty"`
 	// Total number of items found
-	Total   *int64             `json:"total,omitempty"`
-	Offset  *int32             `json:"offset,omitempty"`
-	Limit   *int32             `json:"limit,omitempty"`
-	Results []ComponentVersion `json:"results,omitempty"`
+	Total                *int64             `json:"total,omitempty"`
+	Offset               *int32             `json:"offset,omitempty"`
+	Limit                *int32             `json:"limit,omitempty"`
+	Results              []ComponentVersion `json:"results,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ComponentVersionPaginator ComponentVersionPaginator
 
 // NewComponentVersionPaginator instantiates a new ComponentVersionPaginator object
 // This constructor will assign default values to properties that have it defined,
@@ -239,7 +242,37 @@ func (o ComponentVersionPaginator) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Results) {
 		toSerialize["results"] = o.Results
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ComponentVersionPaginator) UnmarshalJSON(data []byte) (err error) {
+	varComponentVersionPaginator := _ComponentVersionPaginator{}
+
+	err = json.Unmarshal(data, &varComponentVersionPaginator)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ComponentVersionPaginator(varComponentVersionPaginator)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "results")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableComponentVersionPaginator struct {

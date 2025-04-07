@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,13 +22,14 @@ var _ MappedNullable = &CommitData{}
 
 // CommitData struct for CommitData
 type CommitData struct {
-	Id        string           `json:"id"`
-	CreatedAt time.Time        `json:"created_at"`
-	Subject   string           `json:"subject"`
-	Commit    string           `json:"commit"`
-	Parents   []string         `json:"parents,omitempty"`
-	Author    CommitDataAuthor `json:"author"`
-	Committer CommitDataAuthor `json:"committer"`
+	Id                   string           `json:"id"`
+	CreatedAt            time.Time        `json:"created_at"`
+	Subject              string           `json:"subject"`
+	Commit               string           `json:"commit"`
+	Parents              []string         `json:"parents,omitempty"`
+	Author               CommitDataAuthor `json:"author"`
+	Committer            CommitDataAuthor `json:"committer"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CommitData CommitData
@@ -252,6 +252,11 @@ func (o CommitData) ToMap() (map[string]interface{}, error) {
 	}
 	toSerialize["author"] = o.Author
 	toSerialize["committer"] = o.Committer
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -284,15 +289,26 @@ func (o *CommitData) UnmarshalJSON(data []byte) (err error) {
 
 	varCommitData := _CommitData{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCommitData)
+	err = json.Unmarshal(data, &varCommitData)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CommitData(varCommitData)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "subject")
+		delete(additionalProperties, "commit")
+		delete(additionalProperties, "parents")
+		delete(additionalProperties, "author")
+		delete(additionalProperties, "committer")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,8 +20,11 @@ var _ MappedNullable = &ErrorUnauthorized{}
 
 // ErrorUnauthorized Unauthorized
 type ErrorUnauthorized struct {
-	Message *string `json:"message,omitempty"`
+	Message              *string `json:"message,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ErrorUnauthorized ErrorUnauthorized
 
 // NewErrorUnauthorized instantiates a new ErrorUnauthorized object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ErrorUnauthorized) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Message) {
 		toSerialize["message"] = o.Message
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ErrorUnauthorized) UnmarshalJSON(data []byte) (err error) {
+	varErrorUnauthorized := _ErrorUnauthorized{}
+
+	err = json.Unmarshal(data, &varErrorUnauthorized)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorUnauthorized(varErrorUnauthorized)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "message")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableErrorUnauthorized struct {

@@ -170,9 +170,6 @@ func (a *APIClientsApiService) ApiClientCreateExecute(r ApiApiClientCreateReques
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.apiClientDraft == nil {
-		return localVarReturnValue, nil, reportError("apiClientDraft is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -743,10 +740,10 @@ func (a *APIClientsApiService) ApiClientQueryExecute(r ApiApiClientQueryRequest)
 	localVarFormParams := url.Values{}
 
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.offset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -893,9 +890,6 @@ func (a *APIClientsApiService) ApiClientUpdateExecute(r ApiApiClientUpdateReques
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.apiClientDraft == nil {
-		return localVarReturnValue, nil, reportError("apiClientDraft is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}

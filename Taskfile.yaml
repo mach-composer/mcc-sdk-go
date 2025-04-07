@@ -3,7 +3,7 @@ version: '3'
 tasks:
   test:
       cmds:
-      - go test ./...
+        - go test ./...
 
   clean:
     cmds:
@@ -15,7 +15,7 @@ tasks:
   generate:
     cmds:
       - rm -rf mccsdk docs
-      - openapi-generator generate -i ../mach-composer-cloud/openapi.yaml -g go --enable-post-process-file --model-package mccsdk/mccmodels --http-user-agent mcc-sdk-go --additional-properties=apiNameSuffix=Api,packageName=mccsdk,generateInterfaces=true
+      - openapi-generator-cli generate -i https://api.mach.cloud/docs/openapi.yaml -g go --enable-post-process-file -c ./openapi-config.yaml
       - mkdir mccsdk
       - mv *.go mccsdk
       - rm -rf test

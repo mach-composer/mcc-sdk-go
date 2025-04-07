@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -30,7 +29,8 @@ type Project struct {
 	// The name of the project
 	Name string `json:"name"`
 	// The description of the project
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _Project Project
@@ -201,6 +201,11 @@ func (o Project) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -231,15 +236,24 @@ func (o *Project) UnmarshalJSON(data []byte) (err error) {
 
 	varProject := _Project{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varProject)
+	err = json.Unmarshal(data, &varProject)
 
 	if err != nil {
 		return err
 	}
 
 	*o = Project(varProject)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "id")
+		delete(additionalProperties, "created_at")
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

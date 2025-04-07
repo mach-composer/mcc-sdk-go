@@ -23,11 +23,14 @@ type CommitDataPaginator struct {
 	// Number of items in the current page
 	Count *int32 `json:"count,omitempty"`
 	// Total number of items found
-	Total   *int64       `json:"total,omitempty"`
-	Offset  *int32       `json:"offset,omitempty"`
-	Limit   *int32       `json:"limit,omitempty"`
-	Results []CommitData `json:"results,omitempty"`
+	Total                *int64       `json:"total,omitempty"`
+	Offset               *int32       `json:"offset,omitempty"`
+	Limit                *int32       `json:"limit,omitempty"`
+	Results              []CommitData `json:"results,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _CommitDataPaginator CommitDataPaginator
 
 // NewCommitDataPaginator instantiates a new CommitDataPaginator object
 // This constructor will assign default values to properties that have it defined,
@@ -239,7 +242,37 @@ func (o CommitDataPaginator) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Results) {
 		toSerialize["results"] = o.Results
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *CommitDataPaginator) UnmarshalJSON(data []byte) (err error) {
+	varCommitDataPaginator := _CommitDataPaginator{}
+
+	err = json.Unmarshal(data, &varCommitDataPaginator)
+
+	if err != nil {
+		return err
+	}
+
+	*o = CommitDataPaginator(varCommitDataPaginator)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "count")
+		delete(additionalProperties, "total")
+		delete(additionalProperties, "offset")
+		delete(additionalProperties, "limit")
+		delete(additionalProperties, "results")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableCommitDataPaginator struct {

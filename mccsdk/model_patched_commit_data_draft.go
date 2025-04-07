@@ -20,12 +20,15 @@ var _ MappedNullable = &PatchedCommitDataDraft{}
 
 // PatchedCommitDataDraft struct for PatchedCommitDataDraft
 type PatchedCommitDataDraft struct {
-	Subject   *string                `json:"subject,omitempty"`
-	Commit    *string                `json:"commit,omitempty"`
-	Parents   []string               `json:"parents,omitempty"`
-	Author    *CommitDataAuthorDraft `json:"author,omitempty"`
-	Committer *CommitDataAuthorDraft `json:"committer,omitempty"`
+	Subject              *string                `json:"subject,omitempty"`
+	Commit               *string                `json:"commit,omitempty"`
+	Parents              []string               `json:"parents,omitempty"`
+	Author               *CommitDataAuthorDraft `json:"author,omitempty"`
+	Committer            *CommitDataAuthorDraft `json:"committer,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedCommitDataDraft PatchedCommitDataDraft
 
 // NewPatchedCommitDataDraft instantiates a new PatchedCommitDataDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -229,7 +232,37 @@ func (o PatchedCommitDataDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Committer) {
 		toSerialize["committer"] = o.Committer
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedCommitDataDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedCommitDataDraft := _PatchedCommitDataDraft{}
+
+	err = json.Unmarshal(data, &varPatchedCommitDataDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedCommitDataDraft(varPatchedCommitDataDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "subject")
+		delete(additionalProperties, "commit")
+		delete(additionalProperties, "parents")
+		delete(additionalProperties, "author")
+		delete(additionalProperties, "committer")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedCommitDataDraft struct {

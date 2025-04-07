@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,12 +21,13 @@ var _ MappedNullable = &ComponentDraft{}
 
 // ComponentDraft struct for ComponentDraft
 type ComponentDraft struct {
-	// key of the component
+	// The component key (must be unique)
 	Key string `json:"key"`
-	// short description of the component
-	Description *string `json:"description,omitempty"`
-	// name of the component
+	// The name of the component
 	Name string `json:"name"`
+	// The description of the component
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _ComponentDraft ComponentDraft
@@ -75,6 +75,30 @@ func (o *ComponentDraft) SetKey(v string) {
 	o.Key = v
 }
 
+// GetName returns the Name field value
+func (o *ComponentDraft) GetName() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value
+// and a boolean to check if the value has been set.
+func (o *ComponentDraft) GetNameOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Name, true
+}
+
+// SetName sets field value
+func (o *ComponentDraft) SetName(v string) {
+	o.Name = v
+}
+
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ComponentDraft) GetDescription() string {
 	if o == nil || IsNil(o.Description) {
@@ -107,30 +131,6 @@ func (o *ComponentDraft) SetDescription(v string) {
 	o.Description = &v
 }
 
-// GetName returns the Name field value
-func (o *ComponentDraft) GetName() string {
-	if o == nil {
-		var ret string
-		return ret
-	}
-
-	return o.Name
-}
-
-// GetNameOk returns a tuple with the Name field value
-// and a boolean to check if the value has been set.
-func (o *ComponentDraft) GetNameOk() (*string, bool) {
-	if o == nil {
-		return nil, false
-	}
-	return &o.Name, true
-}
-
-// SetName sets field value
-func (o *ComponentDraft) SetName(v string) {
-	o.Name = v
-}
-
 func (o ComponentDraft) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -142,10 +142,15 @@ func (o ComponentDraft) MarshalJSON() ([]byte, error) {
 func (o ComponentDraft) ToMap() (map[string]interface{}, error) {
 	toSerialize := map[string]interface{}{}
 	toSerialize["key"] = o.Key
+	toSerialize["name"] = o.Name
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
-	toSerialize["name"] = o.Name
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -174,15 +179,22 @@ func (o *ComponentDraft) UnmarshalJSON(data []byte) (err error) {
 
 	varComponentDraft := _ComponentDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varComponentDraft)
+	err = json.Unmarshal(data, &varComponentDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = ComponentDraft(varComponentDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

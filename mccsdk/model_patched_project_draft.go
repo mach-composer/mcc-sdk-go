@@ -25,8 +25,11 @@ type PatchedProjectDraft struct {
 	// The name of the project
 	Name *string `json:"name,omitempty"`
 	// The description of the project
-	Description *string `json:"description,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedProjectDraft PatchedProjectDraft
 
 // NewPatchedProjectDraft instantiates a new PatchedProjectDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -160,7 +163,35 @@ func (o PatchedProjectDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Description) {
 		toSerialize["description"] = o.Description
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedProjectDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedProjectDraft := _PatchedProjectDraft{}
+
+	err = json.Unmarshal(data, &varPatchedProjectDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedProjectDraft(varPatchedProjectDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedProjectDraft struct {

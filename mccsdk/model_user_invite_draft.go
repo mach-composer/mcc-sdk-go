@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,12 +22,13 @@ var _ MappedNullable = &UserInviteDraft{}
 
 // UserInviteDraft struct for UserInviteDraft
 type UserInviteDraft struct {
-	AcceptedAt   NullableTime   `json:"accepted_at,omitempty"`
-	CreatedBy    string         `json:"created_by"`
-	Email        string         `json:"email"`
-	Organization string         `json:"organization"`
-	Project      NullableString `json:"project,omitempty"`
-	Role         string         `json:"role"`
+	AcceptedAt           NullableTime   `json:"accepted_at,omitempty"`
+	CreatedBy            string         `json:"created_by"`
+	Email                string         `json:"email"`
+	Organization         string         `json:"organization"`
+	Project              NullableString `json:"project,omitempty"`
+	Role                 string         `json:"role"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _UserInviteDraft UserInviteDraft
@@ -256,6 +256,11 @@ func (o UserInviteDraft) ToMap() (map[string]interface{}, error) {
 		toSerialize["project"] = o.Project.Get()
 	}
 	toSerialize["role"] = o.Role
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -286,15 +291,25 @@ func (o *UserInviteDraft) UnmarshalJSON(data []byte) (err error) {
 
 	varUserInviteDraft := _UserInviteDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varUserInviteDraft)
+	err = json.Unmarshal(data, &varUserInviteDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = UserInviteDraft(varUserInviteDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "accepted_at")
+		delete(additionalProperties, "created_by")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "organization")
+		delete(additionalProperties, "project")
+		delete(additionalProperties, "role")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

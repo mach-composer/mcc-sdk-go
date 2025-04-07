@@ -420,16 +420,16 @@ func (a *ComponentsApiService) ComponentCommitQueryExecute(r ApiComponentCommitQ
 	localVarFormParams := url.Values{}
 
 	if r.from != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "from", r.from, "form", "")
 	}
 	if r.to != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "to", r.to, "form", "")
 	}
 	if r.offset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -986,7 +986,7 @@ func (a *ComponentsApiService) ComponentLatestVersionExecute(r ApiComponentLates
 	localVarFormParams := url.Values{}
 
 	if r.branch != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "branch", r.branch, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "branch", r.branch, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1284,13 +1284,13 @@ func (a *ComponentsApiService) ComponentQueryExecute(r ApiComponentQueryRequest)
 	localVarFormParams := url.Values{}
 
 	if r.key != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "key", r.key, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "key", r.key, "form", "")
 	}
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.offset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2753,10 +2753,10 @@ func (a *ComponentsApiService) ComponentVersionQueryExecute(r ApiComponentVersio
 	localVarFormParams := url.Values{}
 
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.offset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2917,10 +2917,10 @@ func (a *ComponentsApiService) ComponentVersionQueryCommitsExecute(r ApiComponen
 	localVarFormParams := url.Values{}
 
 	if r.limit != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
 	}
 	if r.offset != nil {
-		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "")
+		parameterAddToHeaderOrQuery(localVarQueryParams, "offset", r.offset, "form", "")
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}

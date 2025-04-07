@@ -34,7 +34,7 @@ import (
 func main() {
 	organization := "organization_example" // string | 
 	project := "project_example" // string | 
-	apiClientDraft := *openapiclient.NewApiClientDraft("ClientId_example", "ClientSecret_example") // ApiClientDraft | 
+	apiClientDraft := *openapiclient.NewApiClientDraft() // ApiClientDraft |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
@@ -405,7 +405,7 @@ func main() {
 	organization := "organization_example" // string | 
 	project := "project_example" // string | 
 	id := "id_example" // string | 
-	apiClientDraft := *openapiclient.NewApiClientDraft("ClientId_example", "ClientSecret_example") // ApiClientDraft | 
+	apiClientDraft := *openapiclient.NewApiClientDraft() // ApiClientDraft |  (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)

@@ -6,9 +6,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** |  | [readonly] 
 **CreatedAt** | **time.Time** |  | [readonly] 
-**Key** | **string** | key of the component | 
-**Description** | Pointer to **string** | short description of the component | [optional] 
-**Name** | **string** | name of the component | 
+**Key** | **string** | The component key (must be unique) | 
+**Name** | **string** | The name of the component | 
+**Description** | Pointer to **string** | The description of the component | [optional] 
 
 ## Methods
 
@@ -89,6 +89,26 @@ and a boolean to check if the value has been set.
 SetKey sets Key field to given value.
 
 
+### GetName
+
+`func (o *Component) GetName() string`
+
+GetName returns the Name field if non-nil, zero value otherwise.
+
+### GetNameOk
+
+`func (o *Component) GetNameOk() (*string, bool)`
+
+GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetName
+
+`func (o *Component) SetName(v string)`
+
+SetName sets Name field to given value.
+
+
 ### GetDescription
 
 `func (o *Component) GetDescription() string`
@@ -113,26 +133,6 @@ SetDescription sets Description field to given value.
 `func (o *Component) HasDescription() bool`
 
 HasDescription returns a boolean if a field has been set.
-
-### GetName
-
-`func (o *Component) GetName() string`
-
-GetName returns the Name field if non-nil, zero value otherwise.
-
-### GetNameOk
-
-`func (o *Component) GetNameOk() (*string, bool)`
-
-GetNameOk returns a tuple with the Name field if it's non-nil, zero value otherwise
-and a boolean to check if the value has been set.
-
-### SetName
-
-`func (o *Component) SetName(v string)`
-
-SetName sets Name field to given value.
-
 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

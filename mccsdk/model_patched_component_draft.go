@@ -20,13 +20,16 @@ var _ MappedNullable = &PatchedComponentDraft{}
 
 // PatchedComponentDraft struct for PatchedComponentDraft
 type PatchedComponentDraft struct {
-	// key of the component
+	// The component key (must be unique)
 	Key *string `json:"key,omitempty"`
-	// short description of the component
-	Description *string `json:"description,omitempty"`
-	// name of the component
+	// The name of the component
 	Name *string `json:"name,omitempty"`
+	// The description of the component
+	Description          *string `json:"description,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _PatchedComponentDraft PatchedComponentDraft
 
 // NewPatchedComponentDraft instantiates a new PatchedComponentDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -77,38 +80,6 @@ func (o *PatchedComponentDraft) SetKey(v string) {
 	o.Key = &v
 }
 
-// GetDescription returns the Description field value if set, zero value otherwise.
-func (o *PatchedComponentDraft) GetDescription() string {
-	if o == nil || IsNil(o.Description) {
-		var ret string
-		return ret
-	}
-	return *o.Description
-}
-
-// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *PatchedComponentDraft) GetDescriptionOk() (*string, bool) {
-	if o == nil || IsNil(o.Description) {
-		return nil, false
-	}
-	return o.Description, true
-}
-
-// HasDescription returns a boolean if a field has been set.
-func (o *PatchedComponentDraft) HasDescription() bool {
-	if o != nil && !IsNil(o.Description) {
-		return true
-	}
-
-	return false
-}
-
-// SetDescription gets a reference to the given string and assigns it to the Description field.
-func (o *PatchedComponentDraft) SetDescription(v string) {
-	o.Description = &v
-}
-
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *PatchedComponentDraft) GetName() string {
 	if o == nil || IsNil(o.Name) {
@@ -141,6 +112,38 @@ func (o *PatchedComponentDraft) SetName(v string) {
 	o.Name = &v
 }
 
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *PatchedComponentDraft) GetDescription() string {
+	if o == nil || IsNil(o.Description) {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *PatchedComponentDraft) GetDescriptionOk() (*string, bool) {
+	if o == nil || IsNil(o.Description) {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *PatchedComponentDraft) HasDescription() bool {
+	if o != nil && !IsNil(o.Description) {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *PatchedComponentDraft) SetDescription(v string) {
+	o.Description = &v
+}
+
 func (o PatchedComponentDraft) MarshalJSON() ([]byte, error) {
 	toSerialize, err := o.ToMap()
 	if err != nil {
@@ -154,13 +157,41 @@ func (o PatchedComponentDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Key) {
 		toSerialize["key"] = o.Key
 	}
-	if !IsNil(o.Description) {
-		toSerialize["description"] = o.Description
-	}
 	if !IsNil(o.Name) {
 		toSerialize["name"] = o.Name
 	}
+	if !IsNil(o.Description) {
+		toSerialize["description"] = o.Description
+	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *PatchedComponentDraft) UnmarshalJSON(data []byte) (err error) {
+	varPatchedComponentDraft := _PatchedComponentDraft{}
+
+	err = json.Unmarshal(data, &varPatchedComponentDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = PatchedComponentDraft(varPatchedComponentDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "key")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "description")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullablePatchedComponentDraft struct {

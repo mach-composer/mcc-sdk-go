@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
@@ -22,13 +21,14 @@ var _ MappedNullable = &OrganizationUserDraft{}
 
 // OrganizationUserDraft struct for OrganizationUserDraft
 type OrganizationUserDraft struct {
-	AccountStatus string  `json:"account_status"`
-	Name          string  `json:"name"`
-	Email         string  `json:"email"`
-	AvatarUrl     *string `json:"avatar_url,omitempty"`
-	IsActive      *bool   `json:"is_active,omitempty"`
-	IsStaff       *bool   `json:"is_staff,omitempty"`
-	IsSuperuser   *bool   `json:"is_superuser,omitempty"`
+	AccountStatus        string  `json:"account_status"`
+	Name                 string  `json:"name"`
+	Email                string  `json:"email"`
+	AvatarUrl            *string `json:"avatar_url,omitempty"`
+	IsActive             *bool   `json:"is_active,omitempty"`
+	IsStaff              *bool   `json:"is_staff,omitempty"`
+	IsSuperuser          *bool   `json:"is_superuser,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _OrganizationUserDraft OrganizationUserDraft
@@ -278,6 +278,11 @@ func (o OrganizationUserDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.IsSuperuser) {
 		toSerialize["is_superuser"] = o.IsSuperuser
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -307,15 +312,26 @@ func (o *OrganizationUserDraft) UnmarshalJSON(data []byte) (err error) {
 
 	varOrganizationUserDraft := _OrganizationUserDraft{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varOrganizationUserDraft)
+	err = json.Unmarshal(data, &varOrganizationUserDraft)
 
 	if err != nil {
 		return err
 	}
 
 	*o = OrganizationUserDraft(varOrganizationUserDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "account_status")
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "avatar_url")
+		delete(additionalProperties, "is_active")
+		delete(additionalProperties, "is_staff")
+		delete(additionalProperties, "is_superuser")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

@@ -20,8 +20,11 @@ var _ MappedNullable = &ComponentCommitCreateDraft{}
 
 // ComponentCommitCreateDraft struct for ComponentCommitCreateDraft
 type ComponentCommitCreateDraft struct {
-	Commits []CommitDraft `json:"commits,omitempty"`
+	Commits              []CommitDraft `json:"commits,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ComponentCommitCreateDraft ComponentCommitCreateDraft
 
 // NewComponentCommitCreateDraft instantiates a new ComponentCommitCreateDraft object
 // This constructor will assign default values to properties that have it defined,
@@ -85,7 +88,33 @@ func (o ComponentCommitCreateDraft) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Commits) {
 		toSerialize["commits"] = o.Commits
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ComponentCommitCreateDraft) UnmarshalJSON(data []byte) (err error) {
+	varComponentCommitCreateDraft := _ComponentCommitCreateDraft{}
+
+	err = json.Unmarshal(data, &varComponentCommitCreateDraft)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ComponentCommitCreateDraft(varComponentCommitCreateDraft)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "commits")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableComponentCommitCreateDraft struct {

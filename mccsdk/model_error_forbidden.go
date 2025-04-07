@@ -20,11 +20,14 @@ var _ MappedNullable = &ErrorForbidden{}
 
 // ErrorForbidden Forbidden
 type ErrorForbidden struct {
-	Status      *int32  `json:"status,omitempty"`
-	Summary     *string `json:"summary,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Message     *string `json:"message,omitempty"`
+	Status               *int32  `json:"status,omitempty"`
+	Summary              *string `json:"summary,omitempty"`
+	Description          *string `json:"description,omitempty"`
+	Message              *string `json:"message,omitempty"`
+	AdditionalProperties map[string]interface{}
 }
+
+type _ErrorForbidden ErrorForbidden
 
 // NewErrorForbidden instantiates a new ErrorForbidden object
 // This constructor will assign default values to properties that have it defined,
@@ -193,7 +196,36 @@ func (o ErrorForbidden) ToMap() (map[string]interface{}, error) {
 	if !IsNil(o.Message) {
 		toSerialize["message"] = o.Message
 	}
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
+}
+
+func (o *ErrorForbidden) UnmarshalJSON(data []byte) (err error) {
+	varErrorForbidden := _ErrorForbidden{}
+
+	err = json.Unmarshal(data, &varErrorForbidden)
+
+	if err != nil {
+		return err
+	}
+
+	*o = ErrorForbidden(varErrorForbidden)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "status")
+		delete(additionalProperties, "summary")
+		delete(additionalProperties, "description")
+		delete(additionalProperties, "message")
+		o.AdditionalProperties = additionalProperties
+	}
+
+	return err
 }
 
 type NullableErrorForbidden struct {

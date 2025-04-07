@@ -12,7 +12,6 @@ Contact: mach@labdigital.nl
 package mccsdk
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"time"
@@ -23,9 +22,10 @@ var _ MappedNullable = &CommitDataAuthor{}
 
 // CommitDataAuthor struct for CommitDataAuthor
 type CommitDataAuthor struct {
-	Name  string    `json:"name"`
-	Email string    `json:"email"`
-	Date  time.Time `json:"date"`
+	Name                 string    `json:"name"`
+	Email                string    `json:"email"`
+	Date                 time.Time `json:"date"`
+	AdditionalProperties map[string]interface{}
 }
 
 type _CommitDataAuthor CommitDataAuthor
@@ -135,6 +135,11 @@ func (o CommitDataAuthor) ToMap() (map[string]interface{}, error) {
 	toSerialize["name"] = o.Name
 	toSerialize["email"] = o.Email
 	toSerialize["date"] = o.Date
+
+	for key, value := range o.AdditionalProperties {
+		toSerialize[key] = value
+	}
+
 	return toSerialize, nil
 }
 
@@ -164,15 +169,22 @@ func (o *CommitDataAuthor) UnmarshalJSON(data []byte) (err error) {
 
 	varCommitDataAuthor := _CommitDataAuthor{}
 
-	decoder := json.NewDecoder(bytes.NewReader(data))
-	decoder.DisallowUnknownFields()
-	err = decoder.Decode(&varCommitDataAuthor)
+	err = json.Unmarshal(data, &varCommitDataAuthor)
 
 	if err != nil {
 		return err
 	}
 
 	*o = CommitDataAuthor(varCommitDataAuthor)
+
+	additionalProperties := make(map[string]interface{})
+
+	if err = json.Unmarshal(data, &additionalProperties); err == nil {
+		delete(additionalProperties, "name")
+		delete(additionalProperties, "email")
+		delete(additionalProperties, "date")
+		o.AdditionalProperties = additionalProperties
+	}
 
 	return err
 }

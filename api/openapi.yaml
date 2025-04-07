@@ -26,7 +26,7 @@ servers:
 - description: Live environment
   url: https://api.mach.cloud
 security:
-- OAuth2:
+- oauth2:
   - api-client:read
   - api-client:write
   - component:read
@@ -462,14 +462,6 @@ paths:
       requestBody:
         content:
           application/json:
-            examples:
-              UpdateOrganizationName:
-                description: Example of updating an organization's name
-                summary: Update organization name
-                value:
-                - op: replace
-                  path: /name
-                  value: New Organization Name
             schema:
               $ref: '#/components/schemas/PatchedOrganizationDraft'
       responses:
@@ -721,14 +713,6 @@ paths:
       requestBody:
         content:
           application/json:
-            examples:
-              UpdateProjectName:
-                description: Example of updating a project's name
-                summary: Update project name
-                value:
-                - op: replace
-                  path: /name
-                  value: New Project Name
             schema:
               $ref: '#/components/schemas/PatchedProjectDraft'
       responses:
@@ -882,7 +866,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiClientDraft'
-        required: true
       responses:
         "201":
           content:
@@ -1098,7 +1081,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ApiClientDraft'
-        required: true
       responses:
         "200":
           content:
@@ -2662,25 +2644,29 @@ components:
         scope:
         - organization:owner
         - organization:owner
+        name: name
         created_at: 2000-01-23T04:56:07.000+00:00
         description: description
-        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 5
         client_secret: client_secret
         client_id: client_id
       properties:
         id:
-          format: uuid
           readOnly: true
-          type: string
+          type: integer
         created_at:
           format: date-time
           readOnly: true
           type: string
+        name:
+          maxLength: 255
+          type: string
         client_id:
-          maxLength: 36
+          maxLength: 100
           type: string
         client_secret:
-          maxLength: 60
+          description: Hashed on Save. Copy it now if this is a new secret.
+          maxLength: 255
           type: string
         scope:
           items:
@@ -2699,6 +2685,9 @@ components:
               * `site:manage` - Site Manage
               * `site-component:read` - Site Component Read
               * `site-component:manage` - Site Component Manage
+              * `user:read` - User Read
+              * `user:manage` - User Manage
+              * `user:invite` - User Invite
             enum:
             - organization:owner
             - organization:create
@@ -2714,8 +2703,11 @@ components:
             - site:manage
             - site-component:read
             - site-component:manage
+            - user:read
+            - user:manage
+            - user:invite
             type: string
-            x-spec-enum-id: 829bb91e437de277
+            x-spec-enum-id: 8bc2bb6e18bcd46f
           type: array
         description:
           type: string
@@ -2724,8 +2716,6 @@ components:
           nullable: true
           type: string
       required:
-      - client_id
-      - client_secret
       - created_at
       - id
       type: object
@@ -2735,17 +2725,21 @@ components:
         scope:
         - organization:owner
         - organization:owner
+        name: name
         description: description
         client_secret: client_secret
         client_id: client_id
       properties:
+        name:
+          maxLength: 255
+          type: string
         client_id:
-          maxLength: 36
+          maxLength: 100
           minLength: 1
           type: string
         client_secret:
-          maxLength: 60
-          minLength: 1
+          description: Hashed on Save. Copy it now if this is a new secret.
+          maxLength: 255
           type: string
         scope:
           items:
@@ -2764,6 +2758,9 @@ components:
               * `site:manage` - Site Manage
               * `site-component:read` - Site Component Read
               * `site-component:manage` - Site Component Manage
+              * `user:read` - User Read
+              * `user:manage` - User Manage
+              * `user:invite` - User Invite
             enum:
             - organization:owner
             - organization:create
@@ -2779,19 +2776,18 @@ components:
             - site:manage
             - site-component:read
             - site-component:manage
+            - user:read
+            - user:manage
+            - user:invite
             type: string
-            x-spec-enum-id: 829bb91e437de277
+            x-spec-enum-id: 8bc2bb6e18bcd46f
           type: array
         description:
-          minLength: 1
           type: string
         last_used_at:
           format: date-time
           nullable: true
           type: string
-      required:
-      - client_id
-      - client_secret
       type: object
     ApiClientPaginator:
       example:
@@ -2804,18 +2800,20 @@ components:
           scope:
           - organization:owner
           - organization:owner
+          name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 5
           client_secret: client_secret
           client_id: client_id
         - last_used_at: 2000-01-23T04:56:07.000+00:00
           scope:
           - organization:owner
           - organization:owner
+          name: name
           created_at: 2000-01-23T04:56:07.000+00:00
           description: description
-          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 5
           client_secret: client_secret
           client_id: client_id
       properties:
@@ -3097,15 +3095,15 @@ components:
           readOnly: true
           type: string
         key:
-          description: key of the component
+          description: The component key (must be unique)
+          maxLength: 100
+          type: string
+        name:
+          description: The name of the component
           maxLength: 100
           type: string
         description:
-          description: short description of the component
-          type: string
-        name:
-          description: name of the component
-          maxLength: 100
+          description: The description of the component
           type: string
       required:
       - created_at
@@ -3155,17 +3153,17 @@ components:
         key: key
       properties:
         key:
-          description: key of the component
+          description: The component key (must be unique)
+          maxLength: 100
+          minLength: 1
+          type: string
+        name:
+          description: The name of the component
           maxLength: 100
           minLength: 1
           type: string
         description:
-          description: short description of the component
-          type: string
-        name:
-          description: name of the component
-          maxLength: 100
-          minLength: 1
+          description: The description of the component
           type: string
       required:
       - key
@@ -3445,6 +3443,17 @@ components:
       example:
         is_active: true
         is_superuser: true
+        projects:
+        - name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          key: key
+        - name: name
+          created_at: 2000-01-23T04:56:07.000+00:00
+          description: description
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          key: key
         avatar_url: avatar_url
         is_staff: true
         name: name
@@ -3485,6 +3494,11 @@ components:
           type: boolean
         is_superuser:
           type: boolean
+        projects:
+          items:
+            $ref: '#/components/schemas/Project'
+          readOnly: true
+          type: array
       required:
       - account_status
       - created_at
@@ -3492,6 +3506,7 @@ components:
       - id
       - last_modified_at
       - name
+      - projects
       type: object
     OrganizationUserDraft:
       example:
@@ -3540,6 +3555,17 @@ components:
         results:
         - is_active: true
           is_superuser: true
+          projects:
+          - name: name
+            created_at: 2000-01-23T04:56:07.000+00:00
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            key: key
+          - name: name
+            created_at: 2000-01-23T04:56:07.000+00:00
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            key: key
           avatar_url: avatar_url
           is_staff: true
           name: name
@@ -3550,6 +3576,17 @@ components:
           last_modified_at: 2000-01-23T04:56:07.000+00:00
         - is_active: true
           is_superuser: true
+          projects:
+          - name: name
+            created_at: 2000-01-23T04:56:07.000+00:00
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            key: key
+          - name: name
+            created_at: 2000-01-23T04:56:07.000+00:00
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            key: key
           avatar_url: avatar_url
           is_staff: true
           name: name
@@ -3583,17 +3620,21 @@ components:
         scope:
         - organization:owner
         - organization:owner
+        name: name
         description: description
         client_secret: client_secret
         client_id: client_id
       properties:
+        name:
+          maxLength: 255
+          type: string
         client_id:
-          maxLength: 36
+          maxLength: 100
           minLength: 1
           type: string
         client_secret:
-          maxLength: 60
-          minLength: 1
+          description: Hashed on Save. Copy it now if this is a new secret.
+          maxLength: 255
           type: string
         scope:
           items:
@@ -3612,6 +3653,9 @@ components:
               * `site:manage` - Site Manage
               * `site-component:read` - Site Component Read
               * `site-component:manage` - Site Component Manage
+              * `user:read` - User Read
+              * `user:manage` - User Manage
+              * `user:invite` - User Invite
             enum:
             - organization:owner
             - organization:create
@@ -3627,11 +3671,13 @@ components:
             - site:manage
             - site-component:read
             - site-component:manage
+            - user:read
+            - user:manage
+            - user:invite
             type: string
-            x-spec-enum-id: 829bb91e437de277
+            x-spec-enum-id: 8bc2bb6e18bcd46f
           type: array
         description:
-          minLength: 1
           type: string
         last_used_at:
           format: date-time
@@ -3679,17 +3725,17 @@ components:
         key: key
       properties:
         key:
-          description: key of the component
+          description: The component key (must be unique)
+          maxLength: 100
+          minLength: 1
+          type: string
+        name:
+          description: The name of the component
           maxLength: 100
           minLength: 1
           type: string
         description:
-          description: short description of the component
-          type: string
-        name:
-          description: name of the component
-          maxLength: 100
-          minLength: 1
+          description: The description of the component
           type: string
       type: object
     PatchedComponentVersionDraft:

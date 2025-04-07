@@ -1,0 +1,7 @@
+modelPackage: mccsdk/mccmodels
+httpUserAgent: mcc-sdk-go
+additionalProperties:
+  apiNameSuffix: Api
+  packageName: mccsdk
+  generateInterfaces: true
+  disallowAdditionalPropertiesIfNotPresent: false
